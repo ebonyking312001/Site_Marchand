@@ -13,5 +13,6 @@
 			<attribute name="javadoc_location" value="https://javaee.github.io/javaee-spec/javadocs/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Ngo Nam An/Documents/GitHub/Site_Marchand/src/main/webapp/WEB-INF/lib/mysql-connector-java-8.0.26.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
