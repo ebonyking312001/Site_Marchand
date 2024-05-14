@@ -57,9 +57,9 @@ public class ConnectionMySql
 
 
 	/**
-	 * Retourne la liste de citations de 'nom_auteur'.
+	 * Retourne la liste de articles.
 	 */
-	public static ArrayList<String> lireCitations (String nom_auteur) throws ClassNotFoundException, SQLException
+	public static ArrayList<String> afficherArticle () throws ClassNotFoundException, SQLException
 		{
 		/*----- Création de la connexion à la base de données -----*/
 		if (ConnectionMySql.cx == null)
@@ -69,18 +69,17 @@ public class ConnectionMySql
 		ArrayList<String> liste = new ArrayList<>();
 
 		/*----- Requête SQL -----*/
-		String sql = "SELECT LibCitation FROM Auteur, Citation WHERE Auteur.IdAuteur=Citation.AutCitation AND Auteur.NomAuteur=?";
+		String sql = "SELECT * from Articles";
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql))
 			{
 			/*----- Exécution de la requête -----*/
-			st.setString(1, nom_auteur);
 			try (ResultSet rs = st.executeQuery())
 				{
 				/*----- Lecture du contenu du ResultSet -----*/
 				while (rs.next())
-					liste.add(rs.getString(1));
+					liste.add(rs.getString(2));
 				}
 			}
 		catch (SQLException ex)
@@ -160,7 +159,7 @@ public class ConnectionMySql
 	public static void main (String[] s) throws Exception
 		{
 		try {
-			ArrayList<String> l = ConnectionMySql.lireCitations("Coluche");
+			ArrayList<String> l = ConnectionMySql.afficherArticle();
 			for (String msg : l) System.out.println(msg);
 			
 			// test chercher()
