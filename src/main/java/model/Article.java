@@ -1,11 +1,10 @@
 package model;
 
 public class Article {
-    private String textesComplets;
     private double EAN;
     private String vignetteArticle;
     private double prixUnitaireArticle;
-    private String nutriscoreArticle;
+    private String NutriscoreArticle;
     private String libelleArticle;
     private double poidsArticle;
     private double prixKgArticle;
@@ -16,15 +15,14 @@ public class Article {
     private int idRayon;
 
     // Constructeur
-    public Article(String textesComplets, double EAN, String vignetteArticle, double prixUnitaireArticle,
-                   String nutriscoreArticle, String libelleArticle, double poidsArticle, double prixKgArticle,
+    public Article(double EAN, String vignetteArticle, double prixUnitaireArticle,
+                   String NutriscoreArticle, String libelleArticle, double poidsArticle, double prixKgArticle,
                    String descriptionCourteArticle, String descriptionLongueArticle, String fournisseurArticle,
                    String marque, int idRayon) {
-        this.textesComplets = textesComplets;
         this.EAN = EAN;
         this.vignetteArticle = vignetteArticle;
         this.prixUnitaireArticle = prixUnitaireArticle;
-        this.nutriscoreArticle = nutriscoreArticle;
+        this.NutriscoreArticle = NutriscoreArticle;
         this.libelleArticle = libelleArticle;
         this.poidsArticle = poidsArticle;
         this.prixKgArticle = prixKgArticle;
@@ -36,11 +34,9 @@ public class Article {
     }
 
     // Getters et Setters
-    public String getTextesComplets() { return textesComplets; }
-    public void setTextesComplets(String textesComplets) { this.textesComplets = textesComplets; }
 
-    public double getEan() { return EAN; }
-    public void setEanCroissant1(double EAN) { this.EAN = EAN; }
+    public double getEAN() { return EAN; }
+    public void setEAN(double EAN) { this.EAN = EAN; }
 
     public String getVignetteArticle() { return vignetteArticle; }
     public void setVignetteArticle(String vignetteArticle) { this.vignetteArticle = vignetteArticle; }
@@ -48,8 +44,8 @@ public class Article {
     public double getPrixUnitaireArticle() { return prixUnitaireArticle; }
     public void setPrixUnitaireArticle(double prixUnitaireArticle) { this.prixUnitaireArticle = prixUnitaireArticle; }
 
-    public String getNutriscoreArticle() { return nutriscoreArticle; }
-    public void setNutriscoreArticle(String nutriscoreArticle) { this.nutriscoreArticle = nutriscoreArticle; }
+    public String getNutriscoreArticle() { return NutriscoreArticle; }
+    public void setNutriscoreArticle(String NutriscoreArticle) { this.NutriscoreArticle = NutriscoreArticle; }
 
     public String getLibelleArticle() { return libelleArticle; }
     public void setLibelleArticle(String libelleArticle) { this.libelleArticle = libelleArticle; }
@@ -78,11 +74,10 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "textesComplets='" + textesComplets + '\'' +
-                ", eanCroissant1='" + EAN + '\'' +
+                ", EAN='" + EAN + '\'' +
                 ", vignetteArticle='" + vignetteArticle + '\'' +
                 ", prixUnitaireArticle=" + prixUnitaireArticle +
-                ", nutriscoreArticle='" + nutriscoreArticle + '\'' +
+                ", NutriscoreArticle='" + NutriscoreArticle + '\'' +
                 ", libelleArticle='" + libelleArticle + '\'' +
                 ", poidsArticle=" + poidsArticle +
                 ", prixKgArticle=" + prixKgArticle +
