@@ -10,4 +10,12 @@
       <servlet-name>SiteMarchand</servlet-name>
       <url-pattern>/SiteMarchand</url-pattern>
   </servlet-mapping>
+  <servlet>
+      <servlet-name>catalogue</servlet-name>
+      <jsp-file>/jsp/catalogue.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>catalogue</servlet-name>
+      <url-pattern>/catalogue</url-pattern>
+  </servlet-mapping>
 </web-app>
