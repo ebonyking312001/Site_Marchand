@@ -28,7 +28,7 @@
 	    </tr>
 	    
 	   	<% 
-	    ArrayList<MessageDor> listeMD = (ArrayList<MessageDor>) request.getAttribute("listMD");
+	    ArrayList<Article> listeArt = (ArrayList<Article>) request.getAttribute("listMD");
 	    for (MessageDor md : listeMD) { 
 	    %>
 	        <tr>
