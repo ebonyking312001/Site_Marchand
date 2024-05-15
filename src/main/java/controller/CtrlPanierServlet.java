@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ServletAjout
  */
-@WebServlet("/ServletAjout")
+@WebServlet("/ServletPanier")
 public class CtrlPanierServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

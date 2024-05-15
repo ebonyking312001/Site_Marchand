@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Cette servlet retourne un flux XML.
  */
-@WebServlet(value="/ServletAuteur")
+@WebServlet(value="/ServletGestion")
 public class CtrlGestionMarcServlet extends HttpServlet
 {
 	@Override
