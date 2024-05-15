@@ -182,6 +182,7 @@ public class ConnectionMySql
 	    } catch (SQLException ex) {
 	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 	    }
+	    ConnectionMySql.cx = null;
 	    return liste;
 		
 	}
