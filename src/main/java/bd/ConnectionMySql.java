@@ -1,11 +1,14 @@
 package bd;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import model.Article;
 
 
 
@@ -124,6 +127,53 @@ public class ConnectionMySql
 		
 	}
 	
+	public static ArrayList<Article> afficherArticleCatalogue() throws ClassNotFoundException, SQLException {
+	    // Créer la connexion à la base de données
+	    if (ConnectionMySql.cx == null)
+	        ConnectionMySql.connexion();
+
+	    // Liste pour stocker les articles
+	    ArrayList<Article> liste = new ArrayList<>();
+
+	    // Requête SQL
+	    String sql = "SELECT * from Articles";
+
+	    // Ouverture de l'espace de requête
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	        // Exécution de la requête
+	        try (ResultSet rs = st.executeQuery()) {
+	            // Lecture du contenu du ResultSet
+	            while (rs.next()) {
+	                String textesComplets = rs.getString("TextesComplets");
+	                double EAN = rs.getDouble("EAN");
+	                String vignetteArticle = rs.getString("VignetteArticle");
+	                double prixUnitaireArticle = rs.getDouble("PrixUnitaireArticle");
+	                String nutriscoreArticle = rs.getString("NutriscoreArticle");
+	                String libelleArticle = rs.getString("LibelleArticle");
+	                double poidsArticle = rs.getDouble("PoidsArticle");
+	                double prixKgArticle = rs.getDouble("PrixKgArticle");
+	                String descriptionCourteArticle = rs.getString("DescriptionCourteArticle");
+	                String descriptionLongueArticle = rs.getString("DescriptionLongueArticle");
+	                String fournisseurArticle = rs.getString("FournisseurArticle");
+	                String marque = rs.getString("Marque");
+	                int idRayon = rs.getInt("IdRayon");
+
+	                // Créer un nouvel article et l'ajouter à la liste
+	                Article article = new Article(textesComplets, EAN, vignetteArticle, prixUnitaireArticle,
+	                                              nutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
+	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
+	                                              marque, idRayon);
+	                liste.add(article);
+	            }
+	        }
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
+	    }
+
+	    return liste;
+	}
+
+	
 	/**
 	 * InsÃ©rer un texte dans la table mot 
 	 * @throws Exception 
@@ -150,6 +200,8 @@ public class ConnectionMySql
 		  return nb;
 		
 	}
+	
+	
 
 
 	/*----------------------------*/
@@ -159,8 +211,8 @@ public class ConnectionMySql
 	public static void main (String[] s) throws Exception
 		{
 		try {
-			ArrayList<String> l = ConnectionMySql.afficherArticle();
-			for (String msg : l) System.out.println(msg);
+			ArrayList<Article> l = ConnectionMySql.afficherArticleCatalogue();
+			for (Article msg : l) System.out.println("test");
 			
 			// test chercher()
 			//ArrayList<String> motsTrouve = ConnectionMySql.chercher("sal");
