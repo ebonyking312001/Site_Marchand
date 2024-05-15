@@ -136,7 +136,4 @@ public class Article {
 				+ descriptionLongueArticle + ", fournisseurArticle=" + fournisseurArticle + ", marque=" + marque
 				+ ", idRayon=" + idRayon + "]";
 	}
-    
-
-	
 }
