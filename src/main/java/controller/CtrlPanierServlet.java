@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Article;
+
 /**
  * Servlet implementation class ServletAjout
  */
@@ -20,33 +20,40 @@ public class CtrlPanierServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * @throws IOException
+	 * @throws ServletException
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		// Creates new session
 		HttpSession session = request.getSession();
-				
-		// Gets the article selected
+
+		request.getRequestDispatcher("panier").forward(request, response);
+
+		// Gets the article selected to add to card
 		String idArticle = request.getParameter("checkedBoxPanier");
-		
+
 		// Check if article is not null
-		if(idArticle != null) {
-//			session.getAttribute(idArticleSession);
-			session.getAttribute("idArticleSession");
-			// Adds the article to the current session
-			session.setAttribute("idArticlesSession", idArticle);
-			request.setAttribute("idArticlesSession", idArticle);
-			try {
-				request.getRequestDispatcher("Panier.jsp").forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if (idArticle != null) {
+			// Gets Article by Id
+			
+			// Gets the current list of articles in the card
+			ArrayList<Article> articlesToAddToSession = (ArrayList<Article>) session.getAttribute("articleSession");
+			if(articlesToAddToSession != null) {
+				// Adds the article to the current session
+//				articlesToAddToSession.add();
 			}
+			else {
+				//Creates a new list of articles and adds the article
+				articlesToAddToSession = new ArrayList<>();
+//				articlesToAddToSession.add();
+			}
+			
+			// Sets the new list of articles for the session
+			session.setAttribute("articlesSession", articlesToAddToSession);
 		}
 	}
 

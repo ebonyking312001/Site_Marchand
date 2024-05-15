@@ -6,8 +6,17 @@
       <servlet-name>SiteMarchand</servlet-name>
       <jsp-file>/SiteMarchand.html</jsp-file>
   </servlet>
+    <servlet>
+      <servlet-name>Panier</servlet-name>
+      <jsp-file>/jsp/Panier.jsp</jsp-file>
+  </servlet>
+  
   <servlet-mapping>
       <servlet-name>SiteMarchand</servlet-name>
       <url-pattern>/SiteMarchand</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>Panier</servlet-name>
+      <url-pattern>/panier</url-pattern>
   </servlet-mapping>
 </web-app>

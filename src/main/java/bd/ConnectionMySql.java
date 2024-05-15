@@ -160,20 +160,14 @@ public class ConnectionMySql
 		{
 		try {
 			ArrayList<String> l = ConnectionMySql.afficherArticle();
-<<<<<<< Updated upstream
-			for (String msg : l) {
-				System.out.println(msg);
-			}
-			System.out.println("hello");
-=======
 			for (String msg : l) System.out.println(msg);
+			
 			// test chercher()
 			//ArrayList<String> motsTrouve = ConnectionMySql.chercher("sal");
 			//System.out.println(motsTrouve);
 			
 			// test insérer()
 			//System.out.println(ConnectionMySql.inserer("aaron"));
->>>>>>> Stashed changes
 			}
 		catch (ClassNotFoundException | SQLException ex)
 			{
