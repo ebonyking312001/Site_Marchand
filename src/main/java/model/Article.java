@@ -15,11 +15,10 @@ public class Article {
     private int idRayon;
 
     // Constructeur
-    public Article(String textesComplets, double EAN, String vignetteArticle, double prixUnitaireArticle,
+    public Article(double EAN, String vignetteArticle, double prixUnitaireArticle,
                    String nutriscoreArticle, String libelleArticle, double poidsArticle, double prixKgArticle,
                    String descriptionCourteArticle, String descriptionLongueArticle, String fournisseurArticle,
                    String marque, int idRayon) {
-        this.textesComplets = textesComplets;
         this.EAN = EAN;
         this.vignetteArticle = vignetteArticle;
         this.prixUnitaireArticle = prixUnitaireArticle;
@@ -34,10 +33,12 @@ public class Article {
         this.idRayon = idRayon;
     }
 
-    // Getters et Setters
-    public String getTextesComplets() { return textesComplets; }
-    public void setTextesComplets(String textesComplets) { this.textesComplets = textesComplets; }
+    // Constructor without parameters
+    public Article() {
+		super();
+	}
 
+	// Getters et Setters
     public double getEan() { return EAN; }
     public void setEanCroissant1(double EAN) { this.EAN = EAN; }
 
@@ -77,7 +78,6 @@ public class Article {
     @Override
     public String toString() {
         return "Article{" +
-                "textesComplets='" + textesComplets + '\'' +
                 ", eanCroissant1='" + EAN + '\'' +
                 ", vignetteArticle='" + vignetteArticle + '\'' +
                 ", prixUnitaireArticle=" + prixUnitaireArticle +
