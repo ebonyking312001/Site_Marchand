@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import model.Article;
+
 
 
 /**
@@ -59,14 +61,14 @@ public class ConnectionMySql
 	/**
 	 * Retourne la liste de articles.
 	 */
-	public static ArrayList<String> afficherArticle () throws ClassNotFoundException, SQLException
+	public static ArrayList<Article> afficherArticle () throws ClassNotFoundException, SQLException
 		{
 		/*----- Création de la connexion à la base de données -----*/
 		if (ConnectionMySql.cx == null)
 			ConnectionMySql.connexion();
 
 		/*----- Interrogation de la base -----*/
-		ArrayList<String> liste = new ArrayList<>();
+		ArrayList<Article> liste = new ArrayList<>();
 
 		/*----- Requête SQL -----*/
 		String sql = "SELECT * from Articles";
@@ -77,19 +79,20 @@ public class ConnectionMySql
 			try (ResultSet rs = st.executeQuery()){
 				/*----- Lecture du contenu du ResultSet -----*/
 				while (rs.next()) {
-	                String articleData = rs.getInt("EAN") + ", " + 
-	                                     rs.getString("VignetteArticle") + ", " + 
-	                                     rs.getBigDecimal("PrixUnitaireArticle").toPlainString() + ", " + 
-	                                     rs.getString("NutriscoreArticle") + ", " + 
-	                                     rs.getString("LibelleArticle") + ", " + 
-	                                     rs.getBigDecimal("PoidsArticle").toPlainString() + ", " + 
-	                                     rs.getBigDecimal("PrixKgArticle").toPlainString() + ", " + 
-	                                     rs.getString("DescriptionCourteArticle") + ", " + 
-	                                     rs.getString("DescriptionLongueArticle") + ", " + 
-	                                     rs.getString("FournisseurArticle") + ", " + 
-	                                     rs.getString("Marque") + ", " + 
-	                                     rs.getInt("IdRayon");
-	                liste.add(articleData);
+	                liste.add(new Article(rs.getInt("EAN"), 
+		                                 rs.getString("VignetteArticle"),
+		                                 rs.getFloat("PrixUnitaireArticle"),
+		                                 rs.getString("NutriscoreArticle"),
+		                                 rs.getString("LibelleArticle"),
+		                                 rs.getFloat("PoidsArticle"),
+		                                 rs.getFloat("PrixKgArticle"),
+		                                 rs.getString("DescriptionCourteArticle"),
+		                                 rs.getString("DescriptionLongueArticle"),
+		                                 rs.getString("FournisseurArticle"),
+		                                 rs.getString("Marque"),
+		                                 rs.getInt("IdRayon")
+		                     )
+                     );
 	            }
 			}
 		}
@@ -170,9 +173,9 @@ public class ConnectionMySql
 	public static void main (String[] s) throws Exception
 		{
 		try {
-			ArrayList<String> l = ConnectionMySql.afficherArticle();
-			for (String msg : l) {
-				System.out.println(msg);
+			ArrayList<Article> l = ConnectionMySql.afficherArticle();
+			for (Article art : l) {
+				System.out.println(art);
 			}
 			System.out.println("hallo");
 			}
