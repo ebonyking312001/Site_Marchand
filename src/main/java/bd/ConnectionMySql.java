@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 import model.Article;
 
-
-
 /**
  * Classe en charge de la base de données.
  */
