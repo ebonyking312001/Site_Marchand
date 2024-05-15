@@ -72,16 +72,27 @@ public class ConnectionMySql
 		String sql = "SELECT * from Articles";
 
 		/*----- Ouverture de l'espace de requête -----*/
-		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql))
-			{
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)){
 			/*----- Exécution de la requête -----*/
-			try (ResultSet rs = st.executeQuery())
-				{
+			try (ResultSet rs = st.executeQuery()){
 				/*----- Lecture du contenu du ResultSet -----*/
-				while (rs.next())
-					liste.add(rs.getString(2));
-				}
+				while (rs.next()) {
+	                String articleData = rs.getInt("EAN") + ", " + 
+	                                     rs.getString("VignetteArticle") + ", " + 
+	                                     rs.getBigDecimal("PrixUnitaireArticle").toPlainString() + ", " + 
+	                                     rs.getString("NutricscoreArticle") + ", " + 
+	                                     rs.getString("LibelleArticle") + ", " + 
+	                                     rs.getBigDecimal("PoidsArticle").toPlainString() + ", " + 
+	                                     rs.getBigDecimal("PrixKgArticle").toPlainString() + ", " + 
+	                                     rs.getString("DescriptionCourteArticle") + ", " + 
+	                                     rs.getString("DescriptionLongueArticle") + ", " + 
+	                                     rs.getString("FournisseurArticle") + ", " + 
+	                                     rs.getString("Marque") + ", " + 
+	                                     rs.getInt("IdRayon");
+	                liste.add(articleData);
+	            }
 			}
+		}
 		catch (SQLException ex)
 			{
 			throw new SQLException("Exception ConnectionMySql.lireCitations() : Problème SQL - " + ex.getMessage());
