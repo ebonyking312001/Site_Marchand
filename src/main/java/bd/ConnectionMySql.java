@@ -98,7 +98,7 @@ public class ConnectionMySql
 		}
 		catch (SQLException ex)
 			{
-			throw new SQLException("Exception ConnectionMySql.lireCitations() : Problème SQL - " + ex.getMessage());
+			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
 			}
 
 		return liste;
