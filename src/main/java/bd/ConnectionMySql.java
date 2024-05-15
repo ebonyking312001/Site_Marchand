@@ -163,7 +163,7 @@ public class ConnectionMySql
 			for (String msg : l) {
 				System.out.println(msg);
 			}
-			System.out.println("hello");
+			System.out.println("hallo");
 			}
 		catch (ClassNotFoundException | SQLException ex)
 			{
