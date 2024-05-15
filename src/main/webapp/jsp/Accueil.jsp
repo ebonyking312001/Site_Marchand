@@ -2,7 +2,9 @@
     pageEncoding="ISO-8859-1"
     import="model.Article"
     import="java.util.ArrayList"
-    %>
+ 	import="bd.ConnectionMySql" 
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +30,7 @@
 	    </tr>
 	    
 	   	<% 
-	    ArrayList<Article> listeArt = (ArrayList<Article>) request.getAttribute("listeArticles");
+	    ArrayList<Article> listeArt = ConnectionMySql.afficherArticle();
 	    for (Article art : listeArt) { 
 	    %>
 	        <tr>

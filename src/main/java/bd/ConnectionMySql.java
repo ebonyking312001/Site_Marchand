@@ -137,12 +137,12 @@ public class ConnectionMySql
 	                String marque = rs.getString("Marque");
 	                int idRayon = rs.getInt("IdRayon");
 
-	                // Cr�er un nouvel article et l'ajouter � la liste
-	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
-	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
-	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-	                                              marque, idRayon);
-	                liste.add(article);
+//	                // Cr�er un nouvel article et l'ajouter � la liste
+//	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
+//	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
+//	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
+//	                                              marque, idRayon);
+//	                liste.add(article);
 	            }
 	        }
 	    } catch (SQLException ex) {
