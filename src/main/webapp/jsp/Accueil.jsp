@@ -37,6 +37,15 @@
 	            <td><%= art.getEAN() %></td>
 	            <td><%= art.getVignetteArticle() %></td>
 	            <td><%= art.getPrixUnitaireArticle() %></td>
+	             <td><%= art.getNutriscoreArticle()%></td>
+	            <td><%= art.getLibelleArticle()%></td>
+	            <td><%= art.getPoidsArticle()%></td>
+	            <td><%= art.getPrixKgArticle()%></td>
+	            <td><%= art.getDescriptionCourteArticle()%></td>
+	            <td><%= art.getDescriptionLongueArticle()%></td>
+	            <td><%= art.getFournisseurArticle()%></td>
+	            <td><%= art.getMarque()%></td>
+				<td><a href="CtrlPanierServlet?idArticle=<%= art.getEAN()%>">Ajouter au panier</a></td>
 	        </tr>
 	    <% } %>
 

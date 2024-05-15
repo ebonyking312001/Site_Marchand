@@ -15,10 +15,11 @@ public class Article {
 	private int idRayon;
 
     // Constructeur
-	public Article(int eAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
+	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
 			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
 			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
 		super();
+		this.EAN = EAN;
 		this.vignetteArticle = vignetteArticle;
 		this.prixUnitaireArticle = prixUnitaireArticle;
 		this.nutriscoreArticle = nutriscoreArticle;
