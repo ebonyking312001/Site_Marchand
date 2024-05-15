@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * Cette servlet retourne un flux XML.
  */
 @WebServlet(value="/ServletAuteur")
-public class ServletAuteur extends HttpServlet
+public class CtrlGestionMarcServlet extends HttpServlet
 {
 	@Override
 	protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
