@@ -33,7 +33,7 @@ public class Article {
 	}
 
     // Getters et Setters
-    public int getEAN() {return EAN;	}
+    public int getEAN() {return EAN;}
 
 	public void setEAN(int eAN) {
 		EAN = eAN;

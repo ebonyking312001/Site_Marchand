@@ -28,13 +28,13 @@
 	    </tr>
 	    
 	   	<% 
-	    ArrayList<Article> listeArt = (ArrayList<Article>) request.getAttribute("listMD");
-	    for (MessageDor md : listeMD) { 
+	    ArrayList<Article> listeArt = (ArrayList<Article>) request.getAttribute("listeArticles");
+	    for (Article art : listeArt) { 
 	    %>
 	        <tr>
-	            <td><%= md.getNum() %></td>
-	            <td><%= md.getPseudo() %></td>
-	            <td><%= md.getTexte() %></td>
+	            <td><%= art.getEAN() %></td>
+	            <td><%= art.getVignetteArticle() %></td>
+	            <td><%= art.getPrixUnitaireArticle() %></td>
 	        </tr>
 	    <% } %>
 
