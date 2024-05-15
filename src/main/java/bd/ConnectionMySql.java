@@ -155,28 +155,28 @@ public class ConnectionMySql
 	/**
 	 * Retourne le mot cherché existant dans la ConnectionMySqld
 	 */
-	public static ArrayList<String> chercher (String motSaisi) throws ClassNotFoundException, SQLException {
+	public static ArrayList<Article> chercher (String motSaisi) throws ClassNotFoundException, SQLException {
 		/*----- Création de la connexion à la base de données -----*/
 		if (ConnectionMySql.cx == null)
 			ConnectionMySql.connexion();
 		
 		 /*----- Interrogation de la base -----*/
-	    ArrayList<String> liste = new ArrayList<>();
+	    ArrayList<Article> liste = new ArrayList<>();
 
 	    /*----- Requête SQL -----*/
-	    String sql = "SELECT Texte FROM Mot WHERE Texte LIKE ?";
+	    String sql = "SELECT * FROM Articles WHERE Marque LIKE ? OR LibelleArticle LIKE ?";
 	    
 	    /*----- Ouverture de l'espace de requête -----*/
 	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 	    	
 	        /*----- Exécution de la requête -----*/
 	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
-	        st.setString(1, motSaisi + "%");
+	        st.setString(1, "%"+motSaisi + "%");
+	        st.setString(2, "%"+motSaisi + "%");
 	        
 	        try (ResultSet rs = st.executeQuery()) {
 	            /*----- Lecture du contenu du ResultSet -----*/
-	            while (rs.next())
-	                liste.add(rs.getString(1));
+	            liste = resToArticles(rs);
 	        }
 	        
 	    } catch (SQLException ex) {
@@ -212,8 +212,27 @@ public class ConnectionMySql
 		  return nb;
 		
 	}
-
-
+	
+	public static ArrayList<Article> resToArticles(ResultSet rs) throws SQLException{
+		ArrayList<Article> liste = new ArrayList<>();
+		while (rs.next()) {
+            Article a = new Article(
+            		rs.getDouble(1),
+            		rs.getString(2),
+            		rs.getDouble(3),
+            		rs.getString(4),
+            		rs.getString(5),
+            		rs.getDouble(6),
+            		rs.getDouble(7),
+            		rs.getString(8),
+            		rs.getString(9),
+            		rs.getString(10),
+            		rs.getString(11),
+            		rs.getInt(12));
+            liste.add(a);
+    }
+		return liste;
+	}
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
@@ -221,11 +240,10 @@ public class ConnectionMySql
 	public static void main (String[] s) throws Exception
 		{
 		try {
-			ArrayList<Article> l = ConnectionMySql.afficherArticleCatalogue();
-			for (Article msg : l) {
-				System.out.println(msg);
-			}
-			System.out.println("hallo");
+
+			ArrayList<Article> articlesTrouve = ConnectionMySql.chercher("bio");
+			System.out.println(articlesTrouve);
+			System.out.println("hello");
 			}
 		catch (ClassNotFoundException | SQLException ex)
 			{

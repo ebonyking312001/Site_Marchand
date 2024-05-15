@@ -18,6 +18,7 @@
   <servlet-mapping>
       <servlet-name>JspAccueil</servlet-name>
       <url-pattern>/Accueil</url-pattern>
+  </servlet-mapping>
   <servlet>
       <servlet-name>catalogue</servlet-name>
       <jsp-file>/jsp/catalogue.jsp</jsp-file>
@@ -25,5 +26,13 @@
   <servlet-mapping>
       <servlet-name>catalogue</servlet-name>
       <url-pattern>/catalogue</url-pattern>
+  </servlet-mapping>
+  <servlet>
+      <servlet-name>Chercher</servlet-name>
+      <jsp-file>/jsp/Chercher.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>Chercher</servlet-name>
+      <url-pattern>/Chercher</url-pattern>
   </servlet-mapping>
 </web-app>
