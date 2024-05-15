@@ -1,4 +1,5 @@
 package model;
+
 public class Article {
     private String textesComplets;
     private double EAN;

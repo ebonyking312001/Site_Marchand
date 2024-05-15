@@ -80,7 +80,7 @@ public class ConnectionMySql
 	                String articleData = rs.getInt("EAN") + ", " + 
 	                                     rs.getString("VignetteArticle") + ", " + 
 	                                     rs.getBigDecimal("PrixUnitaireArticle").toPlainString() + ", " + 
-	                                     rs.getString("NutricscoreArticle") + ", " + 
+	                                     rs.getString("NutriscoreArticle") + ", " + 
 	                                     rs.getString("LibelleArticle") + ", " + 
 	                                     rs.getBigDecimal("PoidsArticle").toPlainString() + ", " + 
 	                                     rs.getBigDecimal("PrixKgArticle").toPlainString() + ", " + 
