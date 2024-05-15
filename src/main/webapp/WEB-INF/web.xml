@@ -18,5 +18,12 @@
   <servlet-mapping>
       <servlet-name>JspAccueil</servlet-name>
       <url-pattern>/Accueil</url-pattern>
+  <servlet>
+      <servlet-name>catalogue</servlet-name>
+      <jsp-file>/jsp/catalogue.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>catalogue</servlet-name>
+      <url-pattern>/catalogue</url-pattern>
   </servlet-mapping>
 </web-app>
