@@ -27,14 +27,7 @@ public class CtrlArticleServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("CrtlArticleServlet doGet()");
-		try {
-	    	request.setAttribute("listeArticles", ConnectionMySql.afficherArticle());
-	    } catch (Exception e) {
-			// TODO: handle exception
-	    	e.printStackTrace();
-		}
-		request.getRequestDispatcher("Accueil").forward(request, response);
+
 	}
 
 	

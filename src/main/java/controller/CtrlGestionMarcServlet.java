@@ -53,11 +53,11 @@ public class CtrlGestionMarcServlet extends HttpServlet
 	                int idRayon = Integer.parseInt(values[11].trim());
 	                
 	                // Create Article object and add to list
-	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
-	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
-	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-	                                              marque, idRayon);
-	                articles.add(article);
+//	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
+//	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
+//	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
+//	                                              marque, idRayon);
+//	                articles.add(article);
 	            }
 	        }
 	        
@@ -73,14 +73,14 @@ public class CtrlGestionMarcServlet extends HttpServlet
 		    
 		    try {
 		        for (Article article : articles) {
-		            // Insérer chaque article dans la base de données
+		            // Insï¿½rer chaque article dans la base de donnï¿½es
 		            // ConnectionMySql.insertArticle(article);
 		        }
 		        
-		        // Récupérer la liste mise à jour des articles depuis la base de données
+		        // Rï¿½cupï¿½rer la liste mise ï¿½ jour des articles depuis la base de donnï¿½es
 		        articles = ConnectionMySql.afficherArticleCatalogue();
 		        
-		        // Rediriger vers une page qui affiche la liste mise à jour des articles
+		        // Rediriger vers une page qui affiche la liste mise ï¿½ jour des articles
 		        request.setAttribute("articles", articles);
 		        request.getRequestDispatcher("display.jsp").forward(request, response);
 		    } catch (Exception e) {

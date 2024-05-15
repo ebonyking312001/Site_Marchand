@@ -222,12 +222,11 @@ public class ConnectionMySql
 	public static void main (String[] s) throws Exception
 		{
 		try {
-			ArrayList<Article> l = ConnectionMySql.afficherArticleCatalogue();
+			ArrayList<Article> l = ConnectionMySql.afficherArticle();
 			for (Article msg : l) {
 				System.out.println(msg);
 			}
-			System.out.println("hallo");
-			}
+		}
 		catch (ClassNotFoundException | SQLException ex)
 			{
 			System.out.println(ex.getMessage());
