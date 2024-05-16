@@ -17,14 +17,15 @@
 			<h1 class="fw-light p-3">Liste d'articles</h1>
 
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
 				<c:forEach var="art" items="${listeArt}">
 
 					<div class="col">
 						<div class="card shadow-sm">
-							<img src="${art.vignetteArticle}"/>
+							<a href="?idArticle=${art.EAN}">
+								<img src="${art.vignetteArticle}"/>
+							</a>
 							<div class="card-body">
-								<p class="card-text">${art.libelleArticle}</p>
+								<p class="card-text"><a href="?idArticle=${art.EAN}">${art.libelleArticle}</a></p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
 										<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
@@ -49,3 +50,5 @@
 
 
 </t:genericpage>
+</body>
+</html>
