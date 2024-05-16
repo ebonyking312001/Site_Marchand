@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bd.ConnectionMySql;
+import model.Article;
 
 
 /**
  * Servlet implementation class ServletAjout
  */
-@WebServlet("/ServletAjout")
+@WebServlet("/")
 public class CtrlArticleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +28,17 @@ public class CtrlArticleServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	  
+		try {
+			ArrayList<Article> listeArt = ConnectionMySql.afficherArticle();
+			request.setAttribute("listeArt",listeArt);
+			request.getRequestDispatcher("Accueil").forward(request, response);
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
 	}
 
