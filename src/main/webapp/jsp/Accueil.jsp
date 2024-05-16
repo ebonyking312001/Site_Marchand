@@ -16,6 +16,7 @@
 		<tr>
 			<th>Vignette</th>
 			<th>Libelle</th>
+			<th>Promotion</th>
 			<th>Prix au Kg</th>
 		</tr>
 
@@ -23,6 +24,7 @@
 			<tr>
 				<td><a href="?idArticle=${art.EAN}">${art.vignetteArticle}</a></td>
 				<td><a href="?idArticle=${art.EAN}">${art.libelleArticle}</a></td>
+				<td>${art.promoArticle}</td>
 				<td>${art.prixKgArticle}</td>
 				<td><a href="ServletPanier?idArticle=${art.EAN}">Ajouter au panier</a></td>
 			</tr>

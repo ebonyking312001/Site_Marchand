@@ -36,6 +36,10 @@
 	        <td>${article.prixKgArticle}</td>
 	    </tr>
 	    <tr>
+	    	<th>Promotion</th>
+	    	<td>${article.promoArticle}</td>
+	    </tr>
+	    <tr>
 	        <th>Description courte</th>
 	        <td>${article.descriptionCourteArticle}</td>
 	    </tr>

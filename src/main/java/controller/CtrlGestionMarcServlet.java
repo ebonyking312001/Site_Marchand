@@ -56,12 +56,13 @@ public class CtrlGestionMarcServlet extends HttpServlet
                         String descriptionLongueArticle = values[8].replace("\"", "").trim();
                         String fournisseurArticle = values[9].replace("\"", "").trim();
                         String marque = values[10].replace("\"", "").trim();
-                        int idRayon = Integer.parseInt(values[11].replace("\"", "").trim());
+                        int promoArticle = Integer.parseInt(values[11].replace("\"", "").trim());
+                        int idRayon = Integer.parseInt(values[12].replace("\"", "").trim());
 	                
 	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
                             NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
                             descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-                            marque, idRayon);
+                            marque, promoArticle, idRayon);
 	                
 	                articles.add(article);
 	                System.out.println("Article bien ajouté");
