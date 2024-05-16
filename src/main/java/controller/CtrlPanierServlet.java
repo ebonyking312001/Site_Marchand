@@ -47,7 +47,7 @@ public class CtrlPanierServlet extends HttpServlet {
 		        session.setAttribute("articleList", articlesInSession);
 	    	}
 
-			request.getRequestDispatcher("panier").forward(request, response);
+			request.getRequestDispatcher("/jsp/Panier.jsp").forward(request, response);
 
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

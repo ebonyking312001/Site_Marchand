@@ -263,17 +263,8 @@ public class ConnectionMySql {
 	    } catch (SQLException sqle) {
 	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
 	    }
-	}
+	}	
 
-			nb = st.executeUpdate();
-
-		} catch (SQLException sqle) {
-			throw new Exception("ConnectionMySql.inserer() - " + sqle.getMessage());
-		}
-
-		return nb;
-
-	}
 
 	public static ArrayList<Article> resToArticles(ResultSet rs) throws SQLException{
 		ArrayList<Article> liste = new ArrayList<>();
