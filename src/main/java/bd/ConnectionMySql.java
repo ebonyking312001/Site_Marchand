@@ -36,6 +36,7 @@ public class ConnectionMySql {
 	private static void connexion() throws ClassNotFoundException, SQLException {
 		/*----- Chargement du pilote pour la ConnectionMySql -----*/
 		try {
+			
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException ex) {
 			throw new ClassNotFoundException(
@@ -82,7 +83,7 @@ public class ConnectionMySql {
 		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
 		}
-
+		ConnectionMySql.cx = null;
 		return liste;
 	}
 
@@ -117,6 +118,7 @@ public class ConnectionMySql {
 		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 		}
+		ConnectionMySql.cx = null;
 		return article;
 	}
 
@@ -162,6 +164,7 @@ public class ConnectionMySql {
 			throw new SQLException(
 					"Exception ConnectionMySql.afficherArticleCatalogue() : Probl�me SQL - " + ex.getMessage());
 		}
+		ConnectionMySql.cx = null;
 
 		return liste;
 	}
