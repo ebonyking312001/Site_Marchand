@@ -7,8 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import model.Article;
+import model.ArticleCommande;
+import model.Commande;
 
 /**
  * Classe en charge de la base de données.
@@ -283,22 +286,112 @@ public class ConnectionMySql {
             		rs.getString(11),
             		rs.getInt(12));
             liste.add(a);
-    }
+		}
 		return liste;
+	}
+	
+	public static ArrayList<Commande> panierCommande (String commandeEtat) throws ClassNotFoundException, SQLException {
+		ArrayList<Commande> liste = new ArrayList<>();
+		
+		/*----- Création de la connexion à la base de données -----*/
+		if (ConnectionMySql.cx == null)
+			ConnectionMySql.connexion();
+
+	    /*----- Requête SQL -----*/
+	    String sql = "SELECT * FROM Commandes WHERE EtatCommande LIKE ?";
+	    
+	    /*----- Ouverture de l'espace de requête -----*/
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	    	
+	        /*----- Exécution de la requête -----*/
+	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
+	        st.setString(1, "%"+commandeEtat+"%");
+	        
+	        try (ResultSet rs = st.executeQuery()) {
+	            /*----- Lecture du contenu du ResultSet -----*/
+	        	liste=resToCommandes(rs);
+	        }
+	        
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+	    }
+	    ConnectionMySql.cx.close();
+	    ConnectionMySql.cx = null;
+	    return liste;
+		
+	}
+	
+	public static ArrayList<Commande> resToCommandes(ResultSet rs) throws SQLException{
+		ArrayList<Commande> liste = new ArrayList<>();
+		while (rs.next()) {
+            Commande c = new Commande(
+            		rs.getDate("DateRetrait"),
+            		rs.getString("EtatCommande"),
+            		rs.getInt("IdCommande"),
+            		rs.getInt("IdMagasin"),
+            		rs.getInt("IdUtilisateur"));
+            liste.add(c);
+		}
+		return liste;
+	}
+	
+	public static ArrayList<ArticleCommande> DetailCommande(String idCom) throws ClassNotFoundException, SQLException {
+		ArrayList<ArticleCommande> liste = new ArrayList<>();
+		
+		/*----- Création de la connexion à la base de données -----*/
+		if (ConnectionMySql.cx == null)
+			ConnectionMySql.connexion();
+
+	    /*----- Requête SQL -----*/
+	    String sql = "SELECT Articles.*,qteCom "
+	    		+ "FROM Articles,Articles_Commandes "
+	    		+ "WHERE Articles_Commandes.EAN=Articles.EAN "
+	    		+ "AND IdCommande=?";
+	    
+	    /*----- Ouverture de l'espace de requête -----*/
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	    	
+	        /*----- Exécution de la requête -----*/
+	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
+	        st.setInt(1, Integer.parseInt(idCom));
+	        
+	        try (ResultSet rs = st.executeQuery()) {
+	            /*----- Lecture du contenu du ResultSet -----*/
+	        	while (rs.next()) {
+	                ArticleCommande ac = new ArticleCommande(
+	                		rs.getInt(1),
+	                		rs.getString(2),
+	                		rs.getFloat(3),
+	                		rs.getString(4),
+	                		rs.getString(5),
+	                		rs.getFloat(6),
+	                		rs.getFloat(7),
+	                		rs.getString(8),
+	                		rs.getString(9),
+	                		rs.getString(10),
+	                		rs.getString(11),
+	                		rs.getInt(12),
+	                		rs.getInt(13));
+	                
+	                liste.add(ac);
+	    		}
+	        }
+	        
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+	    }
+	    ConnectionMySql.cx.close();
+	    ConnectionMySql.cx = null;
+	    return liste;
+		
 	}
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-		try {
-			ArrayList<Article> l = ConnectionMySql.afficherArticle();
-			for (Article msg : l) {
-				System.out.println(msg);
-			}
-		} catch (ClassNotFoundException | SQLException ex) {
-			System.out.println(ex.getMessage());
-		}
+
+			System.out.println(DetailCommande("1").get(0).getLibelleArticle());
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/
