@@ -43,7 +43,7 @@
 	            <td><%= art.getDescriptionLongueArticle()%></td>
 	            <td><%= art.getFournisseurArticle()%></td>
 	            <td><%= art.getMarque()%></td>
-				<td><a href="CtrlPanierServlet?idArticle=<%= art.getEAN()%>">Ajouter au panier</a></td>
+				<td><a href="ServletPanier?idArticle=<%= art.getEAN()%>">Ajouter au panier</a></td>
 	        </tr>
 	    <% } %>
 

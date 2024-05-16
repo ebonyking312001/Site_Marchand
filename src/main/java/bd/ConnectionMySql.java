@@ -98,13 +98,21 @@ public class ConnectionMySql {
 
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 			st.setString(1, idArticle);
-
 			try (ResultSet rs = st.executeQuery()) {
-				article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
-						rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
-						rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-						rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon"));
+			    // Check if there is at least one row in the ResultSet
+			    if (rs.next()) {
+			    	article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
+							rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
+							rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon"));
+			    } else {
+			        // Handle the case where no rows were found
+			        // For example, you can throw an exception or return null
+			    }
+			} catch (SQLException ex) {
+			    throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 			}
+	
 
 		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());

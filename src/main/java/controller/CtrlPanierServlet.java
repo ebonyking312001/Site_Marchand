@@ -30,60 +30,29 @@ public class CtrlPanierServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// get article id 
+		String idArticle = request.getParameter("idArticle");	    
+	    try {
+			HttpSession session = request.getSession();
+			Article article = ConnectionMySql.getArticleById(idArticle);
+    		List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
-		// Stocker la liste d'articles dans la session
-		HttpSession session = request.getSession();
+	    	if (articlesInSession == null) {
+	    		List<Article> articleList = new ArrayList<>();
+				articleList.add(article);
+		        session.setAttribute("articleList", articleList);
+	    	}
+	    	else {
+				articlesInSession.add(article);
+		        session.setAttribute("articleList", articlesInSession);
+	    	}
 
-		// Créer une liste d'articles pour test
-        List<Article> articleList = new ArrayList<>();
+			request.getRequestDispatcher("panier").forward(request, response);
 
-		// Creates new Article
-		Article getArticle = new Article();
-
-		// Gets the current list of articles in the card
-		ArrayList<Article> articlesToAddToSession = (ArrayList<Article>) session.getAttribute("articleSession");
-
-		// Gets the article selected to add to card
-		String idArticle = request.getParameter("checkedBoxPanier");
-
-//		request.getRequestDispatcher("panier").forward(request, response);
-
-        articleList.add(new Article(1, "Vignette1", 10.99f, "A", "Article 1", 0.5f, 21.98f, "Description courte 1", "Description longue 1", "Fournisseur 1", "Marque 1", 1));
-        articleList.add(new Article(2, "Vignette2", 20.49f, "B", "Article 2", 0.75f, 27.32f, "Description courte 2", "Description longue 2", "Fournisseur 2", "Marque 2", 2));
-        articleList.add(new Article(3, "Vignette3", 15.75f, "C", "Article 3", 0.6f, 26.25f, "Description courte 3", "Description longue 3", "Fournisseur 3", "Marque 3", 3));
-
-        session.setAttribute("articleList", articleList);	
-
-		request.getRequestDispatcher("panier").forward(request, response);
-
-//		// Check if article is not null
-//		if (idArticle != null) {
-//			// Gets Article by Id
-//			try {
-//				getArticle = ConnectionMySql.getArticleById(idArticle);
-//
-//				if (getArticle != null) {
-//					if (articlesToAddToSession != null) {
-//						// Adds the article to the current session
-//						articlesToAddToSession.add(getArticle);
-//					} else {
-//						// Creates a new list of articles and adds the article
-//						articlesToAddToSession = new ArrayList<>();
-//						articlesToAddToSession.add(getArticle);
-//					}
-//				}
-//
-//			} catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//			// Sets the new list of articles for the session
-//			session.setAttribute("articlesSession", articlesToAddToSession);
-//		}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
