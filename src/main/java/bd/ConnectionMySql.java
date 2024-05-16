@@ -2,7 +2,6 @@ package bd;
 
 import java.sql.Connection;
 
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,13 +10,10 @@ import java.util.ArrayList;
 
 import model.Article;
 
-
-
 /**
  * Classe en charge de la base de données.
  */
-public class ConnectionMySql
-{
+public class ConnectionMySql {
 	/*---------*/
 	/* Données */
 	/*---------*/
@@ -26,10 +22,9 @@ public class ConnectionMySql
 	private static Connection cx = null;
 
 	/*----- Données de connexion -----*/
-	private static final String URL			= "jdbc:mysql://srv1049.hstgr.io:3306/u523250608_projetdai";
-	private static final String LOGIN		= "u523250608_projetdai";
-	private static final String PASSWORD	= "Projetdai1$";
-
+	private static final String URL = "jdbc:mysql://srv1049.hstgr.io:3306/u523250608_projetdai";
+	private static final String LOGIN = "u523250608_projetdai";
+	private static final String PASSWORD = "Projetdai1$";
 
 	/*----------*/
 	/* Méthodes */
@@ -38,33 +33,30 @@ public class ConnectionMySql
 	/**
 	 * Crée la connexion avec la base de données.
 	 */
-	private static void connexion() throws ClassNotFoundException, SQLException
-		{
+	private static void connexion() throws ClassNotFoundException, SQLException {
 		/*----- Chargement du pilote pour la ConnectionMySql -----*/
 		try {
+			
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			}
-		catch (ClassNotFoundException ex)
-			{
-			throw new ClassNotFoundException("Exception ConnectionMySql.connexion() - Pilote MySql introuvable - " + ex.getMessage());
-			}
+		} catch (ClassNotFoundException ex) {
+			throw new ClassNotFoundException(
+					"Exception ConnectionMySql.connexion() - Pilote MySql introuvable - " + ex.getMessage());
+		}
 
 		/*----- Ouverture de la connexion -----*/
 		try {
-			ConnectionMySql.cx = DriverManager.getConnection(URL,LOGIN,PASSWORD);
-			}
-		catch (SQLException ex)
-			{
-			throw new SQLException("Exception ConnectionMySql.connexion() - Problème de connexion à la base de données - " + ex.getMessage());
-			}
+			ConnectionMySql.cx = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+		} catch (SQLException ex) {
+			throw new SQLException(
+					"Exception ConnectionMySql.connexion() - Problème de connexion à la base de données - "
+							+ ex.getMessage());
 		}
-
+	}
 
 	/**
-	 * Retourne la liste de articles.
+	 * Retourne la liste d'articles.
 	 */
-	public static ArrayList<Article> afficherArticle () throws ClassNotFoundException, SQLException
-		{
+	public static ArrayList<Article> afficherArticle() throws ClassNotFoundException, SQLException {
 		/*----- Création de la connexion à la base de données -----*/
 		if (ConnectionMySql.cx == null)
 			ConnectionMySql.connexion();
@@ -76,40 +68,112 @@ public class ConnectionMySql
 		String sql = "SELECT * from Articles";
 
 		/*----- Ouverture de l'espace de requête -----*/
-		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)){
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 			/*----- Exécution de la requête -----*/
-			try (ResultSet rs = st.executeQuery()){
+			try (ResultSet rs = st.executeQuery()) {
 				/*----- Lecture du contenu du ResultSet -----*/
 				while (rs.next()) {
-	                liste.add(new Article(rs.getInt("EAN"), 
-		                                 rs.getString("VignetteArticle"),
-		                                 rs.getFloat("PrixUnitaireArticle"),
-		                                 rs.getString("NutriscoreArticle"),
-		                                 rs.getString("LibelleArticle"),
-		                                 rs.getFloat("PoidsArticle"),
-		                                 rs.getFloat("PrixKgArticle"),
-		                                 rs.getString("DescriptionCourteArticle"),
-		                                 rs.getString("DescriptionLongueArticle"),
-		                                 rs.getString("FournisseurArticle"),
-		                                 rs.getString("Marque"),
-		                                 rs.getInt("IdRayon")
-		                     )
-                     );
-	            }
+					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon")));
+				}
 			}
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
 		}
-		catch (SQLException ex)
-			{
-			throw new SQLException("Exception ConnectionMySql.lireCitations() : Problème SQL - " + ex.getMessage());
+		ConnectionMySql.cx = null;
+		return liste;
+	}
+
+	/**
+	 * Gets article by Id.
+	 */
+	public static Article getArticleById(String idArticle) throws ClassNotFoundException, SQLException {
+		if (ConnectionMySql.cx == null)
+			ConnectionMySql.connexion();
+
+		Article article = new Article();
+		String sql = "SELECT * from Articles Where EAN = ?";
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			st.setString(1, idArticle);
+			try (ResultSet rs = st.executeQuery()) {
+			    // Check if there is at least one row in the ResultSet
+			    if (rs.next()) {
+			    	article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
+							rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
+							rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon"));
+			    } else {
+			        // Handle the case where no rows were found
+			        // For example, you can throw an exception or return null
+			    }
+			} catch (SQLException ex) {
+			    throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 			}
+	
+
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx = null;
+		return article;
+	}
+
+	public static ArrayList<Article> afficherArticleCatalogue() throws ClassNotFoundException, SQLException {
+		// Cr�er la connexion � la base de donn�es
+		if (ConnectionMySql.cx == null)
+			ConnectionMySql.connexion();
+
+		// Liste pour stocker les articles
+		ArrayList<Article> liste = new ArrayList<>();
+
+		// Requ�te SQL
+		String sql = "SELECT * from Articles";
+
+		// Ouverture de l'espace de requ�te
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Ex�cution de la requ�te
+			try (ResultSet rs = st.executeQuery()) {
+				// Lecture du contenu du ResultSet
+				while (rs.next()) {
+					int EAN = rs.getInt("EAN");
+					String vignetteArticle = rs.getString("VignetteArticle");
+					float prixUnitaireArticle = rs.getFloat("PrixUnitaireArticle");
+					String NutriscoreArticle = rs.getString("NutriscoreArticle");
+					String libelleArticle = rs.getString("LibelleArticle");
+					float poidsArticle = rs.getFloat("PoidsArticle");
+					float prixKgArticle = rs.getFloat("PrixKgArticle");
+					String descriptionCourteArticle = rs.getString("DescriptionCourteArticle");
+					String descriptionLongueArticle = rs.getString("DescriptionLongueArticle");
+					String fournisseurArticle = rs.getString("FournisseurArticle");
+					String marque = rs.getString("Marque");
+					int idRayon = rs.getInt("IdRayon");
+
+	                // Cr�er un nouvel article et l'ajouter � la liste
+	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
+	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
+	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
+	                                              marque, idRayon);
+	                liste.add(article);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException(
+					"Exception ConnectionMySql.afficherArticleCatalogue() : Probl�me SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx = null;
 
 		return liste;
-		}
-	
+	}
+
 
 	/**
 	 * Retourne le mot cherché existant dans la ConnectionMySqld
 	 */
+
 	public static ArrayList<Article> chercher (String motSaisi) throws ClassNotFoundException, SQLException {
 		/*----- Création de la connexion à la base de données -----*/
 		if (ConnectionMySql.cx == null)
@@ -141,16 +205,17 @@ public class ConnectionMySql
 	    return liste;
 		
 	}
-	
+
 	/**
-	 * Insérer un texte dans la table mot 
-	 * @throws Exception 
+	 * Insérer un texte dans la table mot
+	 * 
+	 * @throws Exception
 	 */
-	public static int inserer (String motSaisi) throws Exception {
+	public static int inserer(String motSaisi) throws Exception {
 		/*----- Création de la connexion à la base de données -----*/
 		if (ConnectionMySql.cx == null)
 			ConnectionMySql.connexion();
-		
+
 		/* --- Requête d'insertion --- */
 		  int nb = 0;
 		  String sql = "INSERT INTO Mot (Texte) VALUES (?)";
@@ -200,6 +265,15 @@ public class ConnectionMySql
 	    }
 	}
 
+			nb = st.executeUpdate();
+
+		} catch (SQLException sqle) {
+			throw new Exception("ConnectionMySql.inserer() - " + sqle.getMessage());
+		}
+
+		return nb;
+
+	}
 
 	public static ArrayList<Article> resToArticles(ResultSet rs) throws SQLException{
 		ArrayList<Article> liste = new ArrayList<>();
@@ -225,19 +299,15 @@ public class ConnectionMySql
 	/* Programme principal (test) */
 	/*----------------------------*/
 
-	public static void main (String[] s) throws Exception
-		{
+	public static void main(String[] s) throws Exception {
 		try {
 			ArrayList<Article> l = ConnectionMySql.afficherArticle();
 			for (Article msg : l) {
 				System.out.println(msg);
 			}
-			System.out.println("hallo");
-			}
-		catch (ClassNotFoundException | SQLException ex)
-			{
+		} catch (ClassNotFoundException | SQLException ex) {
 			System.out.println(ex.getMessage());
-			}
 		}
+	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

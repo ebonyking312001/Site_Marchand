@@ -22,13 +22,12 @@ import model.Article;
 /**
  * Cette servlet retourne un flux XML.
  */
+
 @WebServlet(value="/CtrlGestionMarcServlet")
 @MultipartConfig
 public class CtrlGestionMarcServlet extends HttpServlet
 {
 	
-	
-
 	    public List<Article> readCSV(InputStream fileContent) throws IOException {
 	        List<Article> articles = new ArrayList<>();
 	        
@@ -65,7 +64,7 @@ public class CtrlGestionMarcServlet extends HttpServlet
                             marque, idRayon);
 	                
 	                articles.add(article);
-	                System.out.println("Article bien ajouté");
+	                System.out.println("Article bien ajoutÃ©");
 	                }
 	                catch(NumberFormatException e){
 	                	System.err.println("Erreur de format de nombre : " + e.getMessage());
@@ -94,14 +93,14 @@ public class CtrlGestionMarcServlet extends HttpServlet
     
     try {
         for (Article article : articles) {
-            // Insérer chaque article dans la base de données
+            // InsÃ©rer chaque article dans la base de donnÃ©es
             ConnectionMySql.insererArticle(article);
         }
         
-        // Récupérer la liste mise à jour des articles depuis la base de données
+        // RÃ©cupÃ©rer la liste mise Ã  jour des articles depuis la base de donnÃ©es
         articles = ConnectionMySql.afficherArticle();
         
-        // Rediriger vers une page qui affiche la liste mise à jour des articles
+        // Rediriger vers une page qui affiche la liste mise Ã  jour des articles
         request.setAttribute("articles", articles);
         request.getRequestDispatcher("catalogue").forward(request, response);
     } catch (Exception e) {
@@ -110,5 +109,6 @@ public class CtrlGestionMarcServlet extends HttpServlet
     }
 
 }
+
 	}
  /*----- Fin de la servlet ServletAuteur -----*/

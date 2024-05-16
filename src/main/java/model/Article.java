@@ -4,21 +4,30 @@ public class Article {
 	private double EAN;
 	private String vignetteArticle;
 	private Float prixUnitaireArticle;
-	private String nutriscoreArticle; 
+	private String nutriscoreArticle;
 	private String libelleArticle;
 	private Float poidsArticle;
-	private Float prixKgArticle;  
+	private Float prixKgArticle;
 	private String descriptionCourteArticle;
 	private String descriptionLongueArticle;
 	private String fournisseurArticle;
-	private String marque; 
+	private String marque;
 	private int idRayon;
+
+
+	// Constructeur
+	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
+			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
+			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
+		super();
+		this.EAN = EAN;
 
     // Constructeur
 	public Article(double EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
 			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
 			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
 		this.EAN=EAN;
+
 		this.vignetteArticle = vignetteArticle;
 		this.prixUnitaireArticle = prixUnitaireArticle;
 		this.nutriscoreArticle = nutriscoreArticle;
@@ -31,6 +40,20 @@ public class Article {
 		this.marque = marque;
 		this.idRayon = idRayon;
 	}
+
+
+	// Constructor without parameters
+	public Article() {
+		super();
+	}
+
+	// Getters et Setters
+	public int getEAN() {
+		return EAN;
+	}
+
+	public void setEAN(int EAN) {
+		this.EAN = EAN;
 
     // Getters et Setters
     public double getEAN() {return EAN;	}
@@ -129,6 +152,7 @@ public class Article {
 
 	@Override
 	public String toString() {
+
 		return "Article [EAN=" + EAN + ", vignetteArticle=" + vignetteArticle + ", prixUnitaireArticle="
 				+ prixUnitaireArticle + ", nutriscoreArticle=" + nutriscoreArticle + ", libelleArticle="
 				+ libelleArticle + ", poidsArticle=" + poidsArticle + ", prixKgArticle=" + prixKgArticle
