@@ -8,37 +8,49 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Label here</title>
+<title>Details</title>
 </head>
 <body>
 	<h1>${article.libelleArticle}</h1>
 	<div>${article.vignetteArticle}</div>
-
+	<br>
 	<table border="1">
-		<tr>
-			<th>EAN</th>
-			<th>Prix unitaire</th>
-			<th>Nutriscore</th>
-			<th>Poids</th>
-			<th>Prix au Kg</th>
-			<th>Description courte</th>
-			<th>Description longue</th>
-			<th>Fournisseur</th>
-			<th>Marque</th>
-		</tr>
-
-		<tr>
-			<td>${article.EAN}</td>
-			<td>${article.prixUnitaireArticle}</td>
-			<td>${article.nutriscoreArticle}</td>
-			<td>${article.poidsArticle}</td>
-			<td>${article.prixKgArticle}</td>
-			<td>${article.descriptionCourteArticle}</td>
-			<td>${article.descriptionLongueArticle}</td>
-			<td>${article.fournisseurArticle}</td>
-			<td>${article.marque}</td>
-		</tr>
-
+	    <tr>
+	        <th>EAN</th>
+	        <td>${article.EAN}</td>
+	    </tr>
+	    <tr>
+	        <th>Prix unitaire</th>
+	        <td>${article.prixUnitaireArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Nutriscore</th>
+	        <td>${article.nutriscoreArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Poids</th>
+	        <td>${article.poidsArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Prix au Kg</th>
+	        <td>${article.prixKgArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Description courte</th>
+	        <td>${article.descriptionCourteArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Description longue</th>
+	        <td>${article.descriptionLongueArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Fournisseur</th>
+	        <td>${article.fournisseurArticle}</td>
+	    </tr>
+	    <tr>
+	        <th>Marque</th>
+	        <td>${article.marque}</td>
+	    </tr>
 	</table>
 	<br>
 
