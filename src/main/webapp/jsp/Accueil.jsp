@@ -1,54 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="model.Article"
-	import="java.util.List"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1>Page d'accueil</h1>
+<t:genericpage>
+	<jsp:attribute name="header">
+      <%@ include file="Header.jsp"%>
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+      <%@ include file="Footer.jsp"%>
+    </jsp:attribute>
+	<jsp:body>
+ <main>
 
-	<table border="1">
-		<tr>
-			<th>EAN</th>
-			<th>Vignette</th>
-			<th>Prix unitaire</th>
-			<th>Nutriscore</th>
-			<th>Libelle</th>
-			<th>Poids</th>
-			<th>Prix au Kg</th>
-			<th>Description courte</th>
-			<th>Description longue</th>
-			<th>Fournisseur</th>
-			<th>Marque</th>
-		</tr>
+	<div class="album py-5 bg-body-tertiary ">
+		<div class="container">
+			<h1 class="fw-light p-3">Liste d'articles</h1>
 
-		<c:forEach var="art" items="${listeArt}">
-			<tr>
-				<td>${art.EAN}</td>
-				<td>${art.vignetteArticle}</td>
-				<td>${art.prixUnitaireArticle}</td>
-				<td>${art.nutriscoreArticle}</td>
-				<td>${art.libelleArticle}</td>
-				<td>${art.poidsArticle}</td>
-				<td>${art.prixKgArticle}</td>
-				<td>${art.descriptionCourteArticle}</td>
-				<td>${art.descriptionLongueArticle}</td>
-				<td>${art.fournisseurArticle}</td>
-				<td>${art.marque}</td>
-				<td><a href="ServletPanier?idArticle=${art.EAN}">Ajouter au
-						panier</a></td>
-			</tr>
-		</c:forEach>
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-	</table>
-	<br>
+				<c:forEach var="art" items="${listeArt}">
 
-	<p>Cliquer pour revenir à la page d'accueil</p>
+					<div class="col">
+						<div class="card shadow-sm">
+							<img src="${art.vignetteArticle}"/>
+							<div class="card-body">
+								<p class="card-text">${art.libelleArticle}</p>
+								<div class="d-flex justify-content-between align-items-center">
+									<div class="btn-group">
+										<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+										<a class="btn btn-sm btn-primary text-white"
+													href="ServletPanier?idArticle=${art.EAN}">Ajouter au
+											panier</a>
+									</div>
+									<small class="text-body-secondary">${art.prixUnitaireArticle}</small>
+								</div>
+							</div>
+						</div>
+					</div>
 
-</body>
-</html>
+				</c:forEach>
+
+			</div>
+		</div>
+	</div>
+
+</main>
+    </jsp:body>
+
+
+</t:genericpage>
