@@ -7,18 +7,26 @@
       <servlet-name>SiteMarchand</servlet-name>
       <jsp-file>/SiteMarchand.html</jsp-file>
   </servlet>
-  <servlet>
-      <servlet-name>JspAccueil</servlet-name>
-      <jsp-file>/jsp/Accueil.jsp</jsp-file>
-  </servlet>
-  
   <servlet-mapping>
       <servlet-name>SiteMarchand</servlet-name>
       <url-pattern>/SiteMarchand</url-pattern>
   </servlet-mapping>
+  <servlet>
+      <servlet-name>JspAccueil</servlet-name>
+      <jsp-file>/jsp/Accueil.jsp</jsp-file>
+  </servlet>
   <servlet-mapping>
       <servlet-name>JspAccueil</servlet-name>
       <url-pattern>/Accueil</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>JspDetails</servlet-name>
+      <jsp-file>/jsp/Details.jsp</jsp-file>
+  </servlet>
+   <servlet-mapping>
+      <servlet-name>JspDetails</servlet-name>
+      <url-pattern>/Details</url-pattern>
   </servlet-mapping>
   <servlet>
       <servlet-name>catalogue</servlet-name>

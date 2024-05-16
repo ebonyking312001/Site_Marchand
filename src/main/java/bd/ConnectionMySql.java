@@ -80,9 +80,10 @@ public class ConnectionMySql {
 							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
 							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
 							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon")));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon")));
 				}
 			}
+			st.close();
 		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
 		}
@@ -108,11 +109,12 @@ public class ConnectionMySql {
 			    	article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
 							rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
 							rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon"));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"));
 			    } else {
 			        // Handle the case where no rows were found
 			        // For example, you can throw an exception or return null
 			    }
+			    st.close();
 			} catch (SQLException ex) {
 			    throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 			}
@@ -153,16 +155,18 @@ public class ConnectionMySql {
 					String descriptionLongueArticle = rs.getString("DescriptionLongueArticle");
 					String fournisseurArticle = rs.getString("FournisseurArticle");
 					String marque = rs.getString("Marque");
+					int promoArticle = rs.getInt("PromoArticle");
 					int idRayon = rs.getInt("IdRayon");
 
 	                // Cr�er un nouvel article et l'ajouter � la liste
 	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
 	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
 	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-	                                              marque, idRayon);
+	                                              marque, promoArticle, idRayon);
 	                liste.add(article);
 				}
 			}
+			st.close();
 		} catch (SQLException ex) {
 			throw new SQLException(
 					"Exception ConnectionMySql.afficherArticleCatalogue() : Probl�me SQL - " + ex.getMessage());
@@ -200,7 +204,7 @@ public class ConnectionMySql {
 	            /*----- Lecture du contenu du ResultSet -----*/
 	            liste = resToArticles(rs);
 	        }
-	        
+	        st.close();
 	    } catch (SQLException ex) {
 	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 	    }
@@ -228,7 +232,7 @@ public class ConnectionMySql {
 			  st.setString(1, motSaisi);
 			  
 			  nb = st.executeUpdate();
-			  
+			  st.close();
 		  } catch (SQLException sqle) {
 			  throw new Exception("ConnectionMySql.inserer() - " + sqle.getMessage()); 
 		  }
@@ -259,10 +263,12 @@ public class ConnectionMySql {
 	        st.setString(9, article.getDescriptionLongueArticle());
 	        st.setString(10, article.getFournisseurArticle());
 	        st.setString(11, article.getMarque());
-	        st.setInt(12, article.getIdRayon());
+	        st.setInt(12, article.getPromoArticle());
+	        st.setInt(13, article.getIdRayon());
 
 	        // Ex�cuter la requ�te
 	        st.executeUpdate();
+	        st.close();
 	    } catch (SQLException sqle) {
 	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
 	    }
@@ -284,7 +290,8 @@ public class ConnectionMySql {
             		rs.getString(9),
             		rs.getString(10),
             		rs.getString(11),
-            		rs.getInt(12));
+            		rs.getInt(12),
+            		rs.getInt(13));
             liste.add(a);
 		}
 		return liste;

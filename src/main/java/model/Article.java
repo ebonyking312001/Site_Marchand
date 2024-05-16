@@ -12,13 +12,14 @@ public class Article {
 	private String descriptionLongueArticle;
 	private String fournisseurArticle;
 	private String marque;
+	private int promoArticle;
 	private int idRayon;
 
 
 	// Constructeur
 	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
 			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
-			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
+			String descriptionLongueArticle, String fournisseurArticle, String marque, int promoArticle, int idRayon) {
 		super();
 		this.EAN = EAN;
 		this.vignetteArticle = vignetteArticle;
@@ -31,6 +32,7 @@ public class Article {
 		this.descriptionLongueArticle = descriptionLongueArticle;
 		this.fournisseurArticle = fournisseurArticle;
 		this.marque = marque;
+		this.promoArticle = promoArticle;
 		this.idRayon = idRayon;
 	}
 
@@ -50,6 +52,18 @@ public class Article {
 		this.EAN = EAN;
 
 }
+
+
+	public int getPromoArticle() {
+		return promoArticle;
+	}
+
+
+
+	public void setPromoArticle(int promoArticle) {
+		this.promoArticle = promoArticle;
+	}
+
 
 
 	public String getVignetteArticle() {
