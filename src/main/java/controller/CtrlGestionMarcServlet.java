@@ -38,11 +38,15 @@ public class CtrlGestionMarcServlet extends HttpServlet
 	            reader.readLine();
 	            while ((line = reader.readLine()) != null) {
 	            	
+	            	
 	                String[] values = line.split(",");
 	                
 	                if (values.length == 12) {
+	                	
 	                try {
+	                	System.out.println("encore en teeeest");
 	                	int EAN = Integer.parseInt(values[0].replace("\"", "").trim());
+	                	
                         String vignetteArticle = values[1].replace("\"", "").trim();
                         Float prixUnitaireArticle = Float.parseFloat(values[2].replace("\"", "").trim());
                         String NutriscoreArticle = values[3].replace("\"", "").trim();
@@ -61,6 +65,7 @@ public class CtrlGestionMarcServlet extends HttpServlet
                             marque, idRayon);
 	                
 	                articles.add(article);
+	                System.out.println("Article bien ajouté");
 	                }
 	                catch(NumberFormatException e){
 	                	System.err.println("Erreur de format de nombre : " + e.getMessage());
@@ -82,7 +87,6 @@ public class CtrlGestionMarcServlet extends HttpServlet
 
 	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		
-		System.out.println("CTRLTEEEEEEEST");
     Part filePart = request.getPart("file");
     InputStream fileContent = filePart.getInputStream();
     
