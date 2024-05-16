@@ -100,10 +100,10 @@ public class ConnectionMySql {
 			st.setString(1, idArticle);
 
 			try (ResultSet rs = st.executeQuery()) {
-				article = new Article(rs.getInt("EAN"), rs.getString("Vignette"), rs.getFloat("PrixUnitaire"),
-						rs.getString("Nutriscore"), rs.getString("Libelle"), rs.getFloat("Poids"),
-						rs.getFloat("PrixKg"), rs.getString("DescriptionCourte"), rs.getString("DescriptionLongue"),
-						rs.getString("Fournisseur"), rs.getString("Marque"), rs.getInt("IdRayon"));
+				article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
+						rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
+						rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+						rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("IdRayon"));
 			}
 
 		} catch (SQLException ex) {
