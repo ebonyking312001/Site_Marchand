@@ -1,7 +1,7 @@
 package model;
 
 public class Article {
-	private int EAN;
+	private double EAN;
 	private String vignetteArticle;
 	private Float prixUnitaireArticle;
 	private String nutriscoreArticle; 
@@ -15,10 +15,10 @@ public class Article {
 	private int idRayon;
 
     // Constructeur
-	public Article(int eAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
+	public Article(double EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
 			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
 			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
-		super();
+		this.EAN=EAN;
 		this.vignetteArticle = vignetteArticle;
 		this.prixUnitaireArticle = prixUnitaireArticle;
 		this.nutriscoreArticle = nutriscoreArticle;
@@ -33,9 +33,9 @@ public class Article {
 	}
 
     // Getters et Setters
-    public int getEAN() {return EAN;	}
+    public double getEAN() {return EAN;	}
 
-	public void setEAN(int eAN) {
+	public void setEAN(double eAN) {
 		EAN = eAN;
 	}
 

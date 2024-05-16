@@ -27,7 +27,7 @@
         <tbody>
             <%
             try {
-                ArrayList<Article> articles = ConnectionMySql.afficherArticleCatalogue();
+                ArrayList<Article> articles = ConnectionMySql.afficherArticle();
                 for (Article article : articles) {
             %>
             <tr>
@@ -54,7 +54,7 @@
     </table>
     
     <!-- Formulaire d'importation -->
-    <form action="ImportServlet" method="post" enctype="multipart/form-data">
+    <form action="CtrlGestionMarcServlet" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept=".csv" required>
         <button type="submit">Importer</button>
     </form>

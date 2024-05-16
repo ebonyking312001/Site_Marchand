@@ -106,53 +106,7 @@ public class ConnectionMySql
 		return liste;
 		}
 	
-	
-	public static ArrayList<Article> afficherArticleCatalogue() throws ClassNotFoundException, SQLException {
-	    // Crï¿½er la connexion ï¿½ la base de donnï¿½es
-	    if (ConnectionMySql.cx == null)
-	        ConnectionMySql.connexion();
 
-	    // Liste pour stocker les articles
-	    ArrayList<Article> liste = new ArrayList<>();
-
-	    // Requï¿½te SQL
-	    String sql = "SELECT * from Articles";
-
-	    // Ouverture de l'espace de requï¿½te
-	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-	        // Exï¿½cution de la requï¿½te
-	        try (ResultSet rs = st.executeQuery()) {
-	            // Lecture du contenu du ResultSet
-	            while (rs.next()) {
-	                double EAN = rs.getDouble("EAN");
-	                String vignetteArticle = rs.getString("VignetteArticle");
-	                double prixUnitaireArticle = rs.getDouble("PrixUnitaireArticle");
-	                String NutriscoreArticle = rs.getString("NutriscoreArticle");
-	                String libelleArticle = rs.getString("LibelleArticle");
-	                double poidsArticle = rs.getDouble("PoidsArticle");
-	                double prixKgArticle = rs.getDouble("PrixKgArticle");
-	                String descriptionCourteArticle = rs.getString("DescriptionCourteArticle");
-	                String descriptionLongueArticle = rs.getString("DescriptionLongueArticle");
-	                String fournisseurArticle = rs.getString("FournisseurArticle");
-	                String marque = rs.getString("Marque");
-	                int idRayon = rs.getInt("IdRayon");
-
-	                // Crï¿½er un nouvel article et l'ajouter ï¿½ la liste
-	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
-	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
-	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-	                                              marque, idRayon);
-	                liste.add(article);
-	            }
-	        }
-	    } catch (SQLException ex) {
-	        throw new SQLException("Exception ConnectionMySql.afficherArticleCatalogue() : Problï¿½me SQL - " + ex.getMessage());
-	    }
-
-	    return liste;
-	}
-
-	
 	/**
 	 * Retourne le mot cherchÃ© existant dans la ConnectionMySqld
 	 */
@@ -213,6 +167,37 @@ public class ConnectionMySql
 		  return nb;
 		
 	}
+	
+	public static void insererArticle(Article article) throws Exception {
+	    // Créer la connexion à la base de données si elle n'est pas déjà établie
+	    if (ConnectionMySql.cx == null) {
+	        ConnectionMySql.connexion();
+	    }
+
+	    // Requête SQL d'insertion
+	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, IdRayon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	    try (PreparedStatement st = cx.prepareStatement(sql)) {
+	        // Assigner les valeurs des paramètres de la requête
+	        st.setDouble(1, article.getEAN());
+	        st.setString(2, article.getVignetteArticle());
+	        st.setDouble(3, article.getPrixUnitaireArticle());
+	        st.setString(4, article.getNutriscoreArticle());
+	        st.setString(5, article.getLibelleArticle());
+	        st.setDouble(6, article.getPoidsArticle());
+	        st.setDouble(7, article.getPrixKgArticle());
+	        st.setString(8, article.getDescriptionCourteArticle());
+	        st.setString(9, article.getDescriptionLongueArticle());
+	        st.setString(10, article.getFournisseurArticle());
+	        st.setString(11, article.getMarque());
+	        st.setInt(12, article.getIdRayon());
+
+	        // Exécuter la requête
+	        st.executeUpdate();
+	    } catch (SQLException sqle) {
+	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
+	    }
+	}
 
 
 	/*----------------------------*/
@@ -222,7 +207,7 @@ public class ConnectionMySql
 	public static void main (String[] s) throws Exception
 		{
 		try {
-			ArrayList<Article> l = ConnectionMySql.afficherArticleCatalogue();
+			ArrayList<Article> l = ConnectionMySql.afficherArticle();
 			for (Article msg : l) {
 				System.out.println(msg);
 			}
