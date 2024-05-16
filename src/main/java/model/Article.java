@@ -1,7 +1,7 @@
 package model;
 
 public class Article {
-	private int EAN;
+	private double EAN;
 	private String vignetteArticle;
 	private Float prixUnitaireArticle;
 	private String nutriscoreArticle;
@@ -14,12 +14,20 @@ public class Article {
 	private String marque;
 	private int idRayon;
 
+
 	// Constructeur
 	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
 			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
 			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
 		super();
 		this.EAN = EAN;
+
+    // Constructeur
+	public Article(double EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
+			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
+			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
+		this.EAN=EAN;
+
 		this.vignetteArticle = vignetteArticle;
 		this.prixUnitaireArticle = prixUnitaireArticle;
 		this.nutriscoreArticle = nutriscoreArticle;
@@ -33,6 +41,7 @@ public class Article {
 		this.idRayon = idRayon;
 	}
 
+
 	// Constructor without parameters
 	public Article() {
 		super();
@@ -45,6 +54,12 @@ public class Article {
 
 	public void setEAN(int EAN) {
 		this.EAN = EAN;
+
+    // Getters et Setters
+    public double getEAN() {return EAN;	}
+
+	public void setEAN(double eAN) {
+		EAN = eAN;
 	}
 
 	public String getVignetteArticle() {
