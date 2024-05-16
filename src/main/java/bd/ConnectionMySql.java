@@ -291,7 +291,9 @@ public class ConnectionMySql {
             		rs.getString(10),
             		rs.getString(11),
             		rs.getInt(12),
-            		rs.getInt(13));
+            		rs.getInt(13),
+            		rs.getInt(14));
+
             liste.add(a);
 		}
 		return liste;
@@ -378,8 +380,9 @@ public class ConnectionMySql {
 	                		rs.getString(10),
 	                		rs.getString(11),
 	                		rs.getInt(12),
-	                		rs.getInt(13));
-	                
+	                		rs.getInt(13),
+	                		rs.getInt(14),
+	                		rs.getInt(14));
 	                liste.add(ac);
 	    		}
 	        }

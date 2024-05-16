@@ -33,7 +33,9 @@
 	             <th>Description Longue</th>
 	             <th>Fournisseur</th>
 	             <th>Marque</th>
+	             <th>Promotion</th>
 	             <th>Id Rayon</th>
+	             <th>Id Catégorie</th>
 	         </tr>
      <table/>
 	     <%
@@ -52,6 +54,7 @@
             <td><%= article.getFournisseurArticle() %></td>
             <td><%= article.getMarque() %></td>
             <td><%= article.getIdRayon() %></td>
+            <td><%= article.getIdCategorie() %></td>
         </tr>
    	<%
 	    	}
