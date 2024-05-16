@@ -48,9 +48,9 @@ public class CtrlPanierServlet extends HttpServlet {
 
 //		request.getRequestDispatcher("panier").forward(request, response);
 
-        articleList.add(new Article(1234567890123.0, "Vignette1", 10.99, "A", "Article 1", 0.5, 21.98, "Description courte 1", "Description longue 1", "Fournisseur 1", "Marque 1", 1));
-        articleList.add(new Article(1234567890124.0, "Vignette2", 20.49, "B", "Article 2", 0.75, 27.32, "Description courte 2", "Description longue 2", "Fournisseur 2", "Marque 2", 2));
-        articleList.add(new Article(1234567890125.0, "Vignette3", 15.75, "C", "Article 3", 0.6, 26.25, "Description courte 3", "Description longue 3", "Fournisseur 3", "Marque 3", 3));
+        articleList.add(new Article(1, "Vignette1", 10.99f, "A", "Article 1", 0.5f, 21.98f, "Description courte 1", "Description longue 1", "Fournisseur 1", "Marque 1", 1));
+        articleList.add(new Article(2, "Vignette2", 20.49f, "B", "Article 2", 0.75f, 27.32f, "Description courte 2", "Description longue 2", "Fournisseur 2", "Marque 2", 2));
+        articleList.add(new Article(3, "Vignette3", 15.75f, "C", "Article 3", 0.6f, 26.25f, "Description courte 3", "Description longue 3", "Fournisseur 3", "Marque 3", 3));
 
         session.setAttribute("articleList", articleList);	
 

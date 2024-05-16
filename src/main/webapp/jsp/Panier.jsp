@@ -114,7 +114,7 @@ body {
 							<img src="https://via.placeholder.com/150" alt="Product">
 							<div class="cart-item-info">
 								<h3>${article.libelleArticle}</h3>
-								<p>${article.ean}</p>
+								<p>${article.EAN}</p>
 								<p>${article.poidsArticle}</p>
 							</div>
 							<div class="cart-item-quantity">

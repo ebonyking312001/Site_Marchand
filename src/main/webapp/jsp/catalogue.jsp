@@ -1,39 +1,63 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.Article" %>
+<%@ page import="bd.ConnectionMySql" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+    <title>Catalogue des Articles</title>
 </head>
 <body>
-<h1>Liste des articles du catalogue</h1>
-	<table>
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Pseudo</th>
-				<th>Message</th>
-			</tr>
-		</thead>
-		<tbody>
-			<%
-	try{
-		//ArrayList<MessageDOR> messages = Bd.loadMessages();
-		//for (MessageDOR message : messages) {
-	%>
-		                <tr>
-		                	
-		                </tr>
-		                
-	<%
-		//}
-	}
-    catch (Exception e) {
-    out.println("<p>Erreur : " + e.getMessage() + "</p>");
-		}	
-	%>
-		</tbody>
-	</table>
+    <table>
+        <thead>
+            <tr>
+                <th>EAN</th>
+                <th>Vignette</th>
+                <th>Prix Unitaire</th>
+                <th>Nutriscore</th>
+                <th>Libellé</th>
+                <th>Poids</th>
+                <th>Prix par Kg</th>
+                <th>Description Courte</th>
+                <th>Description Longue</th>
+                <th>Fournisseur</th>
+                <th>Marque</th>
+                <th>Id Rayon</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+            try {
+                ArrayList<Article> articles = ConnectionMySql.afficherArticleCatalogue();
+                for (Article article : articles) {
+            %>
+            <tr>
+                <td><%= article.getEAN() %></td>
+                <td><%= article.getVignetteArticle() %></td>
+                <td><%= article.getPrixUnitaireArticle() %></td>
+                <td><%= article.getNutriscoreArticle() %></td>
+                <td><%= article.getLibelleArticle() %></td>
+                <td><%= article.getPoidsArticle() %></td>
+                <td><%= article.getPrixKgArticle() %></td>
+                <td><%= article.getDescriptionCourteArticle() %></td>
+                <td><%= article.getDescriptionLongueArticle() %></td>
+                <td><%= article.getFournisseurArticle() %></td>
+                <td><%= article.getMarque() %></td>
+                <td><%= article.getIdRayon() %></td>
+            </tr>
+            <%
+                }
+            } catch (Exception e) {
+                out.println("<p>Erreur : " + e.getMessage() + "</p>");
+            }
+            %>
+        </tbody>
+    </table>
+    
+    <!-- Formulaire d'importation -->
+    <form action="ImportServlet" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv" required>
+        <button type="submit">Importer</button>
+    </form>
+    
 </body>
 </html>

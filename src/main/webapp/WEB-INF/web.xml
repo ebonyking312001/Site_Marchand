@@ -1,24 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
-<!--   http://xmlns.jcp.org/xml/ns/javaee -->
-  <display-name>SiteMarchand</display-name>
-  
-  <servlet>
-      <servlet-name>SiteMarchand</servlet-name>
-      <jsp-file>/SiteMarchand.html</jsp-file>
-  </servlet>
-    <servlet>
-      <servlet-name>Panier</servlet-name>
-      <jsp-file>/jsp/Panier.jsp</jsp-file>
-  </servlet>
-  
-  <servlet-mapping>
-      <servlet-name>SiteMarchand</servlet-name>
-      <url-pattern>/SiteMarchand</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-      <servlet-name>Panier</servlet-name>
-      <url-pattern>/panier</url-pattern>
-  </servlet-mapping>
-  
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<!-- http://xmlns.jcp.org/xml/ns/javaee -->
+	<display-name>SiteMarchand</display-name>
+
+	<servlet>
+		<servlet-name>SiteMarchand</servlet-name>
+		<jsp-file>/SiteMarchand.html</jsp-file>
+	</servlet>
+	<servlet>
+		<servlet-name>Panier</servlet-name>
+		<jsp-file>/jsp/Panier.jsp</jsp-file>
+	</servlet>
+	<servlet>
+		<servlet-name>JspAccueil</servlet-name>
+		<jsp-file>/jsp/Accueil.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>SiteMarchand</servlet-name>
+		<url-pattern>/SiteMarchand</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Panier</servlet-name>
+		<url-pattern>/panier</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>JspAccueil</servlet-name>
+		<url-pattern>/Accueil</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>catalogue</servlet-name>
+		<jsp-file>/jsp/catalogue.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>catalogue</servlet-name>
+		<url-pattern>/catalogue</url-pattern>
+	</servlet-mapping>
+
 </web-app>

@@ -1,13 +1,13 @@
 package model;
 
 public class Article {
-	private double EAN;
+	private int EAN;
 	private String vignetteArticle;
-	private double prixUnitaireArticle;
+	private Float prixUnitaireArticle;
 	private String nutriscoreArticle;
 	private String libelleArticle;
-	private double poidsArticle;
-	private double prixKgArticle;
+	private Float poidsArticle;
+	private Float prixKgArticle;
 	private String descriptionCourteArticle;
 	private String descriptionLongueArticle;
 	private String fournisseurArticle;
@@ -15,9 +15,10 @@ public class Article {
 	private int idRayon;
 
 	// Constructeur
-	public Article(double EAN, String vignetteArticle, double prixUnitaireArticle, String nutriscoreArticle,
-			String libelleArticle, double poidsArticle, double prixKgArticle, String descriptionCourteArticle,
+	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
+			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
 			String descriptionLongueArticle, String fournisseurArticle, String marque, int idRayon) {
+		super();
 		this.EAN = EAN;
 		this.vignetteArticle = vignetteArticle;
 		this.prixUnitaireArticle = prixUnitaireArticle;
@@ -38,11 +39,11 @@ public class Article {
 	}
 
 	// Getters et Setters
-	public double getEan() {
+	public int getEAN() {
 		return EAN;
 	}
 
-	public void setEanCroissant1(double EAN) {
+	public void setEAN(int EAN) {
 		this.EAN = EAN;
 	}
 
@@ -54,11 +55,11 @@ public class Article {
 		this.vignetteArticle = vignetteArticle;
 	}
 
-	public double getPrixUnitaireArticle() {
+	public Float getPrixUnitaireArticle() {
 		return prixUnitaireArticle;
 	}
 
-	public void setPrixUnitaireArticle(double prixUnitaireArticle) {
+	public void setPrixUnitaireArticle(Float prixUnitaireArticle) {
 		this.prixUnitaireArticle = prixUnitaireArticle;
 	}
 
@@ -78,19 +79,19 @@ public class Article {
 		this.libelleArticle = libelleArticle;
 	}
 
-	public double getPoidsArticle() {
+	public Float getPoidsArticle() {
 		return poidsArticle;
 	}
 
-	public void setPoidsArticle(double poidsArticle) {
+	public void setPoidsArticle(Float poidsArticle) {
 		this.poidsArticle = poidsArticle;
 	}
 
-	public double getPrixKgArticle() {
+	public Float getPrixKgArticle() {
 		return prixKgArticle;
 	}
 
-	public void setPrixKgArticle(double prixKgArticle) {
+	public void setPrixKgArticle(Float prixKgArticle) {
 		this.prixKgArticle = prixKgArticle;
 	}
 
@@ -136,11 +137,12 @@ public class Article {
 
 	@Override
 	public String toString() {
-		return "Article{" + ", eanCroissant1='" + EAN + '\'' + ", vignetteArticle='" + vignetteArticle + '\''
-				+ ", prixUnitaireArticle=" + prixUnitaireArticle + ", nutriscoreArticle='" + nutriscoreArticle + '\''
-				+ ", libelleArticle='" + libelleArticle + '\'' + ", poidsArticle=" + poidsArticle + ", prixKgArticle="
-				+ prixKgArticle + ", descriptionCourteArticle='" + descriptionCourteArticle + '\''
-				+ ", descriptionLongueArticle='" + descriptionLongueArticle + '\'' + ", fournisseurArticle='"
-				+ fournisseurArticle + '\'' + ", marque='" + marque + '\'' + ", idRayon=" + idRayon + '}';
+
+		return "Article [EAN=" + EAN + ", vignetteArticle=" + vignetteArticle + ", prixUnitaireArticle="
+				+ prixUnitaireArticle + ", nutriscoreArticle=" + nutriscoreArticle + ", libelleArticle="
+				+ libelleArticle + ", poidsArticle=" + poidsArticle + ", prixKgArticle=" + prixKgArticle
+				+ ", descriptionCourteArticle=" + descriptionCourteArticle + ", descriptionLongueArticle="
+				+ descriptionLongueArticle + ", fournisseurArticle=" + fournisseurArticle + ", marque=" + marque
+				+ ", idRayon=" + idRayon + "]";
 	}
 }
