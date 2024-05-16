@@ -205,13 +205,13 @@ public class ConnectionMySql
 		ArrayList<Article> liste = new ArrayList<>();
 		while (rs.next()) {
             Article a = new Article(
-            		rs.getDouble(1),
+            		rs.getInt(1),
             		rs.getString(2),
-            		rs.getDouble(3),
+            		rs.getFloat(3),
             		rs.getString(4),
             		rs.getString(5),
-            		rs.getDouble(6),
-            		rs.getDouble(7),
+            		rs.getFloat(6),
+            		rs.getFloat(7),
             		rs.getString(8),
             		rs.getString(9),
             		rs.getString(10),
