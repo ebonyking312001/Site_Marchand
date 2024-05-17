@@ -328,7 +328,6 @@ public  class ConnectionMySql {
 	        throw new SQLException("Exception ConnectionMySql.panierCommande() : Problème SQL - " + ex.getMessage());
 	    }
 	    cx.close();
-	    cx = null;
 	    return liste;
 		
 	}
@@ -394,7 +393,6 @@ public  class ConnectionMySql {
 	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 	    }
 	    ConnectionMySql.cx.close();
-	    ConnectionMySql.cx = null;
 	    return liste;
 		
 	}
