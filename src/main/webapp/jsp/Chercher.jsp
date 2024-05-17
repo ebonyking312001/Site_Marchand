@@ -14,7 +14,7 @@
 
 	<div class="album py-5 bg-body-tertiary ">
 		<div class="container">
-			<h1 class="fw-light p-3">Liste d'articles</h1>
+			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 

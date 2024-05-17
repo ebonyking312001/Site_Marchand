@@ -1,33 +1,32 @@
 
-<header class="p-3 mb-3 border-bottom  text-bg-dark text-white">
+<header class="p-3  border-bottom  text-bg-dark text-white">
 	<div class="container">
 		<div
 			class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-			<a href="/"
-				class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-				<svg class="bi me-2" width="40" height="32" role="img"
-					aria-label="Bootstrap">
-					<use xlink:href="#bootstrap"></use></svg>
-			</a>
+		
 
 			<ul
 				class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-				<li><a href="JspAccueil" class="nav-link px-2 text-white ">Home</a></li>
+				<li class="d-flex d-row align-items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" height="20" width="22.5" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+				
+				<a href="JspAccueil" class="nav-link px-2 text-white fw-bold ">Accueil</a>
+				</li>
 			
 			</ul>
 
-			<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex d-row"
+			<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex d-row px-3"
 				role="search" action="CtrlChercherArticles" method="get">
 				<input type="text" name="inputData" type="search"
-					class="form-control" placeholder="Search..." aria-label="Search">
-				<input type="submit" class="btn btn-sm btn-primary text-white ">
+					class="form-control rounded-0" placeholder="Chercher..." aria-label="Search">
+				<button type="submit" class="btn btn-sm btn-secondary text-white rounded-0"><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg></button>
 			</form>
 
 
 			<a href="ServletPanier"
 				class=" text-white "
 				> <svg
-					xmlns="http://www.w3.org/2000/svg" height="20" width="22.5"
+					xmlns="http://www.w3.org/2000/svg" height="30" width="32.5"
 					viewBox="0 0 576 512">
 					<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
 					<path fill="#ffffff"
