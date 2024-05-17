@@ -11,6 +11,10 @@
       <servlet-name>JspAccueil</servlet-name>
       <jsp-file>/jsp/Accueil.jsp</jsp-file>
   </servlet>
+    <servlet>
+      <servlet-name>JspPanier</servlet-name>
+      <jsp-file>/jsp/Panier.jsp</jsp-file>
+  </servlet>
   
   <servlet-mapping>
       <servlet-name>SiteMarchand</servlet-name>
@@ -35,5 +39,9 @@
   <servlet-mapping>
       <servlet-name>Chercher</servlet-name>
       <url-pattern>/Chercher</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+      <servlet-name>JspPanier</servlet-name>
+      <url-pattern>/panier</url-pattern>
   </servlet-mapping>
 </web-app>

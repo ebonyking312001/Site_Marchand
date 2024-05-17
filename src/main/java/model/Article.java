@@ -13,7 +13,7 @@ public class Article {
 	private String fournisseurArticle;
 	private String marque;
 	private int idRayon;
-
+	private int quantite;
 
 	// Constructeur
 	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
@@ -32,9 +32,8 @@ public class Article {
 		this.fournisseurArticle = fournisseurArticle;
 		this.marque = marque;
 		this.idRayon = idRayon;
+		this.quantite = 0;
 	}
-
-
 
 	// Constructor without parameters
 	public Article() {
@@ -48,9 +47,7 @@ public class Article {
 
 	public void setEAN(int EAN) {
 		this.EAN = EAN;
-
-}
-
+	}
 
 	public String getVignetteArticle() {
 		return vignetteArticle;
@@ -138,6 +135,14 @@ public class Article {
 
 	public void setIdRayon(int idRayon) {
 		this.idRayon = idRayon;
+	}
+	
+	public int getQuantite() {
+		return quantite;
+	}
+
+	public void setQuantite(int quantite) {
+		this.quantite = quantite;
 	}
 
 	@Override

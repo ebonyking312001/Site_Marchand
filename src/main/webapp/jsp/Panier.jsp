@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.List"%>
 <%@ page import="model.Article"%>
 
@@ -118,7 +118,7 @@ body {
 								<p>${article.poidsArticle}</p>
 							</div>
 							<div class="cart-item-quantity">
-								<input type="number" value="1" min="1">
+								<input type="number" value="${article.quantite}" min="0">
 							</div>
 						</div>
 					</c:forEach>
@@ -133,5 +133,7 @@ body {
 			<button class="checkout-btn">Passer la Commande</button>
 		</div>
 	</div>
+
+	<script type="text/JavaScript" src="js/fctxml.js"></script>
 </body>
 </html>

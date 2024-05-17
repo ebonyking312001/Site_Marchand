@@ -30,27 +30,29 @@ public class CtrlPanierServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// get article id 
-		String idArticle = request.getParameter("idArticle");	    
-	    try {
+		// get article id
+		String idArticle = request.getParameter("idArticle");
+		try {
 			HttpSession session = request.getSession();
 			Article article = ConnectionMySql.getArticleById(idArticle);
-    		List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
+			List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
-	    	if (articlesInSession == null) {
-	    		List<Article> articleList = new ArrayList<>();
+			if (articlesInSession == null) {
+				List<Article> articleList = new ArrayList<>();
 				articleList.add(article);
-		        session.setAttribute("articleList", articleList);
-	    	}
-	    	else {
-				articlesInSession.add(article);
-		        session.setAttribute("articleList", articlesInSession);
-	    	}
-
-			request.getRequestDispatcher("/jsp/Panier.jsp").forward(request, response);
+				session.setAttribute("articleList", articleList);
+			} else {
+				if (articlesInSession.contains(articlesInSession.stream()
+						.filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findAny().get())) {
+					articlesInSession.stream().filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findFirst()
+							.ifPresent(a -> a.setQuantite(a.getQuantite() + 1));
+				} else {
+					articlesInSession.add(article);
+				}
+				session.setAttribute("articleList", articlesInSession);
+			}
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -60,7 +62,6 @@ public class CtrlPanierServlet extends HttpServlet {
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		// TODO Auto-generated method stub
 
 	}
 
