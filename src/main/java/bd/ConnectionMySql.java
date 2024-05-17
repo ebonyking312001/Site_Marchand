@@ -388,7 +388,8 @@ public class ConnectionMySql {
 	                		rs.getInt(12),
 	                		rs.getInt(13),
 	                		rs.getInt(14),
-	                		rs.getInt(15));
+	                		rs.getInt(15),
+	                		rs.getInt(16));
 	                liste.add(ac);
 	    		}
 	        }

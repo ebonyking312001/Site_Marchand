@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import bd.ConnectionMySql;
 import model.Article;
+import model.Commande;
 
 
 /**
@@ -28,7 +29,14 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		
+		try {
+			ArrayList<Commande> cEnCours=ConnectionMySql.panierCommande("en cours");
+			request.setAttribute("cEnCours", cEnCours);
+	        request.getRequestDispatcher("/PanierCommande").forward(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
