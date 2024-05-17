@@ -28,6 +28,15 @@ function deleteArticlesCart() {
 	// URL to delete articles from cart
 	xhr.open("GET", "ServletPanier?action=deleteArticlesCart", true);
 
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			console.log("ok reload")
+			location.reload();
+		}
+	};
+
+
 	// Envoie de la requête.
 	xhr.send();
 }
