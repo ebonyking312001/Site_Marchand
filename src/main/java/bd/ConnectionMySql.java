@@ -80,7 +80,7 @@ public class ConnectionMySql {
 							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
 							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
 							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon")));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
 				}
 			}
 			st.close();
@@ -109,7 +109,7 @@ public class ConnectionMySql {
 			    	article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
 							rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
 							rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit"));
 			    } else {
 			        // Handle the case where no rows were found
 			        // For example, you can throw an exception or return null
@@ -157,12 +157,14 @@ public class ConnectionMySql {
 					String marque = rs.getString("Marque");
 					int promoArticle = rs.getInt("PromoArticle");
 					int idRayon = rs.getInt("IdRayon");
+					int idCategorie = rs.getInt("IdCategorie");
+					int idTypeProduit = rs.getInt("IdTypeProduit");
 
 	                // Cr�er un nouvel article et l'ajouter � la liste
 	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
 	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
 	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-	                                              marque, promoArticle, idRayon);
+	                                              marque, promoArticle, idRayon, idCategorie, idTypeProduit);
 	                liste.add(article);
 				}
 			}
@@ -265,6 +267,9 @@ public class ConnectionMySql {
 	        st.setString(11, article.getMarque());
 	        st.setInt(12, article.getPromoArticle());
 	        st.setInt(13, article.getIdRayon());
+	        st.setInt(13, article.getIdCategorie());
+	        st.setInt(13, article.getIdTypeProduit());
+	        
 
 	        // Ex�cuter la requ�te
 	        st.executeUpdate();
@@ -292,7 +297,8 @@ public class ConnectionMySql {
             		rs.getString(11),
             		rs.getInt(12),
             		rs.getInt(13),
-            		rs.getInt(14));
+            		rs.getInt(14),
+            		rs.getInt(15));
 
             liste.add(a);
 		}
