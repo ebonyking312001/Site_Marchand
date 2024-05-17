@@ -29,10 +29,25 @@ public class CtrlArticleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	  
+		// get article id 
+		String idArticle = request.getParameter("idArticle");
 		try {
+			// Afficher tous détails de tous les articles
 			ArrayList<Article> listeArt = ConnectionMySql.afficherArticle();
+		
+			// Renvoyer détails d'un article quand un article est choisi
+			if (idArticle != null) {
+				// Récupérer info article par id article
+				Article article = ConnectionMySql.getArticleById(idArticle);
+				
+				request.setAttribute("article",article);
+				System.out.println("vignette = " + article.getVignetteArticle());
+				request.getRequestDispatcher("Details").forward(request, response);
+				
+			}
+			// Renvoyer liste de tous articles
 			request.setAttribute("listeArt",listeArt);
-			request.getRequestDispatcher("Accueil").forward(request, response);
+			request.getRequestDispatcher("/jsp/Accueil.jsp").forward(request, response);
 
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
