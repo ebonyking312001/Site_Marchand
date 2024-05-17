@@ -1,4 +1,6 @@
-
+/**
+ * ============================================= Accueil jsp =============================================
+ */
 /**
  * Add article by Id
  */
@@ -6,17 +8,25 @@ function addArticleById(event) {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
 
-	console.log("event : " + event);
+	// URL to add the article to cart
 	xhr.open("GET", "ServletPanier?idArticle=" + event, true);
 
-	// Nothing to do
-	// On précise ce que l'on va faire quand on aura reçu la réponse du serveur.
-	//	xhr.onload = function() {
-	//		// Si la requête http s'est bien passée.
-	//		if (xhr.status === 200) {
-	//			
-	//		}
-	//	};
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
+ * ============================================= Panier jsp =============================================
+ */
+/**
+ * Delete articles from cart
+ */
+function deleteArticlesCart() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// URL to delete articles from cart
+	xhr.open("GET", "ServletPanier?action=deleteArticlesCart", true);
 
 	// Envoie de la requête.
 	xhr.send();
@@ -27,18 +37,11 @@ function addArticleById(event) {
  */
 document.addEventListener("DOMContentLoaded", () => {
 	$('.byalpha').on('click',
-		//		{
-		//			'idArt': function(element) {
-		//				console.log("function element : " + $(element));
-		//				console.log($(element).data('idArt'));
-		//				return $(element).data('idArt');
-		//			}
-		//		},
 		function(event) {
-			//			console.log(event);
-			//			console.log(event.target.dataset.idart);
 			addArticleById(event.target.dataset.idart);
 		}
 	);
+
+	document.getElementById("delete_cart").addEventListener("click", deleteArticlesCart);
 
 });

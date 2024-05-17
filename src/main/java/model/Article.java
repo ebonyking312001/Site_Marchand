@@ -32,7 +32,7 @@ public class Article {
 		this.fournisseurArticle = fournisseurArticle;
 		this.marque = marque;
 		this.idRayon = idRayon;
-		this.quantite = 0;
+		this.quantite = 1;
 	}
 
 	// Constructor without parameters

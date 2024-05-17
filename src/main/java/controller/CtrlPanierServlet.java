@@ -32,25 +32,35 @@ public class CtrlPanierServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// get article id
 		String idArticle = request.getParameter("idArticle");
+		// get action delete articles from cart
+		String deleteArticles = request.getParameter("action");
+		// Gets session
+		HttpSession session = request.getSession();
+		
 		try {
-			HttpSession session = request.getSession();
-			Article article = ConnectionMySql.getArticleById(idArticle);
-			List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
+			if(idArticle != null && idArticle != "" ) {
+				Article article = ConnectionMySql.getArticleById(idArticle);
+				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
-			if (articlesInSession == null) {
-				List<Article> articleList = new ArrayList<>();
-				articleList.add(article);
-				session.setAttribute("articleList", articleList);
-			} else {
-				if (articlesInSession.contains(articlesInSession.stream()
-						.filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findAny().get())) {
-					articlesInSession.stream().filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findFirst()
-							.ifPresent(a -> a.setQuantite(a.getQuantite() + 1));
+				if (articlesInSession == null) {
+					List<Article> articleList = new ArrayList<>();
+					article.setQuantite(article.getQuantite() + 1);
+					articleList.add(article);
+					session.setAttribute("articleList", articleList);
 				} else {
-					articlesInSession.add(article);
+					if (articlesInSession.contains(articlesInSession.stream()
+							.filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findAny().get())) {
+						articlesInSession.stream().filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findFirst()
+								.ifPresent(a -> a.setQuantite(a.getQuantite() + 1));
+					} else {
+						articlesInSession.add(article);
+					}
+					session.setAttribute("articleList", articlesInSession);
 				}
-				session.setAttribute("articleList", articlesInSession);
+			} else if(deleteArticles.equals("deleteArticlesCart")) {
+				session.setAttribute("articleList", null);
 			}
+
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

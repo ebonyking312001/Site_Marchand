@@ -10,6 +10,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panier</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -131,9 +133,15 @@ body {
 				<p>Total: $19.99</p>
 			</div>
 			<button class="checkout-btn">Passer la Commande</button>
+			<input class="byalpha" type='button' value='Supprimer panier'
+				id="delete_cart" />
 		</div>
 	</div>
 
-	<script type="text/JavaScript" src="js/fctxml.js"></script>
+	<script type="text/JavaScript">
+		
+	<%@include file="/js/fctxml.js"%>
+		
+	</script>
 </body>
 </html>
