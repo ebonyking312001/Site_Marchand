@@ -31,7 +31,11 @@ public class CtrlPanierServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// get article id 
-		String idArticle = request.getParameter("idArticle");	    
+		String idArticle = request.getParameter("idArticle");	 
+		if(idArticle == null) {
+			request.getRequestDispatcher("/jsp/Panier.jsp").forward(request, response);
+			return;
+		}
 	    try {
 			HttpSession session = request.getSession();
 			Article article = ConnectionMySql.getArticleById(idArticle);
