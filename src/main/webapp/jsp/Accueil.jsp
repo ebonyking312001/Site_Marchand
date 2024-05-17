@@ -22,13 +22,15 @@
 					<div class="col">
 						<div class="card shadow-sm">
 							<a href="?idArticle=${art.EAN}">
-								<img src="${art.vignetteArticle}"/>
+								<center><img src="${art.vignetteArticle}" width='250'/></center>
 							</a>
 							<div class="card-body">
 								<p class="card-text"><a href="?idArticle=${art.EAN}">${art.libelleArticle}</a></p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
+									<a href="?idArticle=${art.EAN}">
 										<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+									</a>
 										<a class="btn btn-sm btn-primary text-white"
 													href="ServletPanier?idArticle=${art.EAN}">Ajouter au
 											panier</a>
