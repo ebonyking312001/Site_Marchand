@@ -34,7 +34,7 @@ public class Article {
 		this.marque = marque;
 		this.promoArticle = promoArticle;
 		this.idRayon = idRayon;
-		this.quantite = 1;
+		this.quantite = 0;
 	}
 
 	// Constructor without parameters

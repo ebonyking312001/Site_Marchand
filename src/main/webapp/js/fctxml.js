@@ -31,7 +31,6 @@ function deleteArticlesCart() {
 	xhr.onload = function() {
 		// Si la requête http s'est bien passée.
 		if (xhr.status === 200) {
-			console.log("ok reload")
 			location.reload();
 		}
 	};

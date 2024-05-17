@@ -15,8 +15,9 @@
                 <div class="card details-card p-0 shadow-sm">
                     <div class="row g-0">
                         <div class="col-md-6">
-                            <img class="img-fluid details-img p-5"
-								src="${article.vignetteArticle}" alt="${article.libelleArticle}">
+                        
+                            <img class="img-fluid details-img p-5" src="${article.vignetteArticle}" alt="${article.libelleArticle}">
+                            
                         </div>
                         <div
 							class="col-md-6 d-flex align-items-center bg-light">
@@ -35,7 +36,7 @@
 											<path fill="#ff0000"
 												d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg>
     
-        Promo : ${(1 - (article.promoArticle / 100.0)) * article.prixUnitaireArticle} €
+        Promo : ${article.promoArticle} €
     
     </small>
 </c:if>
@@ -51,6 +52,9 @@
 									class="btn btn-sm btn-secondary text-white"
 									href="ServletPanier?idArticle=${art.EAN}">Ajouter au
 											panier</a><input>
+<!-- 	<a class="btn btn-dark btn-md my-3 mx-3" -->
+<%-- 													href="ServletPanier?idArticle=${article.EAN}">Ajouter au --%>
+<!-- 											panier</a> -->
                                 <hr>
                                 <h4 class="product-title mt-4 mb-1">Description de l'article</h4>
                                 <p class="product-description mb-4">

@@ -43,11 +43,6 @@ public class CtrlPanierServlet extends HttpServlet {
 				Article article = ConnectionMySql.getArticleById(idArticle);
 				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
-//		if(idArticle == null) {
-//			request.getRequestDispatcher("/jsp/Panier.jsp").forward(request, response);
-//			return;
-//		}
-
 				if (articlesInSession == null) {
 					List<Article> articleList = new ArrayList<>();
 					article.setQuantite(article.getQuantite() + 1);
@@ -55,7 +50,7 @@ public class CtrlPanierServlet extends HttpServlet {
 					session.setAttribute("articleList", articleList);
 				} else {
 					if (articlesInSession.contains(articlesInSession.stream()
-							.filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findAny().get())) {
+							.filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findFirst().get())) {
 						articlesInSession.stream().filter(as -> as.getEAN() == Integer.parseInt(idArticle)).findFirst()
 								.ifPresent(a -> a.setQuantite(a.getQuantite() + 1));
 					} else {
@@ -63,7 +58,9 @@ public class CtrlPanierServlet extends HttpServlet {
 					}
 					session.setAttribute("articleList", articlesInSession);
 				}
-			} else if (deleteArticles.equals("deleteArticlesCart")) {
+			} else if (deleteArticles == null) {
+				request.getRequestDispatcher("panier").forward(request, response);
+			} else {
 				session.setAttribute("articleList", null);
 			}
 
