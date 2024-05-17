@@ -29,6 +29,7 @@ public  class ConnectionMySql {
 	private static final String LOGIN = "u523250608_projetdai";
 	private static final String PASSWORD = "Projetdai1$";
 
+
 	/*----------*/
 	/* Méthodes */
 	/*----------*/
