@@ -307,7 +307,6 @@ public  class ConnectionMySql {
 		ArrayList<Commande> liste = new ArrayList<>();
 		
 		/*----- Création de la connexion à la base de données -----*/
-		if (ConnectionMySql.cx == null)
 			ConnectionMySql.connexion();
 
 	    /*----- Requête SQL -----*/
@@ -352,7 +351,6 @@ public  class ConnectionMySql {
 		ArrayList<ArticleCommande> liste = new ArrayList<>();
 		
 		/*----- Création de la connexion à la base de données -----*/
-		if (ConnectionMySql.cx == null)
 			ConnectionMySql.connexion();
 
 	    /*----- Requête SQL -----*/
