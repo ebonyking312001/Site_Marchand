@@ -250,7 +250,7 @@ public class ConnectionMySql {
 	    }
 
 	    // Requ�te SQL d'insertion
-	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, IdRayon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, PromoArticle, IdRayon, IdCategorie, IdTypeProduit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement st = cx.prepareStatement(sql)) {
 	        // Assigner les valeurs des param�tres de la requ�te
@@ -267,8 +267,8 @@ public class ConnectionMySql {
 	        st.setString(11, article.getMarque());
 	        st.setInt(12, article.getPromoArticle());
 	        st.setInt(13, article.getIdRayon());
-	        st.setInt(13, article.getIdCategorie());
-	        st.setInt(13, article.getIdTypeProduit());
+	        st.setInt(14, article.getIdCategorie());
+	        st.setInt(15, article.getIdTypeProduit());
 	        
 
 	        // Ex�cuter la requ�te

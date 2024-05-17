@@ -11,7 +11,7 @@
         <thead>
             <tr>
                 <th>EAN</th>
-                <th>Vignette</th>
+                <th style="display: none;">Vignette</th>
                 <th>Prix Unitaire</th>
                 <th>Nutriscore</th>
                 <th>Libellé</th>
@@ -21,7 +21,10 @@
                 <th>Description Longue</th>
                 <th>Fournisseur</th>
                 <th>Marque</th>
+                <th>Promo Article</th>
                 <th>Id Rayon</th>
+                <th>Categorie</th>
+                <th>TypeProduit</th>
             </tr>
         </thead>
         <tbody>
@@ -32,7 +35,7 @@
             %>
             <tr>
                 <td><%= article.getEAN() %></td>
-                <td><%= article.getVignetteArticle() %></td>
+                <td style="display: none;"><%= article.getVignetteArticle() %></td>
                 <td><%= article.getPrixUnitaireArticle() %></td>
                 <td><%= article.getNutriscoreArticle() %></td>
                 <td><%= article.getLibelleArticle() %></td>
@@ -42,7 +45,10 @@
                 <td><%= article.getDescriptionLongueArticle() %></td>
                 <td><%= article.getFournisseurArticle() %></td>
                 <td><%= article.getMarque() %></td>
+                <td><%= article.getPromoArticle() %></td>
                 <td><%= article.getIdRayon() %></td>
+                <td><%= article.getIdCategorie() %></td>
+                <td><%= article.getIdTypeProduit() %></td>
             </tr>
             <%
                 }
