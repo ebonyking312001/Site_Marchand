@@ -40,12 +40,11 @@ public class CtrlGestionMarcServlet extends HttpServlet
 	            	
 	                String[] values = line.split(",");
 	                
-	                if (values.length == 12) {
+	                if (values.length == 15) {
 	                	
 	                try {
-	                	System.out.println("encore en teeeest");
+	           
 	                	int EAN = Integer.parseInt(values[0].replace("\"", "").trim());
-	                	
                         String vignetteArticle = values[1].replace("\"", "").trim();
                         Float prixUnitaireArticle = Float.parseFloat(values[2].replace("\"", "").trim());
                         String NutriscoreArticle = values[3].replace("\"", "").trim();
@@ -58,14 +57,15 @@ public class CtrlGestionMarcServlet extends HttpServlet
                         String marque = values[10].replace("\"", "").trim();
                         int promoArticle = Integer.parseInt(values[11].replace("\"", "").trim());
                         int idRayon = Integer.parseInt(values[12].replace("\"", "").trim());
+                        int idCategorie = Integer.parseInt(values[13].replace("\"", "").trim());
+                        int idTypeProduit = Integer.parseInt(values[14].replace("\"", "").trim());
 	                
 	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
                             NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
                             descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-                            marque, promoArticle, idRayon);
+                            marque, promoArticle, idRayon,idCategorie, idTypeProduit);
 	                
 	                articles.add(article);
-	                System.out.println("Article bien ajouté");
 	                }
 	                catch(NumberFormatException e){
 	                	System.err.println("Erreur de format de nombre : " + e.getMessage());
@@ -76,7 +76,6 @@ public class CtrlGestionMarcServlet extends HttpServlet
 	                
 	            }
 	        }
-	        
 	        return articles;
 	    }
 	    

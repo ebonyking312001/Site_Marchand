@@ -7,8 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import model.Article;
+import model.ArticleCommande;
+import model.Commande;
 
 /**
  * Classe en charge de la base de données.
@@ -25,6 +28,7 @@ public  class ConnectionMySql {
 	private static final String URL = "jdbc:mysql://srv1049.hstgr.io:3306/u523250608_projetdai";
 	private static final String LOGIN = "u523250608_projetdai";
 	private static final String PASSWORD = "Projetdai1$";
+
 
 	/*----------*/
 	/* Méthodes */
@@ -76,7 +80,7 @@ public  class ConnectionMySql {
 							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
 							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
 							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon")));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
 				}
 			}
 			st.close();
@@ -105,7 +109,7 @@ public  class ConnectionMySql {
 			    	article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"), rs.getFloat("PrixUnitaireArticle"),
 							rs.getString("NutriscoreArticle"), rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"),
 							rs.getFloat("PrixKgArticle"), rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit"));
 			    } else {
 			        // Handle the case where no rows were found
 			        // For example, you can throw an exception or return null
@@ -152,12 +156,14 @@ public  class ConnectionMySql {
 					String marque = rs.getString("Marque");
 					int promoArticle = rs.getInt("PromoArticle");
 					int idRayon = rs.getInt("IdRayon");
+					int idCategorie = rs.getInt("IdCategorie");
+					int idTypeProduit = rs.getInt("IdTypeProduit");
 
 	                // Cr�er un nouvel article et l'ajouter � la liste
 	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
 	                                              NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
 	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
-	                                              marque, promoArticle, idRayon);
+	                                              marque, promoArticle, idRayon, idCategorie, idTypeProduit);
 	                liste.add(article);
 	                st.close();
 				}
@@ -241,7 +247,7 @@ public  class ConnectionMySql {
 	    ConnectionMySql.connexion();
 
 	    // Requ�te SQL d'insertion
-	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, IdRayon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, PromoArticle, IdRayon, IdCategorie, IdTypeProduit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement st = cx.prepareStatement(sql)) {
 	        // Assigner les valeurs des param�tres de la requ�te
@@ -258,6 +264,9 @@ public  class ConnectionMySql {
 	        st.setString(11, article.getMarque());
 	        st.setInt(12, article.getPromoArticle());
 	        st.setInt(13, article.getIdRayon());
+	        st.setInt(14, article.getIdCategorie());
+	        st.setInt(15, article.getIdTypeProduit());
+	        
 
 	        // Ex�cuter la requ�te
 	        st.executeUpdate();
@@ -286,24 +295,114 @@ public  class ConnectionMySql {
             		rs.getString(10),
             		rs.getString(11),
             		rs.getInt(12),
-            		rs.getInt(13));
+            		rs.getInt(13),
+            		rs.getInt(14),
+            		rs.getInt(15));
+
             liste.add(a);
-    }
+		}
 		return liste;
+	}
+	
+	public static ArrayList<Commande> panierCommande (String commandeEtat) throws ClassNotFoundException, SQLException {
+		ArrayList<Commande> liste = new ArrayList<>();
+		
+		/*----- Création de la connexion à la base de données -----*/
+			ConnectionMySql.connexion();
+
+	    /*----- Requête SQL -----*/
+	    String sql = "SELECT * FROM Commandes WHERE EtatCommande LIKE ?";
+	    
+	    /*----- Ouverture de l'espace de requête -----*/
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	    	
+	        /*----- Exécution de la requête -----*/
+	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
+	        st.setString(1, commandeEtat);
+	        
+	        try (ResultSet rs = st.executeQuery()) {
+	            /*----- Lecture du contenu du ResultSet -----*/
+	        	liste=resToCommandes(rs);
+	        }
+	        
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.panierCommande() : Problème SQL - " + ex.getMessage());
+	    }
+	    cx.close();
+	    return liste;
+		
+	}
+	
+	public static ArrayList<Commande> resToCommandes(ResultSet rs) throws SQLException{
+		ArrayList<Commande> liste = new ArrayList<>();
+		while (rs.next()) {
+            Commande c = new Commande(
+            		rs.getDate("DateRetrait"),
+            		rs.getString("EtatCommande"),
+            		rs.getInt("IdCommande"),
+            		rs.getInt("IdMagasin"),
+            		rs.getInt("IdUtilisateur"));
+            liste.add(c);
+		}
+		return liste;
+	}
+	
+	public static ArrayList<ArticleCommande> DetailCommande(String idCom) throws ClassNotFoundException, SQLException {
+		ArrayList<ArticleCommande> liste = new ArrayList<>();
+		
+		/*----- Création de la connexion à la base de données -----*/
+			ConnectionMySql.connexion();
+
+	    /*----- Requête SQL -----*/
+	    String sql = "SELECT Articles.*,qteCom "
+	    		+ "FROM Articles,Articles_Commandes "
+	    		+ "WHERE Articles_Commandes.EAN=Articles.EAN "
+	    		+ "AND IdCommande=?";
+	    
+	    /*----- Ouverture de l'espace de requête -----*/
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	    	
+	        /*----- Exécution de la requête -----*/
+	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
+	        st.setInt(1, Integer.parseInt(idCom));
+	        
+	        try (ResultSet rs = st.executeQuery()) {
+	            /*----- Lecture du contenu du ResultSet -----*/
+	        	while (rs.next()) {
+	                ArticleCommande ac = new ArticleCommande(
+	                		rs.getInt(1),
+	                		rs.getString(2),
+	                		rs.getFloat(3),
+	                		rs.getString(4),
+	                		rs.getString(5),
+	                		rs.getFloat(6),
+	                		rs.getFloat(7),
+	                		rs.getString(8),
+	                		rs.getString(9),
+	                		rs.getString(10),
+	                		rs.getString(11),
+	                		rs.getInt(12),
+	                		rs.getInt(13),
+	                		rs.getInt(14),
+	                		rs.getInt(15),
+	                		rs.getInt(16));
+	                liste.add(ac);
+	    		}
+	        }
+	        
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+	    }
+	    ConnectionMySql.cx.close();
+	    return liste;
+		
 	}
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-		try {
-			ArrayList<Article> l = ConnectionMySql.afficherArticle();
-			for (Article msg : l) {
-				System.out.println(msg);
-			}
-		} catch (ClassNotFoundException | SQLException ex) {
-			System.out.println(ex.getMessage());
-		}
+			System.out.println(panierCommande("en cours").get(0).getEtatCommande());
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

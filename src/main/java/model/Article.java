@@ -14,12 +14,14 @@ public class Article {
 	private String marque;
 	private int promoArticle;
 	private int idRayon;
+	private int idCategorie;
+	private int idTypeProduit;
 
 
 	// Constructeur
 	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
 			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
-			String descriptionLongueArticle, String fournisseurArticle, String marque, int promoArticle, int idRayon) {
+			String descriptionLongueArticle, String fournisseurArticle, String marque, int promoArticle, int idRayon,int idCategorie, int idTypeProduit) {
 		super();
 		this.EAN = EAN;
 		this.vignetteArticle = vignetteArticle;
@@ -34,6 +36,8 @@ public class Article {
 		this.marque = marque;
 		this.promoArticle = promoArticle;
 		this.idRayon = idRayon;
+		this.idCategorie=idCategorie;
+		this.idTypeProduit=idTypeProduit;
 	}
 
 
@@ -153,6 +157,23 @@ public class Article {
 	public void setIdRayon(int idRayon) {
 		this.idRayon = idRayon;
 	}
+	
+	public int getIdCategorie() {
+		return idCategorie;
+	}
+
+	public void setIdCategorie(int idCategorie) {
+		this.idCategorie = idCategorie;
+	}
+
+	public int getIdTypeProduit() {
+		return idTypeProduit;
+	}
+
+	public void setIdTypeProduit(int typeProduit) {
+		this.idTypeProduit = typeProduit;
+	}
+
 
 	@Override
 	public String toString() {

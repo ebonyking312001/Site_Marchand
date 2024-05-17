@@ -16,10 +16,10 @@
 		<div class="container">
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 
-			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+			<div class="row">
 				<c:forEach var="art" items="${listeArt}">
 
-					<div class="col">
+					<div class="col-md-4  col-lg-4 col-sm-12">
 						<div class="card shadow-sm">
 							<a href="?idArticle=${art.EAN}">
 								<center><img src="${art.vignetteArticle}" width='250'/></center>
