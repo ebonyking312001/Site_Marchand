@@ -13,7 +13,7 @@ import model.Article;
 /**
  * Classe en charge de la base de données.
  */
-public class ConnectionMySql {
+public  class ConnectionMySql {
 	/*---------*/
 	/* Données */
 	/*---------*/
@@ -58,8 +58,7 @@ public class ConnectionMySql {
 	 */
 	public static ArrayList<Article> afficherArticle() throws ClassNotFoundException, SQLException {
 		/*----- Création de la connexion à la base de données -----*/
-		if (ConnectionMySql.cx == null)
-			ConnectionMySql.connexion();
+		ConnectionMySql.connexion();
 
 		/*----- Interrogation de la base -----*/
 		ArrayList<Article> liste = new ArrayList<>();
@@ -82,9 +81,10 @@ public class ConnectionMySql {
 			}
 			st.close();
 		} catch (SQLException ex) {
+			
 			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
 		}
-		ConnectionMySql.cx = null;
+		ConnectionMySql.cx.close();
 		return liste;
 	}
 
@@ -92,8 +92,7 @@ public class ConnectionMySql {
 	 * Gets article by Id.
 	 */
 	public static Article getArticleById(String idArticle) throws ClassNotFoundException, SQLException {
-		if (ConnectionMySql.cx == null)
-			ConnectionMySql.connexion();
+		ConnectionMySql.connexion();
 
 		Article article = new Article();
 		String sql = "SELECT * from Articles Where EAN = ?";
@@ -120,14 +119,13 @@ public class ConnectionMySql {
 		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 		}
-		ConnectionMySql.cx = null;
+		ConnectionMySql.cx.close();
 		return article;
 	}
 
 	public static ArrayList<Article> afficherArticleCatalogue() throws ClassNotFoundException, SQLException {
 		// Cr�er la connexion � la base de donn�es
-		if (ConnectionMySql.cx == null)
-			ConnectionMySql.connexion();
+		ConnectionMySql.connexion();
 
 		// Liste pour stocker les articles
 		ArrayList<Article> liste = new ArrayList<>();
@@ -161,14 +159,14 @@ public class ConnectionMySql {
 	                                              descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
 	                                              marque, promoArticle, idRayon);
 	                liste.add(article);
+	                st.close();
 				}
 			}
-			st.close();
 		} catch (SQLException ex) {
 			throw new SQLException(
 					"Exception ConnectionMySql.afficherArticleCatalogue() : Probl�me SQL - " + ex.getMessage());
 		}
-		ConnectionMySql.cx = null;
+		ConnectionMySql.cx.close();
 
 		return liste;
 	}
@@ -180,8 +178,7 @@ public class ConnectionMySql {
 
 	public static ArrayList<Article> chercher (String motSaisi) throws ClassNotFoundException, SQLException {
 		/*----- Création de la connexion à la base de données -----*/
-		if (ConnectionMySql.cx == null)
-			ConnectionMySql.connexion();
+		ConnectionMySql.connexion();
 		
 		 /*----- Interrogation de la base -----*/
 	    ArrayList<Article> liste = new ArrayList<>();
@@ -205,7 +202,8 @@ public class ConnectionMySql {
 	    } catch (SQLException ex) {
 	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 	    }
-	    ConnectionMySql.cx = null;
+		ConnectionMySql.cx.close();
+
 	    return liste;
 		
 	}
@@ -217,8 +215,7 @@ public class ConnectionMySql {
 	 */
 	public static int inserer(String motSaisi) throws Exception {
 		/*----- Création de la connexion à la base de données -----*/
-		if (ConnectionMySql.cx == null)
-			ConnectionMySql.connexion();
+		ConnectionMySql.connexion();
 
 		/* --- Requête d'insertion --- */
 		  int nb = 0;
@@ -233,16 +230,15 @@ public class ConnectionMySql {
 		  } catch (SQLException sqle) {
 			  throw new Exception("ConnectionMySql.inserer() - " + sqle.getMessage()); 
 		  }
-		  
+		  ConnectionMySql.cx.close();
+
 		  return nb;
 		
 	}
 	
 	public static void insererArticle(Article article) throws Exception {
 	    // Cr�er la connexion � la base de donn�es si elle n'est pas d�j� �tablie
-	    if (ConnectionMySql.cx == null) {
-	        ConnectionMySql.connexion();
-	    }
+	    ConnectionMySql.connexion();
 
 	    // Requ�te SQL d'insertion
 	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, IdRayon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -269,6 +265,8 @@ public class ConnectionMySql {
 	    } catch (SQLException sqle) {
 	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
 	    }
+		ConnectionMySql.cx.close();
+
 	}	
 
 
