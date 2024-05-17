@@ -1,108 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="java.util.List"%>
-<%@ page import="model.Article"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panier</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<style>
-body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #f4f4f4;
-}
-
-.container {
-	max-width: 800px;
-	margin: 20px auto;
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.cart {
-	display: flex;
-	flex-direction: column;
-}
-
-.cart-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid #ddd;
-	padding-bottom: 10px;
-	margin-bottom: 20px;
-}
-
-.cart-header h2 {
-	margin: 0;
-	font-size: 24px;
-}
-
-.cart-items {
-	display: flex;
-	flex-direction: column;
-}
-
-.cart-item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid #ddd;
-	padding: 10px 0;
-}
-
-.cart-item img {
-	width: 100px;
-	height: auto;
-	margin-right: 20px;
-}
-
-.cart-item-info {
-	flex-grow: 1;
-}
-
-.cart-item h3 {
-	margin: 0;
-}
-
-.cart-item p {
-	margin: 5px 0;
-}
-
-.total {
-	margin-top: 20px;
-}
-
-.total p {
-	margin: 5px 0;
-}
-
-.checkout-btn {
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.checkout-btn:hover {
-	background-color: #0056b3;
-}
-</style>
-</head>
-<body>
-	<div class="container">
+<t:genericpage>
+	<jsp:attribute name="header">
+      <%@ include file="Header.jsp"%>
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+      <%@ include file="Footer.jsp"%>
+    </jsp:attribute>
+	<jsp:body>
+ <main>
+<div class="container">
 		<div class="cart">
 			<div class="cart-header">
 				<h2>Panier</h2>
@@ -111,13 +21,40 @@ body {
 
 
 				<div class="cart-items">
+				<c:set var="totalPrice" value="0" />
+				
 					<c:forEach var="article" items="${sessionScope.articleList}">
 						<div class="cart-item">
-							<img src="https://via.placeholder.com/150" alt="Product">
+							<img src="${article.vignetteArticle}" alt="Product" />
 							<div class="cart-item-info">
 								<h3>${article.libelleArticle}</h3>
-								<p>${article.EAN}</p>
-								<p>${article.poidsArticle}</p>
+								<p>code: ${article.EAN}</p>
+								<p>
+								<c:if test="${article.promoArticle > 0}">
+    <small class=" fw-bold text-decoration-line-through ">
+         ${article.prixUnitaireArticle} €
+    </small>
+    <small class="fw-bold text-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" height="14"
+														width="12.25" viewBox="0 0 448 512">
+																<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+																<path fill="#ff0000"
+															d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg>
+    
+        Promo : ${(1 - (article.promoArticle / 100.0)) * article.prixUnitaireArticle} €
+    
+    </small>
+</c:if>
+<c:if test="${article.promoArticle == 0}">
+    <small class="text-body-secondary fw-bold">
+        Prix : ${article.prixUnitaireArticle} €
+    </small>
+</c:if>
+								
+								</p>
+								    <c:set var="totalPrice"
+											value="${totalPrice + article.prixUnitaireArticle}" />
+								
 							</div>
 							<div class="cart-item-quantity">
 								<input type="number" value="${article.quantite}" min="0">
@@ -127,21 +64,21 @@ body {
 
 				</div>
 
-				Ajouter d'autres �l�ments du panier ici
+				Ajouter d'autres éléments du panier ici
 			</div>
 			<div class="total">
-				<p>Total: $19.99</p>
+			
+							<p>Prix : ${totalPrice} €</p>
+					
 			</div>
-			<button class="checkout-btn">Passer la Commande</button>
-			<input class="byalpha" type='button' value='Supprimer panier'
-				id="delete_cart" />
+			<button class="checkout-btn">Valider le panier</button>
+						<input class="" type='button' value='Supprimer panier'
+						id="delete_cart" />
 		</div>
 	</div>
 
-	<script type="text/JavaScript">
-		
-	<%@include file="/js/fctxml.js"%>
-		
-	</script>
-</body>
-</html>
+</main>
+    </jsp:body>
+
+
+</t:genericpage>

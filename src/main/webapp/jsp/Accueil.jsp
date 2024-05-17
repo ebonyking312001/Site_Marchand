@@ -1,66 +1,84 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="model.Article"
-	import="java.util.List"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
-<body>
-	<h1>Page d'accueil</h1>
 
-	<a href="ServletRoute?action=Panier">Aller au panier</a>
+<t:genericpage>
+	<jsp:attribute name="header">
+      <%@ include file="Header.jsp"%>
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+      <%@ include file="Footer.jsp"%>
+    </jsp:attribute>
+	<jsp:body>
+ <main>
 
-	<table border="1" id="list_Article">
-		<tr>
-			<th>EAN</th>
-			<th>Vignette</th>
-			<th>Prix unitaire</th>
-			<th>Nutriscore</th>
-			<th>Libelle</th>
-			<th>Poids</th>
-			<th>Prix au Kg</th>
-			<th>Description courte</th>
-			<th>Description longue</th>
-			<th>Fournisseur</th>
-			<th>Marque</th>
-		</tr>
+	<div class="album py-5 bg-body-tertiary ">
+		<div class="container">
+			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 
-		<c:forEach var="art" items="${listeArt}">
-			<tr>
-				<td>${art.EAN}</td>
-				<td>${art.vignetteArticle}</td>
-				<td>${art.prixUnitaireArticle}</td>
-				<td>${art.nutriscoreArticle}</td>
-				<td>${art.libelleArticle}</td>
-				<td>${art.poidsArticle}</td>
-				<td>${art.prixKgArticle}</td>
-				<td>${art.descriptionCourteArticle}</td>
-				<td>${art.descriptionLongueArticle}</td>
-				<td>${art.fournisseurArticle}</td>
-				<td>${art.marque}</td>
-				<%-- 				<td><a href="ServletPanier?idArticle=${art.EAN}">Ajouter au --%>
-				<!-- 						panier</a></td> -->
-				<%-- 				<td><a class="byalpha" id="btn_addToCard" data-idArt="${art.EAN}">+Panier</a></td> --%>
-				<td><input class="byalpha" type='button' value='+Panier' data-idArt="${art.EAN}" /></td>
-				
-			</tr>
-		</c:forEach>
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+				<c:forEach var="art" items="${listeArt}">
 
-	</table>
-	<br>
+					<div class="col">
+						<div class="card shadow-sm">
+							<a href="?idArticle=${art.EAN}">
+								<center>
+													<img src="${art.vignetteArticle}" width='250' />
+												</center>
+							</a>
+							<div class="card-body">
+								<p class="card-text">
+													<a class="text-decoration-none text-primary fw-bold"
+												href="?idArticle=${art.EAN}">${art.libelleArticle}</a>
+												</p>
+								<div class="d-flex justify-content-between align-items-center">
+									<div class="btn-group">
+									<a href="?idArticle=${art.EAN}">
+										<button type="button" class="btn btn-sm btn-outline-secondary">Plus de détails</button>
+									</a>
+										
+											<input class="byalpha" type='button' data-idArt="${art.EAN}"><a
+													class="btn btn-sm btn-secondary text-white"
+													href="ServletPanier?idArticle=${art.EAN}">Ajouter au
+											panier</a><input>
+									</div>
+<c:if test="${art.promoArticle > 0}">
+    <small class=" fw-bold text-decoration-line-through ">
+         ${art.prixUnitaireArticle} €
+    </small>
+    <small class="fw-bold text-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" height="14"
+														width="12.25" viewBox="0 0 448 512">
+																<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+																<path fill="#ff0000"
+															d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg>
+    
+        Promo : ${(1 - (art.promoArticle / 100.0)) * art.prixUnitaireArticle} €
+    
+    </small>
+</c:if>
+<c:if test="${art.promoArticle == 0}">
+    <small class="text-body-secondary fw-bold">
+        Prix : ${art.prixUnitaireArticle} €
+    </small>
+</c:if>
 
-	<p>Cliquer pour revenir � la page d'accueil</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
 
-	<script type="text/JavaScript">
-		
-	<%@include file="/js/fctxml.js"%>
-		
-	</script>
+			</div>
+		</div>
+	</div>
+
+</main>
+    </jsp:body>
+
+
+</t:genericpage>
 </body>
 </html>

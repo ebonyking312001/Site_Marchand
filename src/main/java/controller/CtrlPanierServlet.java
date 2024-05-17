@@ -30,17 +30,23 @@ public class CtrlPanierServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		// get article id
 		String idArticle = request.getParameter("idArticle");
 		// get action delete articles from cart
 		String deleteArticles = request.getParameter("action");
 		// Gets session
 		HttpSession session = request.getSession();
-		
+
 		try {
-			if(idArticle != null && idArticle != "" ) {
+			if (idArticle != null && idArticle != "") {
 				Article article = ConnectionMySql.getArticleById(idArticle);
 				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
+
+//		if(idArticle == null) {
+//			request.getRequestDispatcher("/jsp/Panier.jsp").forward(request, response);
+//			return;
+//		}
 
 				if (articlesInSession == null) {
 					List<Article> articleList = new ArrayList<>();
@@ -57,10 +63,9 @@ public class CtrlPanierServlet extends HttpServlet {
 					}
 					session.setAttribute("articleList", articlesInSession);
 				}
-			} else if(deleteArticles.equals("deleteArticlesCart")) {
+			} else if (deleteArticles.equals("deleteArticlesCart")) {
 				session.setAttribute("articleList", null);
 			}
-
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
