@@ -15,7 +15,8 @@
                 <div class="card details-card p-0 shadow-sm">
                     <div class="row g-0">
                         <div class="col-md-6">
-                        								<center><img src="${article.vignetteArticle}" width='250'/></center>        
+                        
+                            <img class="img-fluid details-img p-5" src="${article.vignetteArticle}" alt="${article.libelleArticle}">
                         </div>
                         <div class="col-md-6 d-flex align-items-center bg-light">
                             <div class="card-body p-5">
