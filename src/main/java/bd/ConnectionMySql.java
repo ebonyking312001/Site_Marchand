@@ -320,7 +320,7 @@ public class ConnectionMySql {
 	    	
 	        /*----- Exécution de la requête -----*/
 	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
-	        st.setString(1, "%"+commandeEtat+"%");
+	        st.setString(1, commandeEtat);
 	        
 	        try (ResultSet rs = st.executeQuery()) {
 	            /*----- Lecture du contenu du ResultSet -----*/
@@ -328,10 +328,10 @@ public class ConnectionMySql {
 	        }
 	        
 	    } catch (SQLException ex) {
-	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+	        throw new SQLException("Exception ConnectionMySql.panierCommande() : Problème SQL - " + ex.getMessage());
 	    }
-	    ConnectionMySql.cx.close();
-	    ConnectionMySql.cx = null;
+	    cx.close();
+	    cx = null;
 	    return liste;
 		
 	}
@@ -407,8 +407,7 @@ public class ConnectionMySql {
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-
-			System.out.println(DetailCommande("1").get(0).getLibelleArticle());
+			System.out.println(panierCommande("en cours").get(0).getEtatCommande());
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

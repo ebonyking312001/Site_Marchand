@@ -44,4 +44,13 @@
       <servlet-name>Chercher</servlet-name>
       <url-pattern>/Chercher</url-pattern>
   </servlet-mapping>
+  
+    <servlet>
+      <servlet-name>PanierCommande</servlet-name>
+      <jsp-file>/jsp/PanierCommande.jsp</jsp-file>
+  </servlet>
+   <servlet-mapping>
+      <servlet-name>PanierCommande</servlet-name>
+      <url-pattern>/PanierCommande</url-pattern>
+  </servlet-mapping>
 </web-app>
