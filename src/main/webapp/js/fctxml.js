@@ -34,8 +34,46 @@ function deleteArticlesCart() {
 			location.reload();
 		}
 	};
+	// Envoie de la requête.
+	xhr.send();
+}
 
+/**
+ * Add quantity of article by Id and reload page to get the number of articles updated
+ */
+function addArticleByIdFromCart(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
 
+	// URL to add the article from cart
+	xhr.open("GET", "ServletPanier?idArticle=" + event, true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			location.reload();
+		}
+	};
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
+ * Remove quantity of article by Id and reload page to get the number of articles updated
+ */
+function rmArticleByIdFromCart(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// URL to remove the article from cart
+	xhr.open("GET", "ServletPanier?idArticleRm=" + event, true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			location.reload();
+		}
+	};
 	// Envoie de la requête.
 	xhr.send();
 }
@@ -47,6 +85,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	$('.byalpha').on('click',
 		function(event) {
 			addArticleById(event.target.dataset.idart);
+		}
+	);
+	
+		$('.byalphaAddPanier').on('click',
+		function(event) {
+			addArticleByIdFromCart(event.target.dataset.idart);
+		}
+	);
+
+	$('.byalphaRmPanier').on('click',
+		function(event) {
+			rmArticleByIdFromCart(event.target.dataset.idart);
 		}
 	);
 

@@ -47,11 +47,9 @@
 </c:if>
 
 <!--                                 <button name="add_to_cart" type="submit" class="btn btn-dark btn-md my-3 mx-3">Ajouter au panier</button> -->
-                                <input class="byalpha" type='button'
-									data-idArt="${art.EAN}"><a
-									class="btn btn-sm btn-secondary text-white"
-									href="ServletPanier?idArticle=${art.EAN}">Ajouter au
-											panier</a><input>
+                                <a class="btn btn-sm btn-secondary text-white byalpha"
+													data-idArt="${article.EAN}">Ajouter au
+											panier</a>
 <!-- 	<a class="btn btn-dark btn-md my-3 mx-3" -->
 <%-- 													href="ServletPanier?idArticle=${article.EAN}">Ajouter au --%>
 <!-- 											panier</a> -->

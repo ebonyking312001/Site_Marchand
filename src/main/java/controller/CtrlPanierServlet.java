@@ -32,8 +32,10 @@ public class CtrlPanierServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// get article id
+		// get article id to add
 		String idArticle = request.getParameter("idArticle");
+		// get article id to remove
+		String idArticleRm = request.getParameter("idArticleRm");
 		// get action delete articles from cart
 		String deleteArticles = request.getParameter("action");
 		// Gets session
@@ -67,12 +69,26 @@ public class CtrlPanierServlet extends HttpServlet {
 					}
 					session.setAttribute("articleList", articlesInSession);
 				}
-				// Check for action of deleting items, if called the parameter, delete the var
-				// of session containing all the articles in cart
-			} else if (deleteArticles == null) {
+			}
+			// Check for action of deleting items, if called the parameter, delete the var
+			// of session containing all the articles in cart
+			else if (idArticleRm != null && idArticleRm != "") {
+				Article article = ConnectionMySql.getArticleById(idArticleRm);
+				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
+
+				// Remove by 1 the quantity of article
+				articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
+						.ifPresent(a -> a.setQuantite(a.getQuantite() - 1));
+
+				session.setAttribute("articleList", articlesInSession);
+			}
+			// Return the cart page
+			else if (deleteArticles == null) {
 				request.getRequestDispatcher("panier").forward(request, response);
-			} else {
-				// Return the cart page (in all other cases)
+			}
+			// Delete articles from cart
+			else {
+
 				session.setAttribute("articleList", null);
 			}
 
