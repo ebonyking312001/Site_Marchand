@@ -1,15 +1,18 @@
 /**
  * ============================================= Accueil jsp =============================================
  */
+
 /**
- * Add article by Id
+ * Add article by Id with some quantity
  */
-function addArticleById(event) {
+function addArticleByIdWithQuantity(event) {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
+	
+	var nbArticlesToAdd = document.getElementById(event + "_nbArticle");
 
 	// URL to add the article to cart
-	xhr.open("GET", "ServletPanier?idArticle=" + event, true);
+	xhr.open("GET", "ServletPanier?idArticle=" + event + "&quantity=" + nbArticlesToAdd.value, true);
 
 	// Envoie de la requête.
 	xhr.send();
@@ -18,6 +21,7 @@ function addArticleById(event) {
 /**
  * ============================================= Panier jsp =============================================
  */
+
 /**
  * Delete articles from cart
  */
@@ -82,13 +86,14 @@ function rmArticleByIdFromCart(event) {
  * Loads after build of DOM
  */
 document.addEventListener("DOMContentLoaded", () => {
+
 	$('.byalpha').on('click',
 		function(event) {
-			addArticleById(event.target.dataset.idart);
+			addArticleByIdWithQuantity(event.target.dataset.idart);
 		}
 	);
-	
-		$('.byalphaAddPanier').on('click',
+
+	$('.byalphaAddPanier').on('click',
 		function(event) {
 			addArticleByIdFromCart(event.target.dataset.idart);
 		}

@@ -34,6 +34,8 @@ public class CtrlPanierServlet extends HttpServlet {
 
 		// get article id to add
 		String idArticle = request.getParameter("idArticle");
+		// get article quantity to add from home page
+		String quantity = request.getParameter("quantity");
 		// get article id to remove
 		String idArticleRm = request.getParameter("idArticleRm");
 		// get action delete articles from cart
@@ -42,8 +44,8 @@ public class CtrlPanierServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		try {
-			// Check for article id
-			if (idArticle != null && idArticle != "") {
+			// Check for article id (without quantity)
+			if (idArticle != null && quantity == null) {
 				Article article = ConnectionMySql.getArticleById(idArticle);
 				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
@@ -66,6 +68,34 @@ public class CtrlPanierServlet extends HttpServlet {
 						// If exists and has been added to the list, add +1 to quantity article
 						articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
 								.ifPresent(a -> a.setQuantite(a.getQuantite() + 1));
+					}
+					session.setAttribute("articleList", articlesInSession);
+				}
+			}
+			// Check for article id (with quantity)
+			else if(idArticle != null && quantity != null) {
+				Article article = ConnectionMySql.getArticleById(idArticle);
+				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
+				
+				// Check if exists var in session
+				if (articlesInSession == null) {
+					// If not exists, creates new list of articles and add the quantity to quantity article
+					// and add the article
+					List<Article> articleList = new ArrayList<>();
+					article.setQuantite(article.getQuantite() + Integer.parseInt(quantity));
+					articleList.add(article);
+					session.setAttribute("articleList", articleList);
+				} else {
+					// If exists and doesn't has been added to the list, add the quantity to quantity article
+					// and add the article
+					if (articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
+							.isEmpty()) {
+						article.setQuantite(article.getQuantite() + Integer.parseInt(quantity));
+						articlesInSession.add(article);
+					} else {
+						// If exists and has been added to the list, add the quantity to quantity article
+						articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
+								.ifPresent(a -> a.setQuantite(a.getQuantite() + Integer.parseInt(quantity)));
 					}
 					session.setAttribute("articleList", articlesInSession);
 				}

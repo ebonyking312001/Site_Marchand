@@ -38,13 +38,30 @@
 									<a href="?idArticle=${art.EAN}">
 										<button type="button" class="btn btn-sm btn-outline-secondary">Plus de détails</button>
 									</a>
-										
-										<a class="btn btn-sm btn-secondary text-white byalpha"
-													data-idArt="${art.EAN}">Ajouter au
-											panier</a>
-<%-- 											<input class="byalpha" type='button' data-idArt="${art.EAN}"><input> --%>
 									</div>
-<c:if test="${art.promoArticle > 0}">
+									<div class="row">
+									<div class="col">
+									<input type="number" id="${art.EAN}_nbArticle" min="1"
+														style="width: 3em">
+									<a
+														class="btn btn-sm btn-secondary text-white rounded-left byalpha"
+														style="margin-left: 5px;" data-idArt="${art.EAN}">Ajouter au
+											panier</a>
+<!-- 																			<a -->
+<!-- 														class="btn btn-sm btn-secondary text-white rounded-left byalpha" -->
+<%-- 														style="margin-left: 5px;" data-idArt="${art.EAN}">Ajouter au --%>
+<!-- 											panier</a> -->
+												</div>
+									</div>
+
+
+
+								</div>
+							</div>
+																<div class="row text-center">
+														<div class="col">
+																																							<c:if
+												test="${art.promoArticle > 0}">
     <small class=" fw-bold text-decoration-line-through ">
          ${art.prixUnitaireArticle} €
     </small>
@@ -64,9 +81,10 @@
         Prix : ${art.prixUnitaireArticle} €
     </small>
 </c:if>
+		
+																</div>
 
-								</div>
-							</div>
+									</div>
 						</div>
 					</div>
 				</c:forEach>

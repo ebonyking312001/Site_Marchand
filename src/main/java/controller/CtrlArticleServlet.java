@@ -41,7 +41,6 @@ public class CtrlArticleServlet extends HttpServlet {
 				Article article = ConnectionMySql.getArticleById(idArticle);
 				
 				request.setAttribute("article",article);
-				System.out.println("vignette = " + article.getVignetteArticle());
 				request.getRequestDispatcher("Details").forward(request, response);
 				
 			}
