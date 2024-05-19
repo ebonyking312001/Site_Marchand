@@ -109,9 +109,14 @@ public class CtrlPanierServlet extends HttpServlet {
 				Article article = ConnectionMySql.getArticleById(idArticleRm);
 				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
-				// Remove by 1 the quantity of article
-				articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
-						.ifPresent(a -> a.setQuantite(a.getQuantite() - 1));
+				Optional<Article> art = articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN())
+						.findFirst();
+				if (art.get().getQuantite() - 1 <= 0) {
+					articlesInSession.removeIf(as -> as.getEAN() == article.getEAN());
+				} else {
+					articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
+							.ifPresent(a -> a.setQuantite(a.getQuantite() - 1));
+				}
 
 				session.setAttribute("articleList", articlesInSession);
 			}
@@ -126,7 +131,7 @@ public class CtrlPanierServlet extends HttpServlet {
 				case "deleteArticlesCart":
 					session.setAttribute("articleList", null);
 					break;
-				// on keyup function to change quantity manually
+				// On keyup function to change quantity manually
 				case "changeArt":
 					System.out.println(quantity);
 					Article article = ConnectionMySql.getArticleById(idArticle);

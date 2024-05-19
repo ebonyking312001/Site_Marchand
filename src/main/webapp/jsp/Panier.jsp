@@ -65,11 +65,11 @@
                                         <c:when
 											test="${article.promoArticle == 0}">
                                             <c:set var="totalPrice"
-												value="${totalPrice + article.prixUnitaireArticle}" />
+												value="${totalPrice + (article.prixUnitaireArticle * article.quantite)}" />
                                         </c:when>
                                         <c:otherwise>
                                             <c:set var="totalPrice"
-												value="${totalPrice + article.promoArticle}" />
+												value="${totalPrice + (article.prixUnitaireArticle * article.quantite)}" />
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
