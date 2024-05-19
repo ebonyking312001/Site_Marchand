@@ -3,11 +3,11 @@ package model;
 public class Article {
 	private int EAN;
 	private String vignetteArticle;
-	private Float prixUnitaireArticle;
+	private float prixUnitaireArticle;
 	private String nutriscoreArticle;
 	private String libelleArticle;
-	private Float poidsArticle;
-	private Float prixKgArticle;
+	private float poidsArticle;
+	private float prixKgArticle;
 	private String descriptionCourteArticle;
 	private String descriptionLongueArticle;
 	private String fournisseurArticle;
@@ -15,11 +15,14 @@ public class Article {
 	private int promoArticle;
 	private int idRayon;
 	private int quantite;
+	private int idCategorie;
+	private int idTypeProduit;
+
 
 	// Constructeur
-	public Article(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
-			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
-			String descriptionLongueArticle, String fournisseurArticle, String marque, int promoArticle, int idRayon) {
+	public Article(int EAN, String vignetteArticle, float prixUnitaireArticle, String nutriscoreArticle,
+			String libelleArticle, float poidsArticle, float prixKgArticle, String descriptionCourteArticle,
+			String descriptionLongueArticle, String fournisseurArticle, String marque, int promoArticle, int idRayon,int idCategorie, int idTypeProduit) {
 		super();
 		this.EAN = EAN;
 		this.vignetteArticle = vignetteArticle;
@@ -35,6 +38,8 @@ public class Article {
 		this.promoArticle = promoArticle;
 		this.idRayon = idRayon;
 		this.quantite = 0;
+		this.idCategorie=idCategorie;
+		this.idTypeProduit=idTypeProduit;
 	}
 
 	// Constructor without parameters
@@ -71,11 +76,11 @@ public class Article {
 		this.vignetteArticle = vignetteArticle;
 	}
 
-	public Float getPrixUnitaireArticle() {
+	public float getPrixUnitaireArticle() {
 		return prixUnitaireArticle;
 	}
 
-	public void setPrixUnitaireArticle(Float prixUnitaireArticle) {
+	public void setPrixUnitaireArticle(float prixUnitaireArticle) {
 		this.prixUnitaireArticle = prixUnitaireArticle;
 	}
 
@@ -95,19 +100,19 @@ public class Article {
 		this.libelleArticle = libelleArticle;
 	}
 
-	public Float getPoidsArticle() {
+	public float getPoidsArticle() {
 		return poidsArticle;
 	}
 
-	public void setPoidsArticle(Float poidsArticle) {
+	public void setPoidsArticle(float poidsArticle) {
 		this.poidsArticle = poidsArticle;
 	}
 
-	public Float getPrixKgArticle() {
+	public float getPrixKgArticle() {
 		return prixKgArticle;
 	}
 
-	public void setPrixKgArticle(Float prixKgArticle) {
+	public void setPrixKgArticle(float prixKgArticle) {
 		this.prixKgArticle = prixKgArticle;
 	}
 
@@ -157,6 +162,22 @@ public class Article {
 
 	public void setQuantite(int quantite) {
 		this.quantite = quantite;
+	}
+	
+	public int getIdCategorie() {
+		return idCategorie;
+	}
+
+	public void setIdCategorie(int idCategorie) {
+		this.idCategorie = idCategorie;
+	}
+
+	public int getIdTypeProduit() {
+		return idTypeProduit;
+	}
+
+	public void setIdTypeProduit(int typeProduit) {
+		this.idTypeProduit = typeProduit;
 	}
 
 	@Override
