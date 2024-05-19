@@ -10,7 +10,6 @@ function addArticleByIdWithQuantity(event) {
 	var xhr = new XMLHttpRequest();
 
 	var nbArticlesToAdd = document.getElementById(event + "_nbArticle");
-	console.log(nbArticlesToAdd.value);
 
 	// URL to add the article to cart
 	xhr.open("GET", "ServletPanier?idArticle=" + event + "&quantity=" + nbArticlesToAdd.value, true);
@@ -94,7 +93,7 @@ function onKeyupQuantityArt(event) {
 	var nbArticlesToAdd = event.target.value;
 	
 	if(nbArticlesToAdd == "") {
-		nbArticlesToAdd=0;
+		nbArticlesToAdd = 0;
 	}
 	xhr.open("GET", "ServletPanier?action=changeArt&idArticle=" + idArticle + "&quantity=" + nbArticlesToAdd, true);
 
@@ -109,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	$('.byalpha').on('click',
 		function(event) {
-			console.log(event);
 			addArticleByIdWithQuantity(event.target.dataset.idart);
 		}
 	);
