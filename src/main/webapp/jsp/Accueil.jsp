@@ -42,15 +42,11 @@
 									<div class="row">
 									<div class="col">
 									<input type="number" id="${art.EAN}_nbArticle" min="1"
-														style="width: 3em">
+														style="width: 3em" value="1">
 									<a
 														class="btn btn-sm btn-secondary text-white rounded-left byalpha"
 														style="margin-left: 5px;" data-idArt="${art.EAN}">Ajouter au
 											panier</a>
-<!-- 																			<a -->
-<!-- 														class="btn btn-sm btn-secondary text-white rounded-left byalpha" -->
-<%-- 														style="margin-left: 5px;" data-idArt="${art.EAN}">Ajouter au --%>
-<!-- 											panier</a> -->
 												</div>
 									</div>
 

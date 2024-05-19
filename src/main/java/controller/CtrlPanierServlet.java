@@ -39,7 +39,7 @@ public class CtrlPanierServlet extends HttpServlet {
 		// get article id to remove
 		String idArticleRm = request.getParameter("idArticleRm");
 		// get action delete articles from cart
-		String deleteArticles = request.getParameter("action");
+		String action = request.getParameter("action");
 		// Gets session
 		HttpSession session = request.getSession();
 
@@ -73,27 +73,30 @@ public class CtrlPanierServlet extends HttpServlet {
 				}
 			}
 			// Check for article id (with quantity)
-			else if(idArticle != null && quantity != null) {
+			else if (idArticle != null && quantity != null && action == null) {
 				Article article = ConnectionMySql.getArticleById(idArticle);
 				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
-				
+
 				// Check if exists var in session
 				if (articlesInSession == null) {
-					// If not exists, creates new list of articles and add the quantity to quantity article
+					// If not exists, creates new list of articles and add the quantity to quantity
+					// article
 					// and add the article
 					List<Article> articleList = new ArrayList<>();
 					article.setQuantite(article.getQuantite() + Integer.parseInt(quantity));
 					articleList.add(article);
 					session.setAttribute("articleList", articleList);
 				} else {
-					// If exists and doesn't has been added to the list, add the quantity to quantity article
+					// If exists and doesn't has been added to the list, add the quantity to
+					// quantity article
 					// and add the article
 					if (articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
 							.isEmpty()) {
 						article.setQuantite(article.getQuantite() + Integer.parseInt(quantity));
 						articlesInSession.add(article);
 					} else {
-						// If exists and has been added to the list, add the quantity to quantity article
+						// If exists and has been added to the list, add the quantity to quantity
+						// article
 						articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
 								.ifPresent(a -> a.setQuantite(a.getQuantite() + Integer.parseInt(quantity)));
 					}
@@ -113,13 +116,29 @@ public class CtrlPanierServlet extends HttpServlet {
 				session.setAttribute("articleList", articlesInSession);
 			}
 			// Return the cart page
-			else if (deleteArticles == null) {
+			else if (action == null) {
 				request.getRequestDispatcher("panier").forward(request, response);
 			}
-			// Delete articles from cart
+			// Get action with more details of the event
 			else {
+				switch (action) {
+				// Delete articles from cart
+				case "deleteArticlesCart":
+					session.setAttribute("articleList", null);
+					break;
+				// on keyup function to change quantity manually
+				case "changeArt":
+					System.out.println(quantity);
+					Article article = ConnectionMySql.getArticleById(idArticle);
+					List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
 
-				session.setAttribute("articleList", null);
+					// Change the quantity of article
+					articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
+							.ifPresent(a -> a.setQuantite(Integer.parseInt(quantity)));
+
+					session.setAttribute("articleList", articlesInSession);
+					break;
+				}
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {

@@ -80,7 +80,7 @@
 										data-idArt="${article.EAN}">-</a>
                       <div class="form-control form-control-sm">
                                     <input type="number"
-											value="${article.quantite}" readonly>
+											value="${article.quantite}" class="changeNbArt" data-idArt="${article.EAN}">
                                 </div>
 										<a
 										class="btn btn-sm btn-secondary text-white byalphaAddPanier" style="margin-left:5px;"

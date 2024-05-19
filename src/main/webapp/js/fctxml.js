@@ -1,5 +1,5 @@
 /**
- * ============================================= Accueil jsp =============================================
+ * ============================================= Accueil jsp, Details jsp =============================================
  */
 
 /**
@@ -8,8 +8,9 @@
 function addArticleByIdWithQuantity(event) {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
-	
+
 	var nbArticlesToAdd = document.getElementById(event + "_nbArticle");
+	console.log(nbArticlesToAdd.value);
 
 	// URL to add the article to cart
 	xhr.open("GET", "ServletPanier?idArticle=" + event + "&quantity=" + nbArticlesToAdd.value, true);
@@ -83,12 +84,32 @@ function rmArticleByIdFromCart(event) {
 }
 
 /**
+ * Sets the quantity of articles when modifying directly the value from the input
+ */
+function onKeyupQuantityArt(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	var idArticle = event.target.dataset.idart;
+	var nbArticlesToAdd = event.target.value;
+	
+	if(nbArticlesToAdd == "") {
+		nbArticlesToAdd=0;
+	}
+	xhr.open("GET", "ServletPanier?action=changeArt&idArticle=" + idArticle + "&quantity=" + nbArticlesToAdd, true);
+
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
  * Loads after build of DOM
  */
 document.addEventListener("DOMContentLoaded", () => {
 
 	$('.byalpha').on('click',
 		function(event) {
+			console.log(event);
 			addArticleByIdWithQuantity(event.target.dataset.idart);
 		}
 	);
@@ -102,6 +123,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	$('.byalphaRmPanier').on('click',
 		function(event) {
 			rmArticleByIdFromCart(event.target.dataset.idart);
+		}
+	);
+
+	$('.changeNbArt').on('keyup',
+		function(event) {
+			onKeyupQuantityArt(event);
 		}
 	);
 
