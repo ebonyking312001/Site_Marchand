@@ -4,11 +4,12 @@
 <head>
     <title>Catalogue des Articles</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 </head>
 <body>
 <div class="p-5">
     <h1 class="mb-4">Catalogue des Articles</h1>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover" id="tableArticles">
         <thead class="thead-dark">
         <tr>
             <th>EAN</th>
@@ -63,6 +64,19 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#tableArticles').DataTable({
+            // Options de configuration
+            "paging": true, // Activation de la pagination
+            "ordering": true, // Activation du tri par colonne
+            "searching": true // Activation de la recherche
+        });
+    });
+</script>
 
 <% if (request.getAttribute("articleExists") != null && (boolean) request.getAttribute("articleExists")) { %>
         <script type="text/javascript">
