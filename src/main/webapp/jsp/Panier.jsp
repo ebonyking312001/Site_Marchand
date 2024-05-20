@@ -76,15 +76,16 @@
                                 <div
 									class="col-md-3 col-lg-3 col-xl-2 d-flex">
                       <a
-										class="btn btn-sm btn-secondary text-white byalphaRmPanier" style="margin-right:5px;"
-										data-idArt="${article.EAN}">-</a>
+										class="btn btn-sm btn-secondary text-white byalphaRmPanier"
+										style="margin-right: 5px;" data-idArt="${article.EAN}">-</a>
                       <div class="form-control form-control-sm">
                                     <input type="number"
-											value="${article.quantite}" class="changeNbArt" data-idArt="${article.EAN}">
+											value="${article.quantite}" class="changeNbArt"
+											data-idArt="${article.EAN}">
                                 </div>
 										<a
-										class="btn btn-sm btn-secondary text-white byalphaAddPanier" style="margin-left:5px;"
-										data-idArt="${article.EAN}">+</a>
+										class="btn btn-sm btn-secondary text-white byalphaAddPanier"
+										style="margin-left: 5px;" data-idArt="${article.EAN}">+</a>
                     </div>
                             </div>
                         </c:forEach>
@@ -95,7 +96,9 @@
 								maxFractionDigits="1" /> €</p>
                     </div>
                     
-                    <button class="checkout-btn" id="validate_card">Valider le panier</button>
+                    <a href="ConfirmationPanierServlet"><button
+							class="checkout-btn" id="validate_card">Valider le panier</button></a>
+                    
                     <button id="delete_card" class="btn btn-danger">Supprimer le panier</button>
                 </div>
             </div>

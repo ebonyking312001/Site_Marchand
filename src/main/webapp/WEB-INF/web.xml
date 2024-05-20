@@ -69,14 +69,5 @@
 		<servlet-name>PanierCommande</servlet-name>
 		<url-pattern>/PanierCommande</url-pattern>
 	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>ConfirmationPanier</servlet-name>
-		<jsp-file>/jsp/ConfirmationPanier.jsp</jsp-file>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ConfirmationPanier</servlet-name>
-		<url-pattern>/ConfirmationPanier</url-pattern>
-	</servlet-mapping>
 	
 </web-app>

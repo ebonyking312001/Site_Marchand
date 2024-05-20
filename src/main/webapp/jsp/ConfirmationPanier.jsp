@@ -8,18 +8,30 @@
 	<jsp:body>
         <main>
         
-		<b>Choix du magasin de retrait</b><br />
-		<select id="nomMagasin">
+        <b>Choix du magasin de retrait</b>
+        <div class="row">
+        <div class="col-2">
+        <select id="nomMagasin">
+		<option>-----</option>
 			<c:forEach var="mag" items="${requestScope.allMagasins}">
-				<option>${mag.nomMagasin}</option>
+				<option value="${mag.nomMagasin}">${mag.nomMagasin}</option>
 			</c:forEach>
 		
 		</select>
-		<input type="time" id="heureRetMag" name="retMag" min="09:00" max="18:00" required />
+        </div>
+		<div class="col-2">
+		<input type="time" id="heureRetMag" name="retMag" min="00:00"
+						max="24:00" required />
+		</div>
+		
 		<div id="HoraireMagasin"></div>
+        </div>
+		
 		
 <!-- 		<b>Choix de l'heure de retrait du magasin concerné</b><br /> -->
 <!-- 		<select id="heureRetMagasin"><option>-----</option></select> -->
+
+		<button class="checkout-btn" id="final_validation">Valider la commande</button>
 		
         </main>
     </jsp:body>

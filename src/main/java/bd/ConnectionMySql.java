@@ -558,6 +558,6 @@ public class ConnectionMySql {
 
 	public static void main(String[] s) throws Exception {
 //		getHoursOpenedByMagasinId(1);
-		getOpeningByMagasinName("ElectroPlus");
+//		getOpeningByMagasinName("ElectroPlus");
 	}
 } /*----- Fin de la classe ConnectionMySql -----*/

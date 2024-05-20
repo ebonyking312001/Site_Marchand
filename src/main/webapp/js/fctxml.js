@@ -130,7 +130,6 @@ function openPopUpChoice_Mag_Hr() {
 
 	xhr.open("GET", "ConfirmationPanierServlet", true);
 
-
 	//	width = window.screen.width;
 	//	height = window.screen.height;
 	//	mywindow = window.open("GET", "ConfirmationPanierServlet?", "Confirmation du magasin et l''heure de retrait",
@@ -152,15 +151,33 @@ function getOpeningMagasin() {
 
 	xhr.onload = function() {
 		if (xhr.status === 200) {
-			var doc = xhr.responseXML.getElementsByTagName("hrOuvFer");
-			var texte = "";
+			var doc = xhr.responseXML.getElementsByTagName("hof");
+			var texte = doc[0].firstChild.nodeValue;
 
-			for (i = 0; i < doc.length; i++) {
-				texte += '<hof>' + doc[i].firstChild.nodeValue + "</hof></br>";
-			}
+			const words = doc[0].firstChild.nodeValue.split(' ');
+			document.getElementById("heureRetMag").setAttribute("min", words[0]);
+			document.getElementById("heureRetMag").setAttribute("max", words[2]);
 
 			var elt = document.getElementById("HoraireMagasin");
 			elt.innerHTML = texte;
+			document.getElementById("heureRetMag").disabled = false;
+		}
+	};
+
+	// Envoie de la requête.
+	xhr.send();
+}
+
+function confirmCard() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// Requête au serveur avec les paramètres éventuels.
+	xhr.open("GET", "ConfirmationPanierServlet?action=confirmCard?nomM=" + document.getElementById("nomMagasin").value + "&hRet=" + document.getElementById("HoraireMagasin").firstChild, true);
+
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			alert("Commande réalisée avec succès");
 		}
 	};
 
@@ -197,10 +214,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	);
 
-	document.getElementById("validate_card").addEventListener("click", openPopUpChoice_Mag_Hr);
+	$('#delete_card').on('click', function() {
+		deleteArticlesCart();
+	})
 
-	document.getElementById("delete_card").addEventListener("click", deleteArticlesCart);
-
-	document.getElementById("nomMagasin").addEventListener("change", l_citations);
+	$('#nomMagasin').on('change', function() {
+		getOpeningMagasin();
+	})
+	$('#final_validation').on('click', function() {
+		confirmCard();
+	})
+	
+	document.getElementById("heureRetMag").disabled = "disabled";
 
 });

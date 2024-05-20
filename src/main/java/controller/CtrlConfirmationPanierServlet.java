@@ -38,7 +38,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 
 		try {
 			if (nomMagasin != null) {
-				
+
 				/*----- Type de la réponse -----*/
 				response.setContentType("application/xml;charset=UTF-8");
 				response.setCharacterEncoding("UTF-8");
@@ -62,7 +62,8 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 				ArrayList<Magasin> magasins = ConnectionMySql.getAllMagasins();
 
 				request.setAttribute("allMagasins", magasins);
-				request.getRequestDispatcher("ConfirmationPanier").forward(request, response);
+				request.getRequestDispatcher("jsp/ConfirmationPanier.jsp").forward(request, response);
+//				response.sendRedirect("confirmationPanier");
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -70,7 +71,6 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//		request.getRequestDispatcher("ConfirmationPanier").forward(request, response);
 	}
 
 	/**
