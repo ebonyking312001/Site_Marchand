@@ -1,5 +1,5 @@
 /**
- * ============================================= Accueil jsp, Details jsp =============================================
+ * ============================================= Accueil jsp, Details jsp, Chercher jsp =============================================
  */
 
 /**
@@ -13,6 +13,13 @@ function addArticleByIdWithQuantity(event) {
 
 	// URL to add the article to cart
 	xhr.open("GET", "ServletPanier?idArticle=" + event + "&quantity=" + nbArticlesToAdd.value, true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			alert("Ajouté au panier avec succès");
+		}
+	};
 
 	// Envoie de la requête.
 	xhr.send();
@@ -91,8 +98,8 @@ function onKeyupQuantityArt(event) {
 
 	var idArticle = event.target.dataset.idart;
 	var nbArticlesToAdd = event.target.value;
-	
-	if(nbArticlesToAdd == "") {
+
+	if (nbArticlesToAdd == "") {
 		nbArticlesToAdd = 0;
 	}
 	xhr.open("GET", "ServletPanier?action=changeArt&idArticle=" + idArticle + "&quantity=" + nbArticlesToAdd, true);
@@ -103,13 +110,64 @@ function onKeyupQuantityArt(event) {
 			location.reload();
 		}
 	};
-	
+
 	// Envoie de la requête.
 	xhr.send();
 }
 
 /**
- * Loads after build of DOM
+ * ============================================= Pop-up jsp (lieu et heure de retrait) =============================================
+ */
+
+/**
+ * Opens pop-up to chose lieu de retrait and heure de retrait
+ */
+function openPopUpChoice_Mag_Hr() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("GET", "ConfirmationPanierServlet", true);
+
+
+	//	width = window.screen.width;
+	//	height = window.screen.height;
+	//	mywindow = window.open("GET", "ConfirmationPanierServlet?", "Confirmation du magasin et l''heure de retrait",
+	//		"location=0,status=1,scrollbars=1,resizable=1,menubar=0,toolbar=no,width="
+	//		+ width + ",height=" + height);
+	//	mywindow.moveTo(0, 0);
+	//	mywindow.focus();
+
+	// Envoie de la requête.
+	xhr.send();
+}
+
+function getOpeningMagasin() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// Requête au serveur avec les paramètres éventuels.
+	xhr.open("GET", "ConfirmationPanierServlet?nomMagasin=" + document.getElementById("nomMagasin").value, true);
+
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			var doc = xhr.responseXML.getElementsByTagName("hrOuvFer");
+			var texte = "";
+
+			for (i = 0; i < doc.length; i++) {
+				texte += '<hof>' + doc[i].firstChild.nodeValue + "</hof></br>";
+			}
+
+			var elt = document.getElementById("HoraireMagasin");
+			elt.innerHTML = texte;
+		}
+	};
+
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
+ * ============================================= After loading DOM =============================================
  */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -137,6 +195,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	);
 
-	document.getElementById("delete_cart").addEventListener("click", deleteArticlesCart);
+	document.getElementById("validate_card").addEventListener("click", openPopUpChoice_Mag_Hr);
+
+	document.getElementById("delete_card").addEventListener("click", deleteArticlesCart);
+
+	document.getElementById("nomMagasin").addEventListener("change", l_citations);
 
 });

@@ -6,6 +6,7 @@
 	id="WebApp_ID" version="4.0">
 	<!-- http://xmlns.jcp.org/xml/ns/javaee -->
 	<display-name>SiteMarchand</display-name>
+	
 	<servlet>
 		<servlet-name>SiteMarchand</servlet-name>
 		<jsp-file>/SiteMarchand.html</jsp-file>
@@ -14,6 +15,7 @@
 		<servlet-name>SiteMarchand</servlet-name>
 		<url-pattern>/SiteMarchand</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>JspAccueil</servlet-name>
 		<jsp-file>/jsp/Accueil.jsp</jsp-file>
@@ -22,6 +24,7 @@
 		<servlet-name>JspAccueil</servlet-name>
 		<url-pattern>/accueil</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>JspPanier</servlet-name>
 		<jsp-file>/jsp/Panier.jsp</jsp-file>
@@ -39,6 +42,7 @@
 		<servlet-name>JspDetails</servlet-name>
 		<url-pattern>/Details</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>catalogue</servlet-name>
 		<jsp-file>/jsp/catalogue.jsp</jsp-file>
@@ -47,6 +51,7 @@
 		<servlet-name>catalogue</servlet-name>
 		<url-pattern>/catalogue</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>Chercher</servlet-name>
 		<jsp-file>/jsp/Chercher.jsp</jsp-file>
@@ -64,4 +69,14 @@
 		<servlet-name>PanierCommande</servlet-name>
 		<url-pattern>/PanierCommande</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ConfirmationPanier</servlet-name>
+		<jsp-file>/jsp/ConfirmationPanier.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConfirmationPanier</servlet-name>
+		<url-pattern>/ConfirmationPanier</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

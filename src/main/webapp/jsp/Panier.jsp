@@ -94,8 +94,9 @@
 								value="${totalPrice}" minFractionDigits="1"
 								maxFractionDigits="1" /> €</p>
                     </div>
-                    <button class="checkout-btn">Valider le panier</button>
-                    <button id="delete_cart" class="btn btn-danger">Supprimer le panier</button>
+                    
+                    <button class="checkout-btn" id="validate_card">Valider le panier</button>
+                    <button id="delete_card" class="btn btn-danger">Supprimer le panier</button>
                 </div>
             </div>
         </main>
