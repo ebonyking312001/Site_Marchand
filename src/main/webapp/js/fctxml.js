@@ -106,8 +106,10 @@ function onKeyupQuantityArt(event) {
 
 	xhr.onload = function() {
 		// Si la requête http s'est bien passée.
-		if (xhr.status === 200) {
-			location.reload();
+		if (nbArticlesToAdd != "") {
+			if (xhr.status === 200) {
+				location.reload();
+			}
 		}
 	};
 

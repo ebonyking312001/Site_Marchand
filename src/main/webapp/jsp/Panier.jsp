@@ -69,7 +69,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <c:set var="totalPrice"
-												value="${totalPrice + (article.prixUnitaireArticle * article.quantite)}" />
+												value="${totalPrice + (article.promoArticle * article.quantite)}" />
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
