@@ -3,8 +3,8 @@ package model;
 public class ArticleCommande extends Article {
 	private int qteCom;
 	
-	public ArticleCommande(int EAN, String vignetteArticle, Float prixUnitaireArticle, String nutriscoreArticle,
-			String libelleArticle, Float poidsArticle, Float prixKgArticle, String descriptionCourteArticle,
+	public ArticleCommande(int EAN, String vignetteArticle, float prixUnitaireArticle, String nutriscoreArticle,
+			String libelleArticle, float poidsArticle, float prixKgArticle, String descriptionCourteArticle,
 			String descriptionLongueArticle, String fournisseurArticle, String marque, int promoArticle, int idRayon,
 			int idCategorie,int idTypeProduit,int qteCom) {
 		super(EAN, vignetteArticle, prixUnitaireArticle, nutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,

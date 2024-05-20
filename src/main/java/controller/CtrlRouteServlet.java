@@ -6,11 +6,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class CtrlRouteServlet
  */
-@WebServlet("/CtrlRouteServlet")
+@WebServlet("/ServletRoute")
 public class CtrlRouteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -18,11 +19,14 @@ public class CtrlRouteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String ch = request.getParameter("action");
+		HttpSession session = request.getSession();
+		
 		switch (ch) {
 			case "Panier" -> {
 				request.getRequestDispatcher("panier").forward(request, response);
-	
+
 			}
 		};
 	}

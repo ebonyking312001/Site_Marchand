@@ -46,11 +46,11 @@ public class CtrlGestionMarcServlet extends HttpServlet
 	           
 	                	int EAN = Integer.parseInt(values[0].replace("\"", "").trim());
                         String vignetteArticle = values[1].replace("\"", "").trim();
-                        Float prixUnitaireArticle = Float.parseFloat(values[2].replace("\"", "").trim());
+                        float prixUnitaireArticle = Float.parseFloat(values[2].replace("\"", "").trim());
                         String NutriscoreArticle = values[3].replace("\"", "").trim();
                         String libelleArticle = values[4].replace("\"", "").trim();
-                        Float poidsArticle = Float.parseFloat(values[5].replace("\"", "").trim());
-                        Float prixKgArticle = Float.parseFloat(values[6].replace("\"", "").trim());
+                        float poidsArticle = Float.parseFloat(values[5].replace("\"", "").trim());
+                        float prixKgArticle = Float.parseFloat(values[6].replace("\"", "").trim());
                         String descriptionCourteArticle = values[7].replace("\"", "").trim();
                         String descriptionLongueArticle = values[8].replace("\"", "").trim();
                         String fournisseurArticle = values[9].replace("\"", "").trim();

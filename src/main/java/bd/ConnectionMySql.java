@@ -16,7 +16,7 @@ import model.Commande;
 /**
  * Classe en charge de la base de données.
  */
-public  class ConnectionMySql {
+public class ConnectionMySql {
 	/*---------*/
 	/* Données */
 	/*---------*/
@@ -40,7 +40,7 @@ public  class ConnectionMySql {
 	private static void connexion() throws ClassNotFoundException, SQLException {
 		/*----- Chargement du pilote pour la ConnectionMySql -----*/
 		try {
-			
+
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException ex) {
 			throw new ClassNotFoundException(
@@ -85,7 +85,7 @@ public  class ConnectionMySql {
 			}
 			st.close();
 		} catch (SQLException ex) {
-			
+
 			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
 		}
 		ConnectionMySql.cx.close();
@@ -116,10 +116,10 @@ public  class ConnectionMySql {
 			    }
 			    st.close();
 			} catch (SQLException ex) {
-			    throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+				throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 			}
-	
 
+			st.close();
 		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 		}
@@ -177,41 +177,39 @@ public  class ConnectionMySql {
 		return liste;
 	}
 
-
 	/**
 	 * Retourne le mot cherché existant dans la ConnectionMySqld
 	 */
 
-	public static ArrayList<Article> chercher (String motSaisi) throws ClassNotFoundException, SQLException {
+	public static ArrayList<Article> chercher(String motSaisi) throws ClassNotFoundException, SQLException {
 		/*----- Création de la connexion à la base de données -----*/
 		ConnectionMySql.connexion();
-		
-		 /*----- Interrogation de la base -----*/
-	    ArrayList<Article> liste = new ArrayList<>();
 
-	    /*----- Requête SQL -----*/
-	    String sql = "SELECT * FROM Articles WHERE Marque LIKE ? OR LibelleArticle LIKE ?";
-	    
-	    /*----- Ouverture de l'espace de requête -----*/
-	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-	    	
-	        /*----- Exécution de la requête -----*/
-	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
-	        st.setString(1, "%"+motSaisi + "%");
-	        st.setString(2, "%"+motSaisi + "%");
-	        
-	        try (ResultSet rs = st.executeQuery()) {
-	            /*----- Lecture du contenu du ResultSet -----*/
-	            liste = resToArticles(rs);
-	        }
-	        st.close();
-	    } catch (SQLException ex) {
-	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
-	    }
+		/*----- Interrogation de la base -----*/
+		ArrayList<Article> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * FROM Articles WHERE Marque LIKE ? OR LibelleArticle LIKE ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+
+			/*----- Exécution de la requête -----*/
+			// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
+			st.setString(1, "%" + motSaisi + "%");
+			st.setString(2, "%" + motSaisi + "%");
+
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				liste = resToArticles(rs);
+			}
+			st.close();
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
+		}
 		ConnectionMySql.cx.close();
 
-	    return liste;
-		
+		return liste;
 	}
 
 	/**
@@ -219,38 +217,55 @@ public  class ConnectionMySql {
 	 * 
 	 * @throws Exception
 	 */
-	public static int inserer(String motSaisi) throws Exception {
-		/*----- Création de la connexion à la base de données -----*/
+//	public static int inserer(String motSaisi) throws Exception {
+//		/*----- Création de la connexion à la base de données -----*/
+//		ConnectionMySql.connexion();
+//
+//		int nb = 0;
+//	    // Requ�te SQL d'insertion
+//	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, PromoArticle, IdRayon, IdCategorie, IdTypeProduit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//
+//	    try (PreparedStatement st = cx.prepareStatement(sql)) {
+//	        // Assigner les valeurs des param�tres de la requ�te
+//	        st.setDouble(1, article.getEAN());
+//	        st.setString(2, article.getVignetteArticle());
+//	        st.setDouble(3, article.getPrixUnitaireArticle());
+//	        st.setString(4, article.getNutriscoreArticle());
+//	        st.setString(5, article.getLibelleArticle());
+//	        st.setDouble(6, article.getPoidsArticle());
+//	        st.setDouble(7, article.getPrixKgArticle());
+//	        st.setString(8, article.getDescriptionCourteArticle());
+//	        st.setString(9, article.getDescriptionLongueArticle());
+//	        st.setString(10, article.getFournisseurArticle());
+//	        st.setString(11, article.getMarque());
+//	        st.setInt(12, article.getPromoArticle());
+//	        st.setInt(13, article.getIdRayon());
+//	        st.setInt(14, article.getIdCategorie());
+//	        st.setInt(15, article.getIdTypeProduit());
+//	        
+//
+//	        // Ex�cuter la requ�te
+//	        st.executeUpdate();
+//	        st.close();
+//	    } catch (SQLException sqle) {
+//	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
+//	    }
+//		ConnectionMySql.cx.close();
+//
+//		return nb;
+//	}
+
+	public static void insererArticle(Article article) throws Exception {
+
+		// Cr�er la connexion � la base de donn�es si elle n'est pas d�j�
+		// �tablie
 		ConnectionMySql.connexion();
 
-		/* --- Requête d'insertion --- */
-		  int nb = 0;
-		  String sql = "INSERT INTO Mot (Texte) VALUES (?)";
-		  
-		  try (PreparedStatement st = cx.prepareStatement(sql)){
-			  // Insertion des paramères
-			  st.setString(1, motSaisi);
-			  
-			  nb = st.executeUpdate();
-			  st.close();
-		  } catch (SQLException sqle) {
-			  throw new Exception("ConnectionMySql.inserer() - " + sqle.getMessage()); 
-		  }
-		  ConnectionMySql.cx.close();
-
-		  return nb;
-		
-	}
-	
-	public static void insererArticle(Article article) throws Exception {
-	    // Cr�er la connexion � la base de donn�es si elle n'est pas d�j� �tablie
-	    ConnectionMySql.connexion();
-
-	    // Requ�te SQL d'insertion
+		// Requ te SQL d'insertion
 	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, PromoArticle, IdRayon, IdCategorie, IdTypeProduit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-	    try (PreparedStatement st = cx.prepareStatement(sql)) {
-	        // Assigner les valeurs des param�tres de la requ�te
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			// Assigner les valeurs des param tres de la requ te
 	        st.setDouble(1, article.getEAN());
 	        st.setString(2, article.getVignetteArticle());
 	        st.setDouble(3, article.getPrixUnitaireArticle());
@@ -266,20 +281,18 @@ public  class ConnectionMySql {
 	        st.setInt(13, article.getIdRayon());
 	        st.setInt(14, article.getIdCategorie());
 	        st.setInt(15, article.getIdTypeProduit());
-	        
 
-	        // Ex�cuter la requ�te
-	        st.executeUpdate();
-	        st.close();
-	    } catch (SQLException sqle) {
-	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
-	    }
+			// Ex cuter la requ te
+			st.executeUpdate();
+			st.close();
+		} catch (SQLException sqle) {
+			throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
+		}
 		ConnectionMySql.cx.close();
 
-	}	
+	}
 
-
-	public static ArrayList<Article> resToArticles(ResultSet rs) throws SQLException{
+	public static ArrayList<Article> resToArticles(ResultSet rs) throws SQLException {
 		ArrayList<Article> liste = new ArrayList<>();
 		while (rs.next()) {
             Article a = new Article(
