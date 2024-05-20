@@ -109,6 +109,29 @@ function onKeyupQuantityArt(event) {
 }
 
 /**
+ * Delete articles from cart
+ */
+function filterCategories() {
+	// Récupérer chaque idCategorie choisi
+    var idCat = document.getElementById("buttonCategory").value;	
+    console.log(idCat);
+	// Objet XMLHttpRequest.
+	/*var xhr = new XMLHttpRequest();
+
+	// URL to delete articles from cart
+	xhr.open("GET", "ServletPanier?action=deleteArticlesCart", true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			location.reload();
+		}
+	};*/
+	// Envoie de la requête.
+	/*xhr.send();*/
+}
+
+/**
  * Loads after build of DOM
  */
 document.addEventListener("DOMContentLoaded", () => {
@@ -138,5 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	);
 
 	document.getElementById("delete_cart").addEventListener("click", deleteArticlesCart);
+	document.getElementById("buttonCategory").addEventListener("click", filterCategories);
 
 });

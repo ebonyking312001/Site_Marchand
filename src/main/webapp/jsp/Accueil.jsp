@@ -16,6 +16,15 @@
 
 	<div class="album py-5 bg-body-tertiary ">
 		<div class="container">
+			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
+				<c:forEach var="cat" items="${listeCat}">
+					<div class="card shadow-sm">${cat.nomCategorie}</div>
+				</c:forEach>
+			<h2 class="fw-light py-3 fw-bold">Type Produit</h2>
+				<c:forEach var="typeProd" items="${listeTypeProd}">
+					<div class="card shadow-sm">${typeProd.nomTypeProduit}</div>
+				</c:forEach>
+			
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 
 			<div class="row">
@@ -25,8 +34,8 @@
 						<div class="card shadow-sm">
 							<a href="?idArticle=${art.EAN}">
 								<center>
-													<img src="${art.vignetteArticle}" width='250' />
-												</center>
+									<img src="${art.vignetteArticle}" width='250' />
+								</center>
 							</a>
 							<div class="card-body">
 								<p class="card-text">

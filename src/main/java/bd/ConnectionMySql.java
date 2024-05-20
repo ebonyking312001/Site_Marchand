@@ -11,7 +11,9 @@ import java.util.Date;
 
 import model.Article;
 import model.ArticleCommande;
+import model.Categorie;
 import model.Commande;
+import model.TypeProduit;
 
 /**
  * Classe en charge de la base de données.
@@ -410,12 +412,76 @@ public class ConnectionMySql {
 	    return liste;
 		
 	}
+	
+	/**
+	 * Retourne la liste de catégories.
+	 */
+	public static ArrayList<Categorie> afficherCategorie() throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<Categorie> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * from Categories";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Categorie(rs.getInt("IdCategorie"), rs.getString("NomCategorie")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherCategories() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+	
+	/**
+	 * Retourne la liste de type de produits.
+	 */
+	public static ArrayList<TypeProduit> afficherTypeProduit() throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<TypeProduit> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * from TypeProduit";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherTypeProduit() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
 			System.out.println(panierCommande("en cours").get(0).getEtatCommande());
+			System.out.println("afficherCategorie() \n" + afficherCategorie());
+//			System.out.println("afficherTypeProduit() \n" + afficherTypeProduit());
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import bd.ConnectionMySql;
 import model.Article;
+import model.Categorie;
+import model.TypeProduit;
 
 /**
  * Servlet implementation class ServletAjout
@@ -31,9 +33,14 @@ public class CtrlArticleServlet extends HttpServlet {
 
 		// get article id
 		String idArticle = request.getParameter("idArticle");
+		
 		try {
 			// Afficher tous détails de tous les articles
 			ArrayList<Article> listeArt = ConnectionMySql.afficherArticle();
+			// Afficher toutes les catégories
+			ArrayList<Categorie> listeCat = ConnectionMySql.afficherCategorie();
+			// Afficher tous les types produit
+			ArrayList<TypeProduit> listeTypeProd = ConnectionMySql.afficherTypeProduit();
 
 			// Renvoyer détails d'un article quand un article est choisi
 			if (idArticle != null) {
@@ -45,8 +52,14 @@ public class CtrlArticleServlet extends HttpServlet {
 				return;
 
 			}
+			
 			// Renvoyer liste de tous articles
 			request.setAttribute("listeArt", listeArt);
+			// Renvoyer liste de tous categories
+			request.setAttribute("listeCat", listeCat);
+			// Renvoyer liste de tous types produit
+			request.setAttribute("listeTypeProd", listeTypeProd);
+			
 			request.getRequestDispatcher("accueil").forward(request, response);
 
 		} catch (ClassNotFoundException | SQLException e) {
