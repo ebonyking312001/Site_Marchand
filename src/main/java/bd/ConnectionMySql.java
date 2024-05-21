@@ -1,15 +1,15 @@
 package bd;
 
 import java.sql.Connection;
-
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 import model.Article;
 import model.ArticleCommande;
@@ -426,7 +426,6 @@ public class ConnectionMySql {
 		}
 		ConnectionMySql.cx.close();
 
-		System.out.println(horaire);
 		return horaire;
 	}
 
@@ -463,6 +462,68 @@ public class ConnectionMySql {
 			throw new SQLException("Exception ConnectionMySql.getMagasinById() : Problème SQL - " + ex.getMessage());
 		}
 		ConnectionMySql.cx.close();
+		return magasin;
+	}
+
+	/**
+	 * Gets magasin by Id
+	 */
+	public static Magasin getMagasinByName(String idMag, boolean isToAddCommande) throws ClassNotFoundException, SQLException {
+		// Cr�er la connexion � la base de donn�es
+
+		Magasin magasin = new Magasin();
+		String sql = "SELECT * from Magasins Where NomMagasin = ?";
+
+		if(isToAddCommande) {
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+				st.setString(1, idMag);
+				try (ResultSet rs = st.executeQuery()) {
+					// Check if there is at least one row in the ResultSet
+					if (rs.next()) {
+						magasin = new Magasin(rs.getInt("IdMagasin"), rs.getString("NomMagasin"),
+								rs.getString("AdresseMagasin"), rs.getString("HeureOuvertureMagasin"),
+								rs.getString("HeureFermetureMagasin"));
+					} else {
+						// Handle the case where no rows were found
+						// For example, you can throw an exception or return null
+					}
+				} catch (SQLException ex) {
+					throw new SQLException(
+							"Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+				}
+				
+			} catch (SQLException ex) {
+				throw new SQLException("Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+			}
+		}
+		else {
+			ConnectionMySql.connexion();
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+				st.setString(1, idMag);
+				try (ResultSet rs = st.executeQuery()) {
+					// Check if there is at least one row in the ResultSet
+					if (rs.next()) {
+						magasin = new Magasin(rs.getInt("IdMagasin"), rs.getString("NomMagasin"),
+								rs.getString("AdresseMagasin"), rs.getString("HeureOuvertureMagasin"),
+								rs.getString("HeureFermetureMagasin"));
+					} else {
+						// Handle the case where no rows were found
+						// For example, you can throw an exception or return null
+					}
+					st.close();
+				} catch (SQLException ex) {
+					throw new SQLException(
+							"Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+				}
+
+				st.close();
+			} catch (SQLException ex) {
+				throw new SQLException("Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+			}
+			
+			ConnectionMySql.cx.close();
+		}
+		
 		return magasin;
 	}
 
@@ -550,6 +611,65 @@ public class ConnectionMySql {
 		}
 
 		return heuresCreneaux;
+	}
+
+	/**
+	 * Adds order
+	 * 
+	 * @throws Exception
+	 */
+	public static void addCommande(String nomMag, Date dateRetrait, Time heureRetrait, List<Article> articles)
+			throws Exception {
+		// Cr�er la connexion � la base de donn�es
+		ConnectionMySql.connexion();
+
+		int auto_incrementId = 0;
+		String sqlCommande = "INSERT INTO Commandes (EtatCommande, DateRetrait, HeureRetrait, IdMagasin, IdUtilisateur) VALUES (?, ?, ?, ?, ?)";
+
+		// Get Magasin by Name
+		Magasin magasin = getMagasinByName(nomMag, true);
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlCommande, Statement.RETURN_GENERATED_KEYS)) {
+
+			st.setString(1, "En cours");
+			st.setDate(2, dateRetrait);
+			st.setTime(3, heureRetrait);
+			st.setInt(4, magasin.getIdMagasin());
+			st.setInt(5, 1);
+
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+			
+			if (rs.next()) {
+				auto_incrementId = rs.getInt(1);
+				System.out.println("Key generated : " + auto_incrementId);
+		    }
+			else {
+				System.out.println("no key generated");
+			}
+			
+//			st.close();
+		} catch (SQLException sqle) {
+			throw new Exception("Erreur lors de l'insertion de la commande : " + sqle.getMessage());
+		}
+
+		for (Article art : articles) {
+			String sqlArticleCommande = "INSERT INTO Articles_Commandes (EAN, IdCommande, qteCom) VALUES (?, ?, ?)";
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlArticleCommande)) {
+
+				st.setInt(1, art.getEAN());
+				st.setInt(2, auto_incrementId);
+				st.setInt(3, art.getQuantite());
+				
+				st.executeUpdate();
+				st.close();
+
+			} catch (SQLException e) {
+				throw new Exception("Bd.addCommande() - " + e.getMessage());
+			}
+		}
+
+		ConnectionMySql.cx.close();
 	}
 
 	/*----------------------------*/

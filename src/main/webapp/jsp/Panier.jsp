@@ -99,7 +99,7 @@
                     <a href="ConfirmationPanierServlet"><button
 							class="checkout-btn" id="validate_card">Valider le panier</button></a>
                     
-                    <button id="delete_card" class="btn btn-danger">Supprimer le panier</button>
+                    <button id="delete_card" class="btn btn-danger">Annuler le panier</button>
                 </div>
             </div>
         </main>

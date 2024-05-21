@@ -19,9 +19,12 @@
 		
 		</select>
         </div>
+        <div class="col-2">
+        <input type="date" id="dateRetMag" name="datRetMag" />
+        </div>
 		<div class="col-2">
 		<input type="time" id="heureRetMag" name="retMag" min="00:00"
-						max="24:00" required />
+						max="23:59" required />
 		</div>
 		
 		<div id="HoraireMagasin"></div>

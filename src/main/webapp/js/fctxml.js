@@ -147,7 +147,7 @@ function getOpeningMagasin() {
 	var xhr = new XMLHttpRequest();
 
 	// Requête au serveur avec les paramètres éventuels.
-	xhr.open("GET", "ConfirmationPanierServlet?nomMagasin=" + document.getElementById("nomMagasin").value, true);
+	xhr.open("GET", "ConfirmationPanierServlet?nomM=" + document.getElementById("nomMagasin").value, true);
 
 	xhr.onload = function() {
 		if (xhr.status === 200) {
@@ -173,11 +173,13 @@ function confirmCard() {
 	var xhr = new XMLHttpRequest();
 
 	// Requête au serveur avec les paramètres éventuels.
-	xhr.open("GET", "ConfirmationPanierServlet?action=confirmCard?nomM=" + document.getElementById("nomMagasin").value + "&hRet=" + document.getElementById("HoraireMagasin").firstChild, true);
+	xhr.open("GET", "ConfirmationPanierServlet?action=confirmCard&nomM=" + document.getElementById("nomMagasin").value + "&dtRet=" + document.getElementById("dateRetMag").value + "&hRet=" + document.getElementById("heureRetMag").value, true);
 
 	xhr.onload = function() {
 		if (xhr.status === 200) {
 			alert("Commande réalisée avec succès");
+			location.href = "/Site_Marchand/";
+
 		}
 	};
 
@@ -224,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	$('#final_validation').on('click', function() {
 		confirmCard();
 	})
-	
+
 	document.getElementById("heureRetMag").disabled = "disabled";
 
 });

@@ -2,7 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,16 +30,19 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		// Gets session
 		HttpSession session = request.getSession();
 
-		String nomMagasin = request.getParameter("nomMagasin");
+		String nomMagasin = request.getParameter("nomM");
+		String heureRetrait = request.getParameter("hRet");
+		String dateRetrait = request.getParameter("dtRet");
 
 		try {
-			if (nomMagasin != null) {
+			if (nomMagasin != null && heureRetrait == null && dateRetrait == null) {
 
 				/*----- Type de la réponse -----*/
 				response.setContentType("application/xml;charset=UTF-8");
@@ -58,12 +63,28 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 
 					out.println("</horaire_journee>");
 				}
+			} else if (nomMagasin != null && heureRetrait != null && dateRetrait != null) {
+				List<Article> articlesInSession = (List<Article>) session.getAttribute("articleList");
+
+				try {
+					String[] dateSplit = dateRetrait.split("-");
+					String dateFormated = dateSplit[0] + "-" + dateSplit[1] + "-" + dateSplit[2];
+
+					Date d = java.sql.Date.valueOf(dateFormated);
+					Time t = java.sql.Time.valueOf(heureRetrait + ":00");
+					ConnectionMySql.addCommande(nomMagasin, d, t, articlesInSession);
+
+//					request.getRequestDispatcher("accueil").forward(request, response);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			} else {
 				ArrayList<Magasin> magasins = ConnectionMySql.getAllMagasins();
 
 				request.setAttribute("allMagasins", magasins);
 				request.getRequestDispatcher("jsp/ConfirmationPanier.jsp").forward(request, response);
-//				response.sendRedirect("confirmationPanier");
 			}
 
 		} catch (ClassNotFoundException e) {
