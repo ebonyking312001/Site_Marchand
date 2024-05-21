@@ -31,32 +31,31 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		String action=request.getParameter("action");
-		if (action.equals("afficherCommandes")) {
-			ArrayList<Commande> cEnCours;
-			try {
-				cEnCours = ConnectionMySql.panierCommande("en cours");
-				request.setAttribute("cEnCours", cEnCours);
-		        request.getRequestDispatcher("/PanierCommande").forward(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		}else {
-			ArrayList<ArticleCommande> cmdD;
-			try {
-				cmdD = ConnectionMySql.DetailCommande(action);
-				request.setAttribute("ean", action);
-				request.setAttribute("cmdD", cmdD);
-		        request.getRequestDispatcher("/PanierCommande").forward(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    String action = request.getParameter("action");
+
+	    if (action == null) {
+	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing action parameter");
+	        return;
+	    }
+
+	    try {
+	        if (action.equals("afficherCommandes")) {
+	            ArrayList<Commande> cEnCours = ConnectionMySql.panierCommande("en cours");
+	            request.setAttribute("cEnCours", cEnCours);
+	            request.getRequestDispatcher("/jsp/PanierCommande.jsp").forward(request, response);
+	        } else {
+	            ArrayList<ArticleCommande> cmdD = ConnectionMySql.DetailCommande(action);
+	            request.setAttribute("ean", action);
+	            request.setAttribute("cmdD", cmdD);
+	            request.getRequestDispatcher("/jsp/PanierCommande.jsp").forward(request, response);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An internal error occurred while processing the request.");
+	    }
 	}
+
 
 	
 
