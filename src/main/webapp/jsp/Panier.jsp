@@ -55,7 +55,7 @@
 											test="${article.promoArticle == 0}">
                                             <small
 												class="text-body-secondary fw-bold">
-                                                Prix : <fmt:formatNumber
+                                                Prix/unité : <fmt:formatNumber
 													value="${article.prixUnitaireArticle}"
 													minFractionDigits="1" maxFractionDigits="1" /> €
                                             </small>
@@ -95,11 +95,18 @@
 								value="${totalPrice}" minFractionDigits="1"
 								maxFractionDigits="1" /> €</p>
                     </div>
-                    
+                    <div class="row">
+                    <div class="col-2">
                     <a href="ConfirmationPanierServlet"><button
-							class="checkout-btn" id="validate_card">Valider le panier</button></a>
+									class="checkout-btn" id="validate_card">Valider le panier</button></a>
                     
-                    <button id="delete_card" class="btn btn-danger">Annuler le panier</button>
+                    </div>
+                    <div class="col-2">
+                    <button id="delete_card"
+									class="checkout-btn btn btn-danger">Annuler le panier</button>
+                    </div>
+                    </div>
+                    
                 </div>
             </div>
         </main>

@@ -468,77 +468,100 @@ public class ConnectionMySql {
 	/**
 	 * Gets magasin by Id
 	 */
-	public static Magasin getMagasinByName(String idMag, boolean isToAddCommande) throws ClassNotFoundException, SQLException {
-		// Cr�er la connexion � la base de donn�es
+	public static Magasin getMagasinByName(String idMag, boolean isToAddCommande)
+			throws ClassNotFoundException, SQLException {
+
+		if (!isToAddCommande) {
+			ConnectionMySql.connexion();
+		}
 
 		Magasin magasin = new Magasin();
 		String sql = "SELECT * from Magasins Where NomMagasin = ?";
 
-		if(isToAddCommande) {
-			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-				st.setString(1, idMag);
-				try (ResultSet rs = st.executeQuery()) {
-					// Check if there is at least one row in the ResultSet
-					if (rs.next()) {
-						magasin = new Magasin(rs.getInt("IdMagasin"), rs.getString("NomMagasin"),
-								rs.getString("AdresseMagasin"), rs.getString("HeureOuvertureMagasin"),
-								rs.getString("HeureFermetureMagasin"));
-					} else {
-						// Handle the case where no rows were found
-						// For example, you can throw an exception or return null
-					}
-				} catch (SQLException ex) {
-					throw new SQLException(
-							"Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			st.setString(1, idMag);
+			try (ResultSet rs = st.executeQuery()) {
+				// Check if there is at least one row in the ResultSet
+				if (rs.next()) {
+					magasin = new Magasin(rs.getInt("IdMagasin"), rs.getString("NomMagasin"),
+							rs.getString("AdresseMagasin"), rs.getString("HeureOuvertureMagasin"),
+							rs.getString("HeureFermetureMagasin"));
+				} else {
+					// Handle the case where no rows were found
+					// For example, you can throw an exception or return null
 				}
-				
-			} catch (SQLException ex) {
-				throw new SQLException("Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
-			}
-		}
-		else {
-			ConnectionMySql.connexion();
-			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-				st.setString(1, idMag);
-				try (ResultSet rs = st.executeQuery()) {
-					// Check if there is at least one row in the ResultSet
-					if (rs.next()) {
-						magasin = new Magasin(rs.getInt("IdMagasin"), rs.getString("NomMagasin"),
-								rs.getString("AdresseMagasin"), rs.getString("HeureOuvertureMagasin"),
-								rs.getString("HeureFermetureMagasin"));
-					} else {
-						// Handle the case where no rows were found
-						// For example, you can throw an exception or return null
-					}
-					st.close();
-				} catch (SQLException ex) {
-					throw new SQLException(
-							"Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
-				}
-
 				st.close();
 			} catch (SQLException ex) {
-				throw new SQLException("Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+				throw new SQLException(
+						"Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
 			}
-			
+
+			st.close();
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.getMagasinByName() : Problème SQL - " + ex.getMessage());
+		}
+
+		if (!isToAddCommande) {
 			ConnectionMySql.cx.close();
 		}
-		
+
 		return magasin;
+	}
+
+	/**
+	 * Gets creneau Id by passing the corresponding times
+	 */
+	public static int getCreneauIdByTime(Time hDeb, Time hFin, boolean isAddCommande)
+			throws ClassNotFoundException, SQLException {
+
+		if (!isAddCommande) {
+			ConnectionMySql.connexion();
+		}
+
+		int idCreneau = 0;
+		String sql = "SELECT IdCreneau from CreneauRetrait Where DebutCreneau = ? AND FinCreneau = ?";
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			st.setTime(1, hDeb);
+			st.setTime(2, hFin);
+			try (ResultSet rs = st.executeQuery()) {
+				// Check if there is at least one row in the ResultSet
+				if (rs.next()) {
+					idCreneau = rs.getInt("IdCreneau");
+					System.out.println(idCreneau);
+				} else {
+					// Handle the case where no rows were found
+					// For example, you can throw an exception or return null
+				}
+				st.close();
+			} catch (SQLException ex) {
+				throw new SQLException(
+						"Exception ConnectionMySql.getCreneauIdByTime() : Problème SQL - " + ex.getMessage());
+			}
+
+			st.close();
+		} catch (SQLException ex) {
+			throw new SQLException(
+					"Exception ConnectionMySql.getCreneauIdByTime() : Problème SQL - " + ex.getMessage());
+		}
+		if (!isAddCommande) {
+			ConnectionMySql.cx.close();
+		}
+
+		return idCreneau;
 	}
 
 	/**
 	 * Gets all the hours opened by magasin Id
 	 */
-	public static ArrayList<String> getHoursOpenedByMagasinId(int magasinId) {
+	public static ArrayList<String> getHoursOpenedByMagasinId(String magasinId) {
 		Magasin mag = new Magasin();
+
 		try {
-			mag = getMagasinById(magasinId);
+			mag = getMagasinByName(magasinId, false);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -559,55 +582,30 @@ public class ConnectionMySql {
 				.parseInt(hF.substring(0, hF.length() - 3)); iO++) {
 			if (!passOneTour) {
 				if (Integer.parseInt(minuteO) == 0) {
-					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":00 - " + Integer.toString(iO) + ":15"
-							: Integer.toString(iO) + ":00 - " + Integer.toString(iO) + ":15");
-					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":15 - " + Integer.toString(iO) + ":30"
-							: Integer.toString(iO) + ":15 - " + Integer.toString(iO) + ":30");
-					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45"
-							: Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45");
+					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":00 - 0" + Integer.toString(iO) + ":30"
+							: Integer.toString(iO) + ":00 - " + Integer.toString(iO) + ":30");
+
 					heuresCreneaux
-							.add(iO <= 9 ? "0" + Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00"
-									: Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00");
-				} else if (Integer.parseInt(minuteO) == 15) {
-					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":15 - " + Integer.toString(iO) + ":30"
-							: Integer.toString(iO) + ":15 - " + Integer.toString(iO) + ":30");
-					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45"
-							: Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45");
-					heuresCreneaux
-							.add(iO <= 9 ? "0" + Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00"
-									: Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00");
+							.add(iO <= 9 ? "0" + Integer.toString(iO) + ":30 - 0" + Integer.toString(iO + 1) + ":00"
+									: Integer.toString(iO) + ":30 - " + Integer.toString(iO + 1) + ":00");
+
 				} else if (Integer.parseInt(minuteO) == 30) {
-					heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45"
-							: Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45");
 					heuresCreneaux
-							.add(iO <= 9 ? "0" + Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00"
-									: Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00");
-				} else if (Integer.parseInt(minuteO) == 45) {
-					heuresCreneaux
-							.add(iO <= 9 ? "0" + Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00"
-									: Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00");
+							.add(iO <= 9 ? "0" + Integer.toString(iO) + ":30 - 0" + Integer.toString(iO + 1) + ":00"
+									: Integer.toString(iO) + ":30 - " + Integer.toString(iO + 1) + ":00");
+
 				}
+				passOneTour = true;
 			} else {
-				heuresCreneaux.add(Integer.toString(iO) + ":00 - " + Integer.toString(iO) + ":15");
-				heuresCreneaux.add(Integer.toString(iO) + ":15 - " + Integer.toString(iO) + ":30");
-				heuresCreneaux.add(Integer.toString(iO) + ":30 - " + Integer.toString(iO) + ":45");
-				heuresCreneaux.add(Integer.toString(iO) + ":45 - " + Integer.toString(iO + 1) + ":00");
+				heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":00 - 0" + Integer.toString(iO) + ":30"
+						: Integer.toString(iO) + ":00 - " + Integer.toString(iO) + ":30");
+				heuresCreneaux.add(iO <= 9 ? "0" + Integer.toString(iO) + ":30 - 0" + Integer.toString(iO + 1) + ":00"
+						: Integer.toString(iO) + ":30 - " + Integer.toString(iO + 1) + ":00");
 			}
 		}
 
-		if (Integer.parseInt(minuteF) > 0) {
-			if (Integer.parseInt(minuteF) >= 15) {
-				heuresCreneaux
-						.add(hF.substring(0, hF.length() - 3) + ":00 - " + hF.substring(0, hF.length() - 3) + ":15");
-			}
-			if (Integer.parseInt(minuteF) >= 30) {
-				heuresCreneaux
-						.add(hF.substring(0, hF.length() - 3) + ":15 - " + hF.substring(0, hF.length() - 3) + ":30");
-			}
-			if (Integer.parseInt(minuteF) >= 45) {
-				heuresCreneaux
-						.add(hF.substring(0, hF.length() - 3) + ":30 - " + hF.substring(0, hF.length() - 3) + ":45");
-			}
+		if (Integer.parseInt(minuteF) == 30) {
+			heuresCreneaux.add(hF.substring(0, hF.length() - 3) + ":00 - " + hF.substring(0, hF.length() - 3) + ":30");
 		}
 
 		return heuresCreneaux;
@@ -618,13 +616,15 @@ public class ConnectionMySql {
 	 * 
 	 * @throws Exception
 	 */
-	public static void addCommande(String nomMag, Date dateRetrait, Time heureRetrait, List<Article> articles)
-			throws Exception {
+	public static void addCommande(String nomMag, Date dateRetrait, Time heureRetraitDeb, Time heureRetraitFin,
+			List<Article> articles) throws Exception {
 		// Cr�er la connexion � la base de donn�es
 		ConnectionMySql.connexion();
 
 		int auto_incrementId = 0;
-		String sqlCommande = "INSERT INTO Commandes (EtatCommande, DateRetrait, HeureRetrait, IdMagasin, IdUtilisateur) VALUES (?, ?, ?, ?, ?)";
+		int idCreneau = getCreneauIdByTime(heureRetraitDeb, heureRetraitFin, true);
+
+		String sqlCommande = "INSERT INTO Commandes (EtatCommande, DateRetrait, IdCreneau, IdMagasin, IdUtilisateur) VALUES (?, ?, ?, ?, ?)";
 
 		// Get Magasin by Name
 		Magasin magasin = getMagasinByName(nomMag, true);
@@ -633,22 +633,17 @@ public class ConnectionMySql {
 
 			st.setString(1, "En cours");
 			st.setDate(2, dateRetrait);
-			st.setTime(3, heureRetrait);
+			st.setInt(3, idCreneau);
 			st.setInt(4, magasin.getIdMagasin());
 			st.setInt(5, 1);
 
 			st.executeUpdate();
 			ResultSet rs = st.getGeneratedKeys();
-			
+
 			if (rs.next()) {
 				auto_incrementId = rs.getInt(1);
-				System.out.println("Key generated : " + auto_incrementId);
-		    }
-			else {
-				System.out.println("no key generated");
 			}
-			
-//			st.close();
+			st.close();
 		} catch (SQLException sqle) {
 			throw new Exception("Erreur lors de l'insertion de la commande : " + sqle.getMessage());
 		}
@@ -660,7 +655,7 @@ public class ConnectionMySql {
 				st.setInt(1, art.getEAN());
 				st.setInt(2, auto_incrementId);
 				st.setInt(3, art.getQuantite());
-				
+
 				st.executeUpdate();
 				st.close();
 
@@ -677,7 +672,8 @@ public class ConnectionMySql {
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-//		getHoursOpenedByMagasinId(1);
+//		getHoursOpenedByMagasinId("MeubleLand");
 //		getOpeningByMagasinName("ElectroPlus");
+
 	}
 } /*----- Fin de la classe ConnectionMySql -----*/

@@ -57,6 +57,12 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 						String horaire = ConnectionMySql.getOpeningByMagasinName(nomMagasin);
 
 						out.println("<hof>" + horaire + "</hof>");
+						ArrayList<String> heuresDispo = ConnectionMySql.getHoursOpenedByMagasinId(nomMagasin);
+						
+						for(String h : heuresDispo) {
+							out.println("<hr>" + h + "</hr>");
+						}
+						
 					} catch (ClassNotFoundException | SQLException ex) {
 						out.println("<hof>Erreur - " + ex.getMessage() + "</hof>");
 					}
@@ -70,9 +76,17 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					String[] dateSplit = dateRetrait.split("-");
 					String dateFormated = dateSplit[0] + "-" + dateSplit[1] + "-" + dateSplit[2];
 
+					String[] heureSplit = heureRetrait.split(" ");
+					
+					String hDeb = heureSplit[0];
+					String hFin = heureSplit[2];
+					
 					Date d = java.sql.Date.valueOf(dateFormated);
-					Time t = java.sql.Time.valueOf(heureRetrait + ":00");
-					ConnectionMySql.addCommande(nomMagasin, d, t, articlesInSession);
+					Time tDeb = java.sql.Time.valueOf(hDeb + ":00");
+					Time tFin = java.sql.Time.valueOf(hFin + ":00");
+					
+					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
+					session.setAttribute("articleList", null);
 
 //					request.getRequestDispatcher("accueil").forward(request, response);
 

@@ -104,43 +104,13 @@ function onKeyupQuantityArt(event) {
 	}
 	xhr.open("GET", "ServletPanier?action=changeArt&idArticle=" + idArticle + "&quantity=" + nbArticlesToAdd, true);
 
-	xhr.onload = function() {
-		// Si la requête http s'est bien passée.
-		if (nbArticlesToAdd != "") {
-			if (xhr.status === 200) {
-				location.reload();
-			}
-		}
-	};
-
 	// Envoie de la requête.
 	xhr.send();
 }
 
 /**
- * ============================================= Pop-up jsp (lieu et heure de retrait) =============================================
+ * ============================================= Confirmation card jsp (lieu et heure de retrait) =============================================
  */
-
-/**
- * Opens pop-up to chose lieu de retrait and heure de retrait
- */
-function openPopUpChoice_Mag_Hr() {
-	// Objet XMLHttpRequest.
-	var xhr = new XMLHttpRequest();
-
-	xhr.open("GET", "ConfirmationPanierServlet", true);
-
-	//	width = window.screen.width;
-	//	height = window.screen.height;
-	//	mywindow = window.open("GET", "ConfirmationPanierServlet?", "Confirmation du magasin et l''heure de retrait",
-	//		"location=0,status=1,scrollbars=1,resizable=1,menubar=0,toolbar=no,width="
-	//		+ width + ",height=" + height);
-	//	mywindow.moveTo(0, 0);
-	//	mywindow.focus();
-
-	// Envoie de la requête.
-	xhr.send();
-}
 
 function getOpeningMagasin() {
 	// Objet XMLHttpRequest.
@@ -151,6 +121,7 @@ function getOpeningMagasin() {
 
 	xhr.onload = function() {
 		if (xhr.status === 200) {
+			// Heure d'ouverture
 			var doc = xhr.responseXML.getElementsByTagName("hof");
 			var texte = doc[0].firstChild.nodeValue;
 
@@ -160,7 +131,20 @@ function getOpeningMagasin() {
 
 			var elt = document.getElementById("HoraireMagasin");
 			elt.innerHTML = texte;
+
+			// Crénaux
+			var doc = xhr.responseXML.getElementsByTagName("hr");
+			var texteOpt = "";
+
+			for (i = 0; i < doc.length; i++) {
+				texteOpt += '<option value="' + doc[i].firstChild.nodeValue + '">' + doc[i].firstChild.nodeValue + "</option>";
+			}
+
+			var elt = document.getElementById("heureRetMag");
+			elt.innerHTML = texteOpt;
+
 			document.getElementById("heureRetMag").disabled = false;
+			document.getElementById("dateRetMag").disabled = false;
 		}
 	};
 
@@ -172,19 +156,26 @@ function confirmCard() {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
 
-	// Requête au serveur avec les paramètres éventuels.
-	xhr.open("GET", "ConfirmationPanierServlet?action=confirmCard&nomM=" + document.getElementById("nomMagasin").value + "&dtRet=" + document.getElementById("dateRetMag").value + "&hRet=" + document.getElementById("heureRetMag").value, true);
+	console.log(document.getElementById("dateRetMag").value);
+	console.log(Date.now());
+	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
+		alert("La date est déjà passée");
+	}
+	else {
+		// Requête au serveur avec les paramètres éventuels.
+		xhr.open("GET", "ConfirmationPanierServlet?action=confirmCard&nomM=" + document.getElementById("nomMagasin").value + "&dtRet=" + document.getElementById("dateRetMag").value + "&hRet=" + document.getElementById("heureRetMag").value, true);
 
-	xhr.onload = function() {
-		if (xhr.status === 200) {
-			alert("Commande réalisée avec succès");
-			location.href = "/Site_Marchand/";
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				alert("Commande réalisée avec succès");
+				location.href = "/Site_Marchand/";
 
-		}
-	};
+			}
+		};
 
-	// Envoie de la requête.
-	xhr.send();
+		// Envoie de la requête.
+		xhr.send();
+	}
 }
 
 /**
@@ -218,15 +209,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	$('#delete_card').on('click', function() {
 		deleteArticlesCart();
-	})
+	});
 
 	$('#nomMagasin').on('change', function() {
 		getOpeningMagasin();
-	})
+	});
+
 	$('#final_validation').on('click', function() {
 		confirmCard();
-	})
+	});
 
 	document.getElementById("heureRetMag").disabled = "disabled";
+	document.getElementById("dateRetMag").disabled = "disabled";
 
 });
