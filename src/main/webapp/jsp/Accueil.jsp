@@ -19,12 +19,12 @@
 			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
 				<div id="buttonCategory">
  				<c:forEach var="cat" items="${listeCat}"> 
-					<div class="card shadow-sm" data-idcategorie="${cat.idCategorie}">${cat.nomCategorie}</div>
+					<a  class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
 				</c:forEach> 
 				</div>
 			<h2 class="fw-light py-3 fw-bold">Type Produit</h2>
 				<c:forEach var="typeProd" items="${listeTypeProd}">
-					<div class="card shadow-sm">${typeProd.nomTypeProduit}</div>
+					<a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
 				</c:forEach>
 			
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
@@ -42,7 +42,7 @@
 							<div class="card-body">
 								<p class="card-text">
 													<a class="text-decoration-none text-primary fw-bold"
-												href="?idArticle=${art.EAN}">${art.libelleArticle}</a>
+												href="?idArticle=${art.EAN}"><strong>${art.marque}</strong> ${art.libelleArticle}</a>
 												</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">

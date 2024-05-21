@@ -118,11 +118,10 @@ function filterCategories() {
     console.log(idCat);
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/?idCategorie=" + idCat, true);
+    xhr.open("GET", "CtrlRepArticleCategorieServlet?idCategorie=" + idCat, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            // Handle successful response
             console.log(xhr.responseText); // Replace this with your logic
         }
     };
@@ -161,8 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	$("#delete_cart").on("click", deleteArticlesCart);
-	$("#buttonCategory").on("click", filterCategories);
-
+/*	$("#buttonCategory").on("click", filterCategories);
+*/
 
 
 

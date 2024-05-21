@@ -71,7 +71,6 @@ public class ConnectionMySql {
 
 		/*----- Requête SQL -----*/
 		String sql = "SELECT * from Articles";
-		
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
@@ -94,7 +93,79 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 		return liste;
 	}
+	
+	/**
+	 * Retourne la liste d'articles.
+	 */
+	public static ArrayList<Article> afficherArticleByCategory(String idCat) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
 
+		/*----- Interrogation de la base -----*/
+		ArrayList<Article> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+        String sql = "SELECT * FROM Articles WHERE IdCategorie = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+            st.setString(1, idCat);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+	/**
+	 * Retourne la liste d'articles par type produit.
+	 */
+	public static ArrayList<Article> afficherArticleByProductType(String idTypeProd) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<Article> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+        String sql = "SELECT * FROM Articles WHERE IdTypeProduit = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+            st.setString(1, idTypeProd);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
 	/**
 	 * Gets article by Id.
 	 */
@@ -481,8 +552,7 @@ public class ConnectionMySql {
 
 	public static void main(String[] s) throws Exception {
 			System.out.println(panierCommande("en cours").get(0).getEtatCommande());
-			System.out.println("afficherCategorie() \n" + afficherCategorie());
-//			System.out.println("afficherTypeProduit() \n" + afficherTypeProduit());
+			System.out.println("afficherArticleByProductType() \n" + afficherArticleByProductType("1"));
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

@@ -5,10 +5,10 @@ public class TypeProduit {
 	private int idTypeProduit;
 	private String nomTypeProduit;
 	
-	public TypeProduit(int IdTypeProduit, String NomTypeProduit) {
+	public TypeProduit(int idTypeProduit, String nomTypeProduit) {
 		// TODO Auto-generated constructor stub
-		this.idTypeProduit=IdTypeProduit;
-		this.nomTypeProduit=NomTypeProduit;
+		this.idTypeProduit=idTypeProduit;
+		this.nomTypeProduit=nomTypeProduit;
 	}
 
 	public int getIdTypeProduit() {
