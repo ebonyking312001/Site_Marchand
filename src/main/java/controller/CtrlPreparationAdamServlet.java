@@ -65,25 +65,27 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		    StringBuilder jsonBuffer = new StringBuilder();
-			String line;
-			try (BufferedReader reader = request.getReader()) {
-			    while ((line = reader.readLine()) != null) {
-			        jsonBuffer.append(line);
-			    }
+		System.out.println("dot0");
+		String selectedEANsJson = request.getParameter("selectedEANs");
+		String cmdId = request.getParameter("cmdId");
+
+        ArrayList<String> selectedEANs = new ArrayList<>();
+        if (selectedEANsJson != null && !selectedEANsJson.isEmpty()) {
+            selectedEANsJson = selectedEANsJson.substring(1, selectedEANsJson.length() - 1); // 去掉前后的中括号
+            String[] eans = selectedEANsJson.split(",");
+            for (String ean : eans) {
+                selectedEANs.add(ean.trim().replace("\"", "")); // 去掉引号和空格
+            }
+
+            try {
+            	System.out.println("dot1");
+				ConnectionMySql.miseAJourCommande(selectedEANs,cmdId);
+				System.out.println("dot2");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			String jsonString = jsonBuffer.toString();
-			jsonString = jsonString.replace("[", "").replace("]", "").replace("\"", "");
-			String[] eanArray = jsonString.split(",");
-			
-			ArrayList<String> selectedEANs = new ArrayList<>();
-			for (String ean : eanArray) {
-			    selectedEANs.add(ean.trim());
-			}
-			String cmdId = request.getParameter("cmd-id");
-			System.out.println(cmdId);
-			System.out.println(selectedEANs.get(0));
-	
+       }
+        response.sendRedirect("/ServletPreparation?action="+cmdId);
 	}
 
 }
