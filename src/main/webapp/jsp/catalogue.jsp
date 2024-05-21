@@ -70,10 +70,16 @@
 <script>
     $(document).ready(function() {
         $('#tableArticles').DataTable({
-            // Options de configuration
-            "paging": true, // Activation de la pagination
-            "ordering": true, // Activation du tri par colonne
-            "searching": true // Activation de la recherche
+        	
+            "paging": true, 
+            "pagingType": "simple_numbers", 
+            "pageLength": 10,
+            "ordering": true, 
+            "searching": true, 
+            "scrollX": true, 
+            "scrollY": "400px", 
+            "scrollCollapse": true, 
+            "autoWidth": true 
         });
     });
 </script>
