@@ -60,4 +60,12 @@
         <url-pattern>/PanierCommande</url-pattern>
     </servlet-mapping>
 
+	<servlet>
+        <servlet-name>JspListeCourse</servlet-name>
+        <jsp-file>/jsp/ListeCourse.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JspListeCourse</servlet-name>
+        <url-pattern>/ListeCourse</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -11,6 +11,7 @@ import java.util.Date;
 
 import model.Article;
 import model.ArticleCommande;
+import model.Categorie;
 import model.Commande;
 
 /**
@@ -68,7 +69,9 @@ public class ConnectionMySql {
 		ArrayList<Article> liste = new ArrayList<>();
 
 		/*----- Requête SQL -----*/
-		String sql = "SELECT * from Articles";
+		String sql = "SELECT a.*, c.nomCategorie " +
+                "FROM Articles a " +
+                "INNER JOIN Categories c ON a.IdCategorie = c.IdCategorie";
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
@@ -76,11 +79,13 @@ public class ConnectionMySql {
 			try (ResultSet rs = st.executeQuery()) {
 				/*----- Lecture du contenu du ResultSet -----*/
 				while (rs.next()) {
-					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+					Article article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
 							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
 							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
 							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
-							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit"));
+					article.setNomCategorie(rs.getString("nomCategorie"));
+					liste.add(article);
 				}
 			}
 			st.close();
@@ -410,6 +415,8 @@ public class ConnectionMySql {
 	    return liste;
 		
 	}
+	
+	
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
