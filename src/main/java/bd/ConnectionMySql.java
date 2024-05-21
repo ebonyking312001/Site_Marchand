@@ -412,32 +412,41 @@ public class ConnectionMySql {
 		
 	}
 	
-	public static boolean majCommande (String commandeEtat) throws ClassNotFoundException, SQLException {
-		ArrayList<Commande> liste = new ArrayList<>();
+	public static void miseAJourCommande (ArrayList<String> LignesCmds,String cmdId) throws ClassNotFoundException, SQLException {
+		String eans = String.join(",", LignesCmds);
 		
 		/*----- Création de la connexion à la base de données -----*/
 			ConnectionMySql.connexion();
 
-	    /*----- Requête SQL -----*/
-	    String sql = "SELECT * FROM Commandes WHERE EtatCommande LIKE ?";
+//	    String sqlLigneCmd = "UPDATE Articles_Commandes "
+//	    		+ "SET estValide = 1 "
+//	    		+ "WHERE IdCommande = ? "
+//	    		+ "AND EAN IN ?";
+	    String sqlLigneCmd = "UPDATE Articles_Commandes SET estValide = 1 WHERE IdCommande = ? AND EAN IN (" + eans.toString() + ")";
+	    String sqlCmd = "UPDATE Commandes "
+	    		+ "SET EtatCommande = 'Validée' "
+	    		+ "WHERE IdCommande NOT IN ("
+	    		+ "SELECT Commandes.IdCommande "
+	    		+ "FROM Commandes "
+	    		+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
+	    		+ "WHERE Articles_Commandes.estValide=0"
+	    		+ ");";
 	    
 	    /*----- Ouverture de l'espace de requête -----*/
-	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlLigneCmd)) {
 	    	
-	        /*----- Exécution de la requête -----*/
-	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
-	        st.setString(1, commandeEtat);
-	        
-	        try (ResultSet rs = st.executeQuery()) {
-	            /*----- Lecture du contenu du ResultSet -----*/
-	        	liste=resToCommandes(rs);
-	        }
+	        st.setInt(1, Integer.parseInt(cmdId));
+//	        st.setString(2, "("+eans+")");
+	        st.executeUpdate();
 	        
 	    } catch (SQLException ex) {
 	        throw new SQLException("Exception ConnectionMySql.panierCommande() : Problème SQL - " + ex.getMessage());
 	    }
+	    
+	    PreparedStatement stCmd = ConnectionMySql.cx.prepareStatement(sqlCmd);
+	    stCmd.executeUpdate();
+	    
 	    cx.close();
-	    return liste;
 		
 	}
 	/*----------------------------*/
@@ -445,7 +454,10 @@ public class ConnectionMySql {
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-			System.out.println(panierCommande("en cours").get(0).getEtatCommande());
+		System.out.println("hi");
+			ArrayList<String> a=new ArrayList();
+			a.add("1");
+			miseAJourCommande(a,"1");
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

@@ -67,9 +67,10 @@
 		if (cmdD != null) {
 			cEnCours = null;
 		%>
-		<h2>Commande actuelle : "${ean}"</h2>
+		<h2>Commande actuelle : ${ean}</h2>
 		<form id="eanForm" action="ServletPreparation" method="POST">
-			<table class="table table-bordered table-hover" cmd-id="${ean}">
+			<input type="hidden" name="cmdId" value="${ean}">
+			<table class="table table-bordered table-hover">
 				<thead class="thead-dark">
 					
 					<tr>
