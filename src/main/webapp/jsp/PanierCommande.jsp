@@ -12,6 +12,47 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
+	<style>
+		.valid-row {
+			background-color: green;
+	        color: white;
+		}
+	     .selected {
+	         background-color: green;
+	         color: white;
+	     }
+	     tr[ligne-cmd-ean] {
+            cursor: pointer;
+        }
+	 </style>
+	 <script>
+	     document.addEventListener('DOMContentLoaded', (event) => {
+	         let selectedEANs = [];
+	
+	         document.querySelectorAll('tr[ligne-cmd-ean]').forEach(row => {
+	             row.addEventListener('click', () => {
+	                 const ean = row.getAttribute('ligne-cmd-ean');
+	                 if (row.classList.contains('selected')) {
+	                     row.classList.remove('selected');
+	                     selectedEANs = selectedEANs.filter(item => item !== ean);
+	                 } else {
+	                     row.classList.add('selected');
+	                     selectedEANs.push(ean);
+	                 }
+	             });
+	         });
+	
+	         document.getElementById('submitBtn').addEventListener('click', () => {
+	             const form = document.getElementById('eanForm');
+	             const input = document.createElement('input');
+	             input.type = 'hidden';
+	             input.name = 'selectedEANs';
+	             input.value = JSON.stringify(selectedEANs);
+	             form.appendChild(input);
+	             form.submit();
+	         });
+	     });
+	 </script>
 </head>
 <body>
 	<div class="container mt-5">
@@ -19,42 +60,53 @@
 			<a href="ServletPreparation?action=afficherCommandes"
 				class="btn btn-primary">Afficher les commandes à préparer</a>
 		</h1>
-
-		<table class="table table-bordered table-hover">
-			<thead class="thead-dark">
-				<%
-				ArrayList<Commande> cEnCours = (ArrayList<Commande>) request.getAttribute("cEnCours");
-				ArrayList<ArticleCommande> cmdD = (ArrayList<ArticleCommande>) request.getAttribute("cmdD");
-				if (cmdD != null) {
-					cEnCours = null;
-				%>
-				<tr>
-					<th>EAN</th>
-					<th>LibelleArticle</th>
-					<th>Marque</th>
-					<th>IdRayon</th>
-					<th>Qte</th>
-					<th>PrixUnitaireArticle</th>
-					<th>PoidsArticle</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
-				for (ArticleCommande ac : cmdD) {
-				%>
-				<tr>
-					<td><%=ac.getEAN()%></td>
-					<td><%=ac.getLibelleArticle()%></td>
-					<td><%=ac.getMarque()%></td>
-					<td><%=ac.getIdRayon()%></td>
-					<td><%=ac.getQteCom()%></td>
-					<td><%=ac.getPrixUnitaireArticle()%></td>
-					<td><%=ac.getPoidsArticle()%></td>
-				</tr>
+		<%
+		ArrayList<Commande> cEnCours = (ArrayList<Commande>) request.getAttribute("cEnCours");
+		ArrayList<ArticleCommande> cmdD = (ArrayList<ArticleCommande>) request.getAttribute("cmdD");
+		// afficher details de commande
+		if (cmdD != null) {
+			cEnCours = null;
+		%>
+		<h2>Commande actuelle : "${ean}"</h2>
+		<form id="eanForm" action="ServletPreparation" method="POST">
+			<table class="table table-bordered table-hover" cmd-id="${ean}">
+				<thead class="thead-dark">
+					
+					<tr>
+						<th>EAN</th>
+						<th>LibelleArticle</th>
+						<th>Marque</th>
+						<th>IdRayon</th>
+						<th>Qte</th>
+						<th>PrixUnitaireArticle</th>
+						<th>PoidsArticle</th>
+						<th>Validée</th>
+					</tr>
+				</thead>
+				<tbody>
+						<%
+						for (ArticleCommande ac : cmdD) {
+						%>
+						<tr ligne-cmd-ean=<%=ac.getEAN()%> class="<%= ac.isEstValide() ? "valid-row" : "" %>">
+							<td><%=ac.getEAN()%></td>
+							<td><%=ac.getLibelleArticle()%></td>
+							<td><%=ac.getMarque()%></td>
+							<td><%=ac.getIdRayon()%></td>
+							<td><%=ac.getQteCom()%></td>
+							<td><%=ac.getPrixUnitaireArticle()%></td>
+							<td><%=ac.getPoidsArticle()%></td>
+							<td><%= ac.isEstValide() ? "✅" : "❎" %></td>
+						</tr>
+	    		</form>
 				<%
 				}
+				%>
+				<button type="button" id="submitBtn">prêt</button>
+				<%// afficher commandes en cours
 				} else if (cEnCours != null) {
 				%>
+		<table class="table table-bordered table-hover">
+			<thead class="thead-dark">
 				<tr>
 					<th>DateRetrait</th>
 					<th>EtatCommande</th>

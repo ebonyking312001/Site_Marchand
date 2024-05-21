@@ -1,6 +1,8 @@
 package controller;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 			ArrayList<ArticleCommande> cmdD;
 			try {
 				cmdD = ConnectionMySql.DetailCommande(action);
+				request.setAttribute("ean", action);
 				request.setAttribute("cmdD", cmdD);
 		        request.getRequestDispatcher("/PanierCommande").forward(request, response);
 			} catch (Exception e) {
@@ -58,10 +61,28 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	
 
 	/**
+	 * @throws IOException 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		    StringBuilder jsonBuffer = new StringBuilder();
+			String line;
+			try (BufferedReader reader = request.getReader()) {
+			    while ((line = reader.readLine()) != null) {
+			        jsonBuffer.append(line);
+			    }
+			}
+			String jsonString = jsonBuffer.toString();
+			jsonString = jsonString.replace("[", "").replace("]", "").replace("\"", "");
+			String[] eanArray = jsonString.split(",");
+			
+			ArrayList<String> selectedEANs = new ArrayList<>();
+			for (String ean : eanArray) {
+			    selectedEANs.add(ean.trim());
+			}
+			String cmdId = request.getParameter("cmd-id");
+			System.out.println(cmdId);
+			System.out.println(selectedEANs.get(0));
 	
 	}
 

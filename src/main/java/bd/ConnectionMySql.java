@@ -367,7 +367,7 @@ public class ConnectionMySql {
 			ConnectionMySql.connexion();
 
 	    /*----- Requête SQL -----*/
-	    String sql = "SELECT Articles.*,qteCom "
+	    String sql = "SELECT Articles.*,qteCom,estValide "
 	    		+ "FROM Articles,Articles_Commandes "
 	    		+ "WHERE Articles_Commandes.EAN=Articles.EAN "
 	    		+ "AND IdCommande=?";
@@ -398,7 +398,8 @@ public class ConnectionMySql {
 	                		rs.getInt(13),
 	                		rs.getInt(14),
 	                		rs.getInt(15),
-	                		rs.getInt(16));
+	                		rs.getInt(16),
+	                		rs.getBoolean(17));
 	                liste.add(ac);
 	    		}
 	        }
@@ -407,6 +408,35 @@ public class ConnectionMySql {
 	        throw new SQLException("Exception ConnectionMySql.chercher() : Problème SQL - " + ex.getMessage());
 	    }
 	    ConnectionMySql.cx.close();
+	    return liste;
+		
+	}
+	
+	public static boolean majCommande (String commandeEtat) throws ClassNotFoundException, SQLException {
+		ArrayList<Commande> liste = new ArrayList<>();
+		
+		/*----- Création de la connexion à la base de données -----*/
+			ConnectionMySql.connexion();
+
+	    /*----- Requête SQL -----*/
+	    String sql = "SELECT * FROM Commandes WHERE EtatCommande LIKE ?";
+	    
+	    /*----- Ouverture de l'espace de requête -----*/
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	    	
+	        /*----- Exécution de la requête -----*/
+	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
+	        st.setString(1, commandeEtat);
+	        
+	        try (ResultSet rs = st.executeQuery()) {
+	            /*----- Lecture du contenu du ResultSet -----*/
+	        	liste=resToCommandes(rs);
+	        }
+	        
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.panierCommande() : Problème SQL - " + ex.getMessage());
+	    }
+	    cx.close();
 	    return liste;
 		
 	}
