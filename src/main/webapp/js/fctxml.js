@@ -91,8 +91,8 @@ function onKeyupQuantityArt(event) {
 
 	var idArticle = event.target.dataset.idart;
 	var nbArticlesToAdd = event.target.value;
-	
-	if(nbArticlesToAdd == "") {
+
+	if (nbArticlesToAdd == "") {
 		nbArticlesToAdd = 0;
 	}
 	xhr.open("GET", "ServletPanier?action=changeArt&idArticle=" + idArticle + "&quantity=" + nbArticlesToAdd, true);
@@ -103,32 +103,31 @@ function onKeyupQuantityArt(event) {
 			location.reload();
 		}
 	};
-	
+
 	// Envoie de la requête.
 	xhr.send();
 }
 
 /**
- * Delete articles from cart
+ * Filter categories 
  */
 function filterCategories() {
+	alert("clicked");
 	// Récupérer chaque idCategorie choisi
-    var idCat = document.getElementById("buttonCategory").value;	
+	var idCat = event.target.dataset.idcategorie;
     console.log(idCat);
 	// Objet XMLHttpRequest.
-	/*var xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/?idCategorie=" + idCat, true);
 
-	// URL to delete articles from cart
-	xhr.open("GET", "ServletPanier?action=deleteArticlesCart", true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Handle successful response
+            console.log(xhr.responseText); // Replace this with your logic
+        }
+    };
 
-	xhr.onload = function() {
-		// Si la requête http s'est bien passée.
-		if (xhr.status === 200) {
-			location.reload();
-		}
-	};*/
-	// Envoie de la requête.
-	/*xhr.send();*/
+    xhr.send();
 }
 
 /**
@@ -160,7 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	);
 
-	document.getElementById("delete_cart").addEventListener("click", deleteArticlesCart);
-	document.getElementById("buttonCategory").addEventListener("click", filterCategories);
+
+	$("#delete_cart").on("click", deleteArticlesCart);
+	$("#buttonCategory").on("click", filterCategories);
+
+
+
+
 
 });

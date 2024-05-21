@@ -33,6 +33,10 @@ public class CtrlArticleServlet extends HttpServlet {
 
 		// get article id
 		String idArticle = request.getParameter("idArticle");
+		// get category id
+		String idCategorie = request.getParameter("idCat");
+		// get product type id
+		String idTypeProd = request.getParameter("idArticle");
 		
 		try {
 			// Afficher tous détails de tous les articles
@@ -50,7 +54,6 @@ public class CtrlArticleServlet extends HttpServlet {
 				request.setAttribute("article", article);
 				request.getRequestDispatcher("/jsp/Details.jsp").forward(request, response);
 				return;
-
 			}
 			
 			// Renvoyer liste de tous articles

@@ -71,6 +71,7 @@ public class ConnectionMySql {
 
 		/*----- Requête SQL -----*/
 		String sql = "SELECT * from Articles";
+		
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {

@@ -17,9 +17,11 @@
 	<div class="album py-5 bg-body-tertiary ">
 		<div class="container">
 			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
-				<c:forEach var="cat" items="${listeCat}">
-					<div class="card shadow-sm">${cat.nomCategorie}</div>
-				</c:forEach>
+				<div id="buttonCategory">
+ 				<c:forEach var="cat" items="${listeCat}"> 
+					<div class="card shadow-sm" data-idcategorie="${cat.idCategorie}">${cat.nomCategorie}</div>
+				</c:forEach> 
+				</div>
 			<h2 class="fw-light py-3 fw-bold">Type Produit</h2>
 				<c:forEach var="typeProd" items="${listeTypeProd}">
 					<div class="card shadow-sm">${typeProd.nomTypeProduit}</div>
