@@ -32,24 +32,11 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    String action = request.getParameter("action");
-
-	    if (action == null) {
-	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing action parameter");
-	        return;
-	    }
-
 	    try {
-	        if (action.equals("afficherCommandes")) {
 	            ArrayList<Commande> cEnCours = ConnectionMySql.panierCommande("en cours");
 	            request.setAttribute("cEnCours", cEnCours);
 	            request.getRequestDispatcher("/jsp/PanierCommande.jsp").forward(request, response);
-	        } else {
-	            ArrayList<ArticleCommande> cmdD = ConnectionMySql.DetailCommande(action);
-	            request.setAttribute("ean", action);
-	            request.setAttribute("cmdD", cmdD);
-	            request.getRequestDispatcher("/jsp/PanierCommande.jsp").forward(request, response);
-	        }
+	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An internal error occurred while processing the request.");
@@ -67,7 +54,7 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 		System.out.println("dot0");
 		String selectedEANsJson = request.getParameter("selectedEANs");
 		String cmdId = request.getParameter("cmdId");
-
+		System.out.println(cmdId);
         ArrayList<String> selectedEANs = new ArrayList<>();
         if (selectedEANsJson != null && !selectedEANsJson.isEmpty()) {
             selectedEANsJson = selectedEANsJson.substring(1, selectedEANsJson.length() - 1); // 去掉前后的中括号
@@ -84,7 +71,7 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 				e.printStackTrace();
 			}
        }
-        response.sendRedirect("/ServletPreparation?action="+cmdId);
+        response.sendRedirect(request.getContextPath()+"/CtrlDetailCommandeAdamServlet/"+cmdId);
 	}
 
 }

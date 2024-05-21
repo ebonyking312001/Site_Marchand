@@ -360,7 +360,7 @@ public class ConnectionMySql {
 		return liste;
 	}
 	
-	public static ArrayList<ArticleCommande> DetailCommande(String idCom) throws ClassNotFoundException, SQLException {
+	public static ArrayList<ArticleCommande> DetailCommande(String idCmd) throws ClassNotFoundException, SQLException {
 		ArrayList<ArticleCommande> liste = new ArrayList<>();
 		
 		/*----- Création de la connexion à la base de données -----*/
@@ -377,7 +377,7 @@ public class ConnectionMySql {
 	    	
 	        /*----- Exécution de la requête -----*/
 	    	// Trouver tous les mots qui contiennent la séquence de caractères de motsaisi
-	        st.setInt(1, Integer.parseInt(idCom));
+	        st.setInt(1, Integer.parseInt(idCmd));
 	        
 	        try (ResultSet rs = st.executeQuery()) {
 	            /*----- Lecture du contenu du ResultSet -----*/

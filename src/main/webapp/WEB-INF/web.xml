@@ -57,11 +57,23 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>PanierCommande</servlet-name>
-		<jsp-file>/jsp/PanierCommande.jsp</jsp-file>
-	</servlet>
+	  	<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>
+	  	<servlet-class>controller.CtrlDetailCommandeAdamServlet</servlet-class>
+  	</servlet>
+  
 	<servlet-mapping>
-		<servlet-name>PanierCommande</servlet-name>
-		<url-pattern>/PanierCommande</url-pattern>
+	  	<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>	
+	  	<url-pattern>/CtrlDetailCommandeAdamServlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+	  	<servlet-name>ServletPreparation</servlet-name>
+	  	<servlet-class>controller.CtrlPreparationAdamServlet</servlet-class>
+  	</servlet>
+  
+	<servlet-mapping>
+	  	<servlet-name>ServletPreparation</servlet-name>	
+	  	<url-pattern>/CtrlPreparationAdamServlet</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

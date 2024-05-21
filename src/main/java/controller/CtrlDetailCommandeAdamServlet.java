@@ -37,7 +37,7 @@ public class CtrlDetailCommandeAdamServlet extends HttpServlet {
 
 		try {
 			ArrayList<ArticleCommande> articles = ConnectionMySql.DetailCommande(id);
-	        request.setAttribute("ean", id);
+	        request.setAttribute("cmdId", id);
 	        request.setAttribute("articles", articles);
 	        request.getRequestDispatcher("/jsp/DetailCommande.jsp").forward(request, response);
 		} catch (ClassNotFoundException | SQLException e) {
