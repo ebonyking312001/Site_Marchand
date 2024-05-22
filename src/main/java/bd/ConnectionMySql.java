@@ -741,6 +741,26 @@ public class ConnectionMySql {
 	    ConnectionMySql.cx.close();
 	}
 	
+	public static void insererLigneListe(int idListe, int idTypeProduit, int EAN, int quantite) throws SQLException, ClassNotFoundException{
+		ConnectionMySql.connexion();
+		String insertQuery = "INSERT INTO Contenu_Liste(EAN, IdTypeProduit, quantite, IdListe) VALUES (?,?,?,?)";
+		
+		try (PreparedStatement insertStmt = ConnectionMySql.cx.prepareStatement(insertQuery)) {
+	        // Remplacer les paramètres de requête par les nouvelles valeurs
+	        insertStmt.setInt(1, EAN);
+	        insertStmt.setInt(2, idTypeProduit);
+	        insertStmt.setInt(3, quantite);
+	        insertStmt.setInt(4, idListe);
+
+	        // Exécuter la mise à jour
+	        insertStmt.executeUpdate();
+	    }
+
+	    ConnectionMySql.cx.close();
+		
+		
+	}
+	
 	public static void supprimerListeCourse(String nomListe) throws SQLException, ClassNotFoundException {
 	    ConnectionMySql.connexion();
 
@@ -802,7 +822,7 @@ public class ConnectionMySql {
 //		getHoursOpenedByMagasinId("MeubleLand");
 //		getOpeningByMagasinName("ElectroPlus");
 		System.out.println(getContenuListe(1));
-		addListeCourse();
+		insererLigneListe(1,18,23,4);
 
 	}
 } /*----- Fin de la classe ConnectionMySql -----*/
