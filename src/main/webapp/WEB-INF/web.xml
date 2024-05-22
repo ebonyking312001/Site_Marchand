@@ -39,14 +39,7 @@
 		<servlet-name>JspDetails</servlet-name>
 		<url-pattern>/Details</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>catalogue</servlet-name>
-		<jsp-file>/jsp/catalogue.jsp</jsp-file>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>catalogue</servlet-name>
-		<url-pattern>/catalogue</url-pattern>
-	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>Chercher</servlet-name>
 		<jsp-file>/jsp/Chercher.jsp</jsp-file>
@@ -57,23 +50,41 @@
 	</servlet-mapping>
 
 	<servlet>
-	  	<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>
-	  	<servlet-class>controller.CtrlDetailCommandeAdamServlet</servlet-class>
-  	</servlet>
-  
+		<servlet-name>PanierCommande</servlet-name>
+		<jsp-file>/jsp/PanierCommande.jsp</jsp-file>
+	</servlet>
 	<servlet-mapping>
-	  	<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>	
-	  	<url-pattern>/CtrlDetailCommandeAdamServlet</url-pattern>
+		<servlet-name>PanierCommande</servlet-name>
+		<url-pattern>/PanierCommande</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
-	  	<servlet-name>ServletPreparation</servlet-name>
-	  	<servlet-class>controller.CtrlPreparationAdamServlet</servlet-class>
-  	</servlet>
-  
+		<servlet-name>JspListeCourse</servlet-name>
+		<jsp-file>/jsp/ListeCourse.jsp</jsp-file>
+	</servlet>
 	<servlet-mapping>
-	  	<servlet-name>ServletPreparation</servlet-name>	
-	  	<url-pattern>/CtrlPreparationAdamServlet</url-pattern>
+		<servlet-name>JspListeCourse</servlet-name>
+		<url-pattern>/ListeCourse</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>
+		<servlet-class>controller.CtrlDetailCommandeAdamServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>
+		<url-pattern>/CtrlDetailCommandeAdamServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletPreparation</servlet-name>
+		<servlet-class>controller.CtrlPreparationAdamServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletPreparation</servlet-name>
+		<url-pattern>/CtrlPreparationAdamServlet</url-pattern>
+	</servlet-mapping>
+
 </web-app>

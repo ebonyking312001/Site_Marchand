@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bd.ConnectionMySql;
 import model.Article;
@@ -31,15 +32,23 @@ public class CtrlArticleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// Gets session
+		HttpSession session = request.getSession();
+		// Badge card
+		var countArtCard = session.getAttribute("countArtCard");
+		if (countArtCard == null) {
+			session.setAttribute("countArtCard", 0);
+		}
+
 		// get article id
 		String idArticle = request.getParameter("idArticle");
 		// get category id
 		String idCategorie = request.getParameter("idCategorie");
 		// get product type id
 		String idTypeProd = request.getParameter("idTypeProd");
-		
+
 		try {
-			
+
 			// Afficher toutes les catégories
 			ArrayList<Categorie> listeCat = ConnectionMySql.afficherCategorie();
 			// Afficher tous les types produit
@@ -54,35 +63,37 @@ public class CtrlArticleServlet extends HttpServlet {
 				request.getRequestDispatcher("/jsp/Details.jsp").forward(request, response);
 				return;
 			}
-			
+
 			ArrayList<Article> listeArt = null;
 			ArrayList<TypeProduit> listeTypeProd = null;
 			// Afficher article par rapport aux filtres catégories, types produits
 			if (idCategorie != null) {
 				listeArt = ConnectionMySql.afficherArticleByCategory(idCategorie);
 				listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);
-				System.out.println("liste d'articles changé : filtre par idCatégorie " + idCategorie + "/n" + listeArt);
+				System.out
+						.println("liste d'articles changé : filtre par idCatégorie " + idCategorie + "/n" + listeArt);
 			} else if (idTypeProd != null) {
 				listeArt = ConnectionMySql.afficherArticleByProductType(idTypeProd);
-				for (Article art : listeArt){
-					idCategorie =  String.valueOf(art.getIdCategorie());
-					listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);	
-					System.out.println("nouvelle liste type prod" +listeTypeProd);
+				for (Article art : listeArt) {
+					idCategorie = String.valueOf(art.getIdCategorie());
+					listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);
+					System.out.println("nouvelle liste type prod" + listeTypeProd);
 				}
-				System.out.println("liste d'articles changé : filtre par idCatégorie " + idTypeProd + "/n" + listeArt);
+				System.out
+						.println("liste d'articles changé : filtre par idCatégorie " + idTypeProd + "/n" + listeArt);
 
 			} else {
 				// Afficher tous détails de tous les articles
-				 listeArt = ConnectionMySql.afficherArticle();
+				listeArt = ConnectionMySql.afficherArticle();
 			}
-			
+
 			// Renvoyer liste de tous articles
 			request.setAttribute("listeArt", listeArt);
 			// Renvoyer liste de tous categories
 			request.setAttribute("listeCat", listeCat);
 			// Renvoyer liste de tous types produit
 			request.setAttribute("listeTypeProd", listeTypeProd);
-			
+
 			request.getRequestDispatcher("accueil").forward(request, response);
 
 		} catch (ClassNotFoundException | SQLException e) {

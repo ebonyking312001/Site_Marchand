@@ -5,20 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <t:genericpage>
-	<jsp:attribute name="header">
-        <%@ include file="Header.jsp"%>
-    </jsp:attribute>
-	<jsp:attribute name="footer">
-        <%@ include file="Footer.jsp"%>
-    </jsp:attribute>
 	<jsp:body>
         <main>
-            <div class="container">
+        <div class="container">
                 <div class="cart">
-                    <div class="cart-header">
-                        <h2>Panier</h2>
-                    </div>
-                    <div class="cart-items">
+                            <div class="cart-items">
                         <c:set var="totalPrice" value="0" />
                         <c:forEach var="article"
 							items="${sessionScope.articleList}">
@@ -26,7 +17,7 @@
                                 <img src="${article.vignetteArticle}"
 									alt="Product" />
                                 <div class="cart-item-info">
-                                    <h3>${article.libelleArticle}</h3>
+                                    <h3>${article.libelleArticle} (${article.quantite})</h3>
                                     <p>code: ${article.EAN}</p>
                                     <p>
                                         <c:if
@@ -73,47 +64,57 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                <div
-									class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                      <a
-										class="btn btn-sm btn-secondary text-white byalphaRmPanier"
-										style="margin-right: 5px;" data-idArt="${article.EAN}">-</a>
-                      <div class="form-control form-control-sm">
-                                    <input type="number" data-idArtQuantity="${article.EAN}_quantity"
-											value="${article.quantite}" class="changeNbArt"
-											data-idArt="${article.EAN}">
-                                </div>
-										<a
-										class="btn btn-sm btn-secondary text-white byalphaAddPanier"
-										style="margin-left: 5px;" data-idArt="${article.EAN}">+</a>
-                    </div>
                             </div>
                         </c:forEach>
                     </div>
-                    <c:if test="${sessionScope.articleList != null}">
-                    <div class="total">
-                        <p class="fw-bold my-2">Prix : <fmt:formatNumber
-									value="${totalPrice}" minFractionDigits="1"
-									maxFractionDigits="1" /> €</p>
+                     <div class="total">
+                        <p class="fw-bold my-2">Prix total à payer : <fmt:formatNumber
+								value="${totalPrice}" minFractionDigits="1"
+								maxFractionDigits="1" /> €</p>
                     </div>
-                    <div class="row">
-                    <div class="col-2">
-                    <a href="ConfirmationPanierServlet"><button
-										class="checkout-btn" id="validate_card">Valider le panier</button></a>
-                    
-                    </div>
-                    <div class="col-2">
-                    <button id="delete_card"
-									class="checkout-btn btn btn-danger">Annuler le panier</button>
-                    </div>
-                    </div>
-					</c:if>
-					<c:if test="${sessionScope.articleList == null}">
-					Vous n'avez rien dans le panier
-					</c:if>
-                    
-                </div>
-            </div>
+        <div class="mt-5">
+
+        <b>Choix du magasin de retrait</b>
+        <div class="row mt-5">
+        <div class="col-2">
+        <select id="nomMagasin">
+		<option>-----</option>
+			<c:forEach var="mag" items="${requestScope.allMagasins}">
+				<option value="${mag.nomMagasin}">${mag.nomMagasin}</option>
+			</c:forEach>
+		
+		</select>
+        </div>
+        <div class="col-2">
+        <input type="date" id="dateRetMag" name="datRetMag" />
+        </div>
+		<div class="col-2">
+		<select id="heureRetMag"><option>-----</option></select>
+<!-- 		<input type="time" id="heureRetMag" name="retMag" min="00:00" -->
+<!-- 									max="23:59" required /> -->
+		</div>
+		
+		<div class="col-2" id="HoraireMagasin"></div>
+        </div>
+        <div class="row mt-5">
+									<div class="col-2">
+									<div>
+		<button class="checkout-btn" id="final_validation">Valider la commande</button>
+</div>
+									</div>
+									<div class="col-2">
+											<a href="ServletPanier">
+			<button type="button" class="btn btn-sm btn-outline-secondary">Retour au panier</button>
+		</a>
+									</div>
+									</div>
+
+
+		
+
+		</div>
+		</div>
+		        </div>
         </main>
     </jsp:body>
 </t:genericpage>

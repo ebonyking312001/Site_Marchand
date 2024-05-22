@@ -17,6 +17,7 @@ public class Article {
 	public int quantite;
 	public int idCategorie;
 	public int idTypeProduit;
+    private String nomCategorie;
 
 
 	// Constructeur
@@ -179,6 +180,14 @@ public class Article {
 	public void setIdTypeProduit(int typeProduit) {
 		this.idTypeProduit = typeProduit;
 	}
+    
+    public String getNomCategorie() {
+        return nomCategorie;
+    }
+      
+    public void setNomCategorie(String nomCategorie) {
+        this.nomCategorie = nomCategorie;
+    }
 
 	@Override
 	public String toString() {
