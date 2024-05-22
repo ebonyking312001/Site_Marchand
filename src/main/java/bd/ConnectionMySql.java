@@ -424,7 +424,7 @@ public class ConnectionMySql {
 	}
 
 	/**
-	 * Gets orders by state
+	 * get list of commands to be prepared
 	 */
 	public static ArrayList<Commande> panierCommande(String commandeEtat) throws ClassNotFoundException, SQLException {
 		ArrayList<Commande> liste = new ArrayList<>();
@@ -516,6 +516,11 @@ public class ConnectionMySql {
 				+ "SELECT Commandes.IdCommande " + "FROM Commandes "
 				+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
 				+ "WHERE Articles_Commandes.estValide=0" + ");";
+		
+		String sqlCmd2 = "UPDATE Commandes " + "SET EtatCommande = 'En cours' " + "WHERE IdCommande IN ("
+				+ "SELECT Commandes.IdCommande " + "FROM Commandes "
+				+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
+				+ "WHERE Articles_Commandes.estValide=0" + ");";
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlLigneCmd)) {
@@ -531,7 +536,8 @@ public class ConnectionMySql {
 
 		PreparedStatement stCmd = ConnectionMySql.cx.prepareStatement(sqlCmd);
 		stCmd.executeUpdate();
-		System.out.println("bdbdbd");
+		PreparedStatement stCmd2 = ConnectionMySql.cx.prepareStatement(sqlCmd2);
+		stCmd2.executeUpdate();
 		cx.close();
 	}
 
