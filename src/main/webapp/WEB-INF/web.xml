@@ -61,4 +61,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         <url-pattern>/PanierCommande</url-pattern>
     </servlet-mapping>
 
+	<servlet>
+        <servlet-name>JspListeCourse</servlet-name>
+        <jsp-file>/jsp/ListeCourse.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JspListeCourse</servlet-name>
+        <url-pattern>/ListeCourse</url-pattern>
+    </servlet-mapping>
 </web-app>
