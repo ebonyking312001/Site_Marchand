@@ -19,7 +19,7 @@
 			<div id="categorieContainer" >
 			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
 			<c:if test="${idTypeProduitChoisi != null || idCategorieChoisi != null}">
-				<div><a href="?">Annuler</a></div>
+				<div><a href="?action=annuler">Annuler</a></div>
 			</c:if>
 				<p class="d-inline-flex gap-1">
 	 				<c:forEach var="cat" items="${listeCat}"> 
@@ -47,12 +47,12 @@
 									<c:choose>
 				                        <c:when test="${idTypeProduitChoisi != null && idTypeProduitChoisi == typeProd.idTypeProduit}">
 				                            <button type="button" class="btn btn-secondary btn-info">
-				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
+				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
 				                            </button>
 				                        </c:when>
 				                        <c:otherwise>
 				                            <button type="button" class="btn btn-secondary">
-				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
+				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
 				                            </button>
 				                        </c:otherwise>
 				                    </c:choose>
@@ -62,6 +62,34 @@
 				</div>
 			</c:if>
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
+			<p class="d-inline-flex gap-1">
+				<c:choose>
+	                <c:when test="${ordreChoisi == 'croissant'}">
+	                    <button type="button" class="btn btn-secondary btn-info">
+	                    	<a class="card shadow-sm" href="?ordre=croissant">Ordre Croissant</a>
+	               		</button>
+		                <button type="button" class="btn btn-secondary">
+		                    <a class="card shadow-sm" href="?ordre=decroissant">Ordre Décroissant</a>
+		                </button>
+	                </c:when>
+	                <c:when test="${ordreChoisi == 'decroissant'}">
+	                    <button type="button" class="btn btn-secondary">
+	                    	<a class="card shadow-sm" href="?ordre=croissant">Ordre Croissant</a>
+	               		</button>
+		                <button type="button" class="btn btn-secondary btn-info">
+		                    <a class="card shadow-sm" href="?ordre=decroissant">Ordre Décroissant</a>
+		                </button>
+	                </c:when>
+	                <c:otherwise>
+	                    <button type="button" class="btn btn-secondary">
+	                    	<a class="card shadow-sm" href="?ordre=croissant">Ordre Croissant</a>
+	               		</button>
+		                <button type="button" class="btn btn-secondary">
+		                    <a class="card shadow-sm" href="?ordre=decroissant">Ordre Décroissant</a>
+		                </button>
+	                </c:otherwise>
+	            </c:choose>
+			</p>
 
 			<div class="row">
 				<c:forEach var="art" items="${listeArt}">

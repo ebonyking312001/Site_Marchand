@@ -69,10 +69,10 @@ public class ConnectionMySql {
 		ConnectionMySql.connexion();
 
 		ArrayList<Article> liste = new ArrayList<>();
-
+		
 		String sql = "SELECT a.*, c.nomCategorie " + "FROM Articles a "
 				+ "INNER JOIN Categories c ON a.IdCategorie = c.IdCategorie";
-
+		
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 			try (ResultSet rs = st.executeQuery()) {
 				while (rs.next()) {
