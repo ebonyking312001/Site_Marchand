@@ -1,23 +1,22 @@
 package model;
 
 public class Article {
-	private int EAN;
-	private String vignetteArticle;
-	private float prixUnitaireArticle;
-	private String nutriscoreArticle;
-	private String libelleArticle;
-	private float poidsArticle;
-	private float prixKgArticle;
-	private String descriptionCourteArticle;
-	private String descriptionLongueArticle;
-	private String fournisseurArticle;
-	private String marque;
-	private int promoArticle;
-	private int idRayon;
-	private int quantite;
-	private int idCategorie;
-	private int idTypeProduit;
-	private String nomCategorie;
+	public int EAN;
+	public String vignetteArticle;
+	public float prixUnitaireArticle;
+	public String nutriscoreArticle;
+	public String libelleArticle;
+	public float poidsArticle;
+	public float prixKgArticle;
+	public String descriptionCourteArticle;
+	public String descriptionLongueArticle;
+	public String fournisseurArticle;
+	public String marque;
+	public int promoArticle;
+	public int idRayon;
+	public int quantite;
+	public int idCategorie;
+	public int idTypeProduit;
 
 
 	// Constructeur
@@ -179,14 +178,6 @@ public class Article {
 
 	public void setIdTypeProduit(int typeProduit) {
 		this.idTypeProduit = typeProduit;
-	}
-	
-	public String getNomCategorie() {
-	    return nomCategorie;
-	}
-	  
-	public void setNomCategorie(String nomCategorie) {
-	    this.nomCategorie = nomCategorie;
 	}
 
 	@Override

@@ -16,45 +16,13 @@
 <body>
 	<div class="container mt-5">
 		<h1 class="mb-4">
-			<a href="ServletPreparation?action=afficherCommandes"
-				class="btn btn-primary">Afficher les commandes à préparer</a>
+			les commandes à préparer</a>
 		</h1>
-
+		<%
+		ArrayList<Commande> cEnCours = (ArrayList<Commande>) request.getAttribute("cEnCours");
+		%>
 		<table class="table table-bordered table-hover">
 			<thead class="thead-dark">
-				<%
-				ArrayList<Commande> cEnCours = (ArrayList<Commande>) request.getAttribute("cEnCours");
-				ArrayList<ArticleCommande> cmdD = (ArrayList<ArticleCommande>) request.getAttribute("cmdD");
-				if (cmdD != null) {
-					cEnCours = null;
-				%>
-				<tr>
-					<th>EAN</th>
-					<th>LibelleArticle</th>
-					<th>Marque</th>
-					<th>IdRayon</th>
-					<th>Qte</th>
-					<th>PrixUnitaireArticle</th>
-					<th>PoidsArticle</th>
-				</tr>
-			</thead>
-			<tbody>
-				<%
-				for (ArticleCommande ac : cmdD) {
-				%>
-				<tr>
-					<td><%=ac.getEAN()%></td>
-					<td><%=ac.getLibelleArticle()%></td>
-					<td><%=ac.getMarque()%></td>
-					<td><%=ac.getIdRayon()%></td>
-					<td><%=ac.getQteCom()%></td>
-					<td><%=ac.getPrixUnitaireArticle()%></td>
-					<td><%=ac.getPoidsArticle()%></td>
-				</tr>
-				<%
-				}
-				} else if (cEnCours != null) {
-				%>
 				<tr>
 					<th>DateRetrait</th>
 					<th>EtatCommande</th>
@@ -70,14 +38,14 @@
 				<tr>
 					<td><%=c.getDateRetrait()%></td>
 					<td><%=c.getEtatCommande()%></td>
-					<td><a
-						href="ServletPreparation?action=<%=c.getIdCommande()%>"><%=c.getIdCommande()%></a></td>
+					<td><a class="btn btn-primary"
+						href="${pageContext.request.contextPath}/CtrlDetailCommandeAdamServlet/<%=c.getIdCommande()%>"><%=c.getIdCommande()%></a></td>
 					<td><%=c.getIdMagasin()%></td>
 					<td><%=c.getIdUtilisateur()%></td>
 				</tr>
 				<%
 				}
-				}
+				
 				%>
 			</tbody>
 		</table>
