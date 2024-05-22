@@ -433,7 +433,10 @@ public class ConnectionMySql {
 		ConnectionMySql.connexion();
 
 		/*----- Requête SQL -----*/
-		String sql = "SELECT * FROM Commandes WHERE EtatCommande LIKE ?";
+		String sql = "SELECT Commandes.DateRetrait, CreneauRetrait.DebutCreneau,Commandes.IdCommande, Magasins.NomMagasin,Utilisateurs.IdUtilisateur,Commandes.EtatCommande FROM Commandes,Utilisateurs,CreneauRetrait,Magasins WHERE EtatCommande LIKE ? "
+				+ "AND Utilisateurs.IdUtilisateur=Commandes.IdUtilisateur "
+				+ "AND Commandes.IdMagasin=Magasins.IdMagasin "
+				+ "AND Commandes.IdCreneau=CreneauRetrait.IdCreneau;";
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
@@ -458,8 +461,7 @@ public class ConnectionMySql {
 	public static ArrayList<Commande> resToCommandes(ResultSet rs) throws SQLException {
 		ArrayList<Commande> liste = new ArrayList<>();
 		while (rs.next()) {
-			Commande c = new Commande(rs.getDate("DateRetrait"), rs.getString("EtatCommande"), rs.getInt("IdCommande"),
-					rs.getInt("IdMagasin"), rs.getInt("IdUtilisateur"));
+			Commande c = new Commande(rs.getDate("DateRetrait"), rs.getTime("DebutCreneau"), rs.getInt("IdCommande"),rs.getString("NomMagasin"),rs.getInt("IdUtilisateur"),rs.getString("EtatCommande"));
 			liste.add(c);
 		}
 		return liste;

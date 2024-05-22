@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class Commande {
@@ -8,6 +9,8 @@ public class Commande {
 	private int IdCommande;
 	private int IdMagasin;
 	private int IdUtilisateur;
+	private Time DebutCreneau;
+	private String NomMagasin;
 	
 	public Commande(Date DateRetrait,String EtatCommande,int IdCommande,int IdMagasin,int IdUtilisateur){
 		this.DateRetrait=DateRetrait;
@@ -46,5 +49,33 @@ public class Commande {
 	}
 	public void setIdUtilisateur(int idUtilisateur) {
 		IdUtilisateur = idUtilisateur;
+	}
+	
+	public Time getDebutCreneau() {
+		return DebutCreneau;
+	}
+
+	public void setDebutCreneau(Time debutCreneau) {
+		DebutCreneau = debutCreneau;
+	}
+
+	public String getNomMagasin() {
+		return NomMagasin;
+	}
+
+	public void setNomMagasin(String nomMagasin) {
+		NomMagasin = nomMagasin;
+	}
+
+	/**
+	 *  Constructor special pour resToCmd, afficher commandes a preparer
+	 */
+	public Commande(Date DateRetrait, Time DebutCreneau, int IdCommande, String NomMagasin,int IdUtilisateur,String EtatCommande){
+		this.DateRetrait=DateRetrait;
+		this.DebutCreneau=DebutCreneau;
+		this.IdCommande= IdCommande;
+		this.NomMagasin =NomMagasin;
+		this.IdUtilisateur=IdUtilisateur;
+		this.EtatCommande=EtatCommande;
 	}
 }
