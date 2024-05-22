@@ -97,7 +97,7 @@
         	
             "paging": true, 
             "pagingType": "simple_numbers", 
-            "pageLength": 10,
+            "pageLength": 25,
             "ordering": false, 
             "searching": true, 
             "scrollX": true, 
