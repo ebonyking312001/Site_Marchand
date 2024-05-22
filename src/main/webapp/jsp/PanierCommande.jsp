@@ -24,11 +24,12 @@
 		<table class="table table-bordered table-hover">
 			<thead class="thead-dark">
 				<tr>
-					<th>DateRetrait</th>
-					<th>EtatCommande</th>
-					<th>IdCommande</th>
-					<th>IdMagasin</th>
+					<th>Date Retrait</th>
+					<th>Créneau Retrait</th>
+					<th>Id Commande</th>
+					<th>Nom Magasin</th>
 					<th>IdUtilisateur</th>
+					<th>Etat Commande</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,11 +38,12 @@
 				%>
 				<tr>
 					<td><%=c.getDateRetrait()%></td>
-					<td><%=c.getEtatCommande()%></td>
+					<td><%=c.getDebutCreneau()%></td>
 					<td><a class="btn btn-primary"
 						href="${pageContext.request.contextPath}/CtrlDetailCommandeAdamServlet/<%=c.getIdCommande()%>"><%=c.getIdCommande()%></a></td>
-					<td><%=c.getIdMagasin()%></td>
+					<td><%=c.getNomMagasin()%></td>
 					<td><%=c.getIdUtilisateur()%></td>
+					<td><%=c.getEtatCommande()%></td>
 				</tr>
 				<%
 				}
