@@ -47,6 +47,8 @@ public class CtrlArticleServlet extends HttpServlet {
 		String idCategorie = request.getParameter("idCategorie");
 		// get product type id
 		String idTypeProd = request.getParameter("idTypeProd");
+		// get product type id
+		String annuler = request.getParameter("annuler");
 		
 		try {
 			
@@ -68,7 +70,7 @@ public class CtrlArticleServlet extends HttpServlet {
 			ArrayList<Article> listeArt = null;
 			ArrayList<TypeProduit> listeTypeProd = null;
 			// Afficher article par rapport aux filtres catégories, types produits
-			if (idCategorie != null) {
+			if ((idCategorie != null) && (idTypeProd == null)) {
 				listeArt = ConnectionMySql.afficherArticleByCategory(idCategorie);
 				listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);
 				System.out.println("liste d'articles changé : filtre par idCatégorie " + idCategorie + "/n" + listeArt);
@@ -76,17 +78,14 @@ public class CtrlArticleServlet extends HttpServlet {
 				request.setAttribute("idCategorieChoisi", idCategorie);
 			} else if (idTypeProd != null) {
 				listeArt = ConnectionMySql.afficherArticleByProductType(idTypeProd);
-				for (Article art : listeArt){
-					idCategorie =  String.valueOf(art.getIdCategorie());
-					listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);	
-					System.out.println("nouvelle liste type prod" + listeTypeProd);
-					// Renvoyer id type de produit choisie
-					request.setAttribute("idTypeProduitChoisi", idTypeProd);
-					// Renvoyer id catégorie choisie
-					request.setAttribute("idCategorieChoisi", idCategorie);
-				}
+				listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);	
+				System.out.println("nouvelle liste type prod" + listeTypeProd);
+				// Renvoyer id type de produit choisie
+				request.setAttribute("idTypeProduitChoisi", idTypeProd);
+				// Renvoyer id catégorie choisie
+				request.setAttribute("idCategorieChoisi", idCategorie);
+				
 				System.out.println("liste d'articles changé : filtre par idCatégorie " + idTypeProd + "/n" + listeArt);
-
 			} else {
 				// Afficher tous détails de tous les articles
 				 listeArt = ConnectionMySql.afficherArticle();
