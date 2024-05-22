@@ -7,7 +7,6 @@ public class TypeProduit {
 	private int idCategorie;
 	
 	public TypeProduit(int idTypeProduit, String nomTypeProduit, int idCategorie) {
-		// TODO Auto-generated constructor stub
 		this.idTypeProduit=idTypeProduit;
 		this.nomTypeProduit=nomTypeProduit;
 		this.idCategorie=idCategorie;
