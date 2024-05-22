@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.Article;
@@ -16,6 +17,8 @@ import model.ArticleCommande;
 import model.Categorie;
 import model.Commande;
 import model.Magasin;
+import model.ContenuListe;
+
 
 /**
  * Classe en charge de la base de donnÃ©es.
@@ -671,6 +674,146 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 	}
 	
+	public static HashMap<String, List<Object[]>> getContenuListe(int idListe) throws ClassNotFoundException, SQLException {
+	    Connection connection = null;
+	    PreparedStatement statement = null;
+	    ResultSet resultSet = null;
+	    HashMap<String, List<Object[]>> contenuListeMap = new HashMap<>();
+
+	    try {
+	        ConnectionMySql.connexion();
+	        
+	        /* Requête SQL */
+	        String sql = "SELECT l.NomListe, t.NomTypeProduit, a.LibelleArticle, c.quantite " +
+	                     "FROM Contenu_Liste c, Liste_Courses l, TypeProduit t, Articles a " +
+	                     "WHERE t.IdTypeProduit = c.IdTypeProduit AND c.IdListe = l.IdListe AND c.EAN = a.EAN AND a.IdTypeProduit = t.IdTypeProduit AND c.IdListe = ?";
+	        
+	        try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	            st.setInt(1, idListe);
+	            try (ResultSet rs = st.executeQuery()) {
+	                while (rs.next()) {
+	                    String nomListe = rs.getString("NomListe");
+	                    String NomTypeProduit = rs.getString("NomTypeProduit");
+	                    String libelleArticle = rs.getString("LibelleArticle");
+	                    int quantite = rs.getInt("quantite");
+
+	                    Object[] contenuListe = {NomTypeProduit, libelleArticle, quantite};
+	                    
+	                    contenuListeMap.computeIfAbsent(nomListe, k -> new ArrayList<>()).add(contenuListe);
+	                }
+	            }
+	        } catch (SQLException ex) {
+	            throw new SQLException("Exception ConnectionMySql.getContenuListe() : Problème SQL - " + ex.getMessage());
+	        }
+	    } finally {
+	        /* Fermeture des ressources */
+	        if (resultSet != null) {
+	            resultSet.close();
+	        }
+	        if (statement != null) {
+	            statement.close();
+	        }
+	        if (connection != null) {
+	            connection.close();
+	        }
+	    }
+	    return contenuListeMap;
+	}
+	
+	
+	public static void updateContenuListe(int idListe, int newEAN, int newIdTypeProduit, int newQuantite) throws SQLException, ClassNotFoundException {
+	    ConnectionMySql.connexion();
+
+	    // Requête SQL pour la mise à jour
+	    String updateQuery = "UPDATE Contenu_Liste SET EAN = ?, IdTypeProduit = ?, quantite = ? WHERE IdListe = ?";
+
+	    try (PreparedStatement updateStmt = ConnectionMySql.cx.prepareStatement(updateQuery)) {
+	        // Remplacer les paramètres de requête par les nouvelles valeurs
+	        updateStmt.setInt(1, newEAN);
+	        updateStmt.setInt(2, newIdTypeProduit);
+	        updateStmt.setInt(3, newQuantite);
+	        updateStmt.setInt(4, idListe);
+
+	        // Exécuter la mise à jour
+	        updateStmt.executeUpdate();
+	    }
+
+	    ConnectionMySql.cx.close();
+	}
+	
+	public static void insererLigneListe(int idListe, int idTypeProduit, int EAN, int quantite) throws SQLException, ClassNotFoundException{
+		ConnectionMySql.connexion();
+		String insertQuery = "INSERT INTO Contenu_Liste(EAN, IdTypeProduit, quantite, IdListe) VALUES (?,?,?,?)";
+		
+		try (PreparedStatement insertStmt = ConnectionMySql.cx.prepareStatement(insertQuery)) {
+	        // Remplacer les paramètres de requête par les nouvelles valeurs
+	        insertStmt.setInt(1, EAN);
+	        insertStmt.setInt(2, idTypeProduit);
+	        insertStmt.setInt(3, quantite);
+	        insertStmt.setInt(4, idListe);
+
+	        // Exécuter la mise à jour
+	        insertStmt.executeUpdate();
+	    }
+
+	    ConnectionMySql.cx.close();
+		
+		
+	}
+	
+	public static void supprimerListeCourse(String nomListe) throws SQLException, ClassNotFoundException {
+	    ConnectionMySql.connexion();
+
+	    // Requête SQL pour la suppression
+	    String deleteQuery = "DELETE FROM Liste_Courses WHERE NomListe = ?";
+
+	    try (PreparedStatement deleteStmt = ConnectionMySql.cx.prepareStatement(deleteQuery)) {
+	        // Remplacer le paramètre de requête par le nom de la liste à supprimer
+	        deleteStmt.setString(1, nomListe);
+
+	        // Exécuter la suppression
+	        deleteStmt.executeUpdate();
+	    }
+
+	    ConnectionMySql.cx.close();
+	}
+
+	public static void addListeCourse() throws SQLException, ClassNotFoundException {
+	    ConnectionMySql.connexion();
+	    
+	    int idListe = 0;
+	    
+	    String insertQuery = "INSERT INTO Liste_Courses(IdUtilisateur, NomListe) VALUES (?, ?)";
+	    
+	    try (PreparedStatement insertStmt = ConnectionMySql.cx.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+	        
+	        insertStmt.setInt(1, 1);
+	        insertStmt.setString(2, null); 
+	        
+	        // Exécuter l'insertion
+	        insertStmt.executeUpdate();
+	        
+	        
+	        ResultSet generatedKeys = insertStmt.getGeneratedKeys();
+	        if (generatedKeys.next()) {
+	            idListe = generatedKeys.getInt(1);
+	            System.out.println("Liste de courses ajoutée avec l'identifiant : " + idListe);
+	        } else {
+	            throw new SQLException("Échec de la récupération de l'identifiant de la liste de courses ajoutée.");
+	        }
+	    }
+
+	    ConnectionMySql.cx.close();
+	}
+
+	
+	
+
+
+
+
+
+	
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
@@ -678,6 +821,8 @@ public class ConnectionMySql {
 	public static void main(String[] s) throws Exception {
 //		getHoursOpenedByMagasinId("MeubleLand");
 //		getOpeningByMagasinName("ElectroPlus");
+		System.out.println(getContenuListe(1));
+		insererLigneListe(1,18,23,4);
 
 	}
 } /*----- Fin de la classe ConnectionMySql -----*/
