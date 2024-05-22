@@ -50,28 +50,47 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	 * @throws IOException 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+		
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("dot0");
-		String selectedEANsJson = request.getParameter("selectedEANs");
-		String cmdId = request.getParameter("cmdId");
-		System.out.println(cmdId);
-        ArrayList<String> selectedEANs = new ArrayList<>();
-        if (selectedEANsJson != null && !selectedEANsJson.isEmpty()) {
-            selectedEANsJson = selectedEANsJson.substring(1, selectedEANsJson.length() - 1); // 去掉前后的中括号
-            String[] eans = selectedEANsJson.split(",");
-            for (String ean : eans) {
-                selectedEANs.add(ean.trim().replace("\"", "")); // 去掉引号和空格
-            }
 
-            try {
-            	System.out.println("dot1");
-				ConnectionMySql.miseAJourCommande(selectedEANs,cmdId);
-				System.out.println("dot2");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-       }
-        response.sendRedirect(request.getContextPath()+"/CtrlDetailCommandeAdamServlet/"+cmdId);
+	    StringBuilder requestBody = new StringBuilder();
+	    BufferedReader reader = request.getReader();
+	    String line;
+	    while ((line = reader.readLine()) != null) {
+	        requestBody.append(line);
+	    }
+
+
+	    String[] params = requestBody.toString().split("&");
+	    String cmdId = null;
+	    String ean = null;
+	    String etat = null;
+	    for (String param : params) {
+	        String[] keyValue = param.split("=");
+	        if (keyValue.length == 2) {
+	            String key = keyValue[0];
+	            String value = keyValue[1];
+	            if ("cmdId".equals(key)) {
+	                cmdId = value;
+	            } else if ("ean".equals(key)) {
+	                ean = value;
+	            } else if ("etat".equals(key)) {
+	                etat = value;
+	            }
+	        }
+	    }
+	    System.out.println("cmd"+cmdId);
+	    System.out.println("etat"+etat);
+	    System.out.println("ean"+ean);
+	    try {
+
+	        ConnectionMySql.miseAJourCommande(cmdId, ean, etat);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    response.sendRedirect(request.getContextPath() + "/CtrlDetailCommandeAdamServlet/" + cmdId);
+
 	}
-
 }

@@ -412,17 +412,14 @@ public class ConnectionMySql {
 		
 	}
 	
-	public static void miseAJourCommande (ArrayList<String> LignesCmds,String cmdId) throws ClassNotFoundException, SQLException {
-		String eans = String.join(",", LignesCmds);
+	public static void miseAJourCommande (String cmdId,String ean,String etat) throws ClassNotFoundException, SQLException {
 		
 		/*----- Création de la connexion à la base de données -----*/
 			ConnectionMySql.connexion();
 
-//	    String sqlLigneCmd = "UPDATE Articles_Commandes "
-//	    		+ "SET estValide = 1 "
-//	    		+ "WHERE IdCommande = ? "
-//	    		+ "AND EAN IN ?";
-	    String sqlLigneCmd = "UPDATE Articles_Commandes SET estValide = 1 WHERE IdCommande = ? AND EAN IN (" + eans.toString() + ")";
+	    String sqlLigneCmd = "UPDATE Articles_Commandes "
+	    		+ "SET estValide=? WHERE IdCommande=? AND EAN=?;";
+
 	    String sqlCmd = "UPDATE Commandes "
 	    		+ "SET EtatCommande = 'Validée' "
 	    		+ "WHERE IdCommande NOT IN ("
@@ -434,18 +431,18 @@ public class ConnectionMySql {
 	    
 	    /*----- Ouverture de l'espace de requête -----*/
 	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlLigneCmd)) {
-	    	
-	        st.setInt(1, Integer.parseInt(cmdId));
-//	        st.setString(2, "("+eans+")");
+	    	st.setBoolean(1,Boolean.parseBoolean(etat));
+	        st.setInt(2, Integer.parseInt(cmdId));
+	        st.setInt(3, Integer.parseInt(ean));
 	        st.executeUpdate();
 	        
-	    } catch (SQLException ex) {
-	        throw new SQLException("Exception ConnectionMySql.panierCommande() : Problème SQL - " + ex.getMessage());
+	    } catch (Exception ex) {
+	        throw new SQLException("Exception ConnectionMySql.miseAJourCommande() : Problème SQL - " + ex.getMessage());
 	    }
 	    
 	    PreparedStatement stCmd = ConnectionMySql.cx.prepareStatement(sqlCmd);
 	    stCmd.executeUpdate();
-	    
+	    System.out.println("bdbdbd");
 	    cx.close();
 		
 	}
@@ -454,10 +451,7 @@ public class ConnectionMySql {
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-		System.out.println("hi");
-			ArrayList<String> a=new ArrayList();
-			a.add("1");
-			miseAJourCommande(a,"1");
+		
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/
