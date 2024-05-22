@@ -758,6 +758,34 @@ public class ConnectionMySql {
 	    ConnectionMySql.cx.close();
 	}
 
+	public static void addListeCourse() throws SQLException, ClassNotFoundException {
+	    ConnectionMySql.connexion();
+	    
+	    int idListe = 0;
+	    
+	    String insertQuery = "INSERT INTO Liste_Courses(IdUtilisateur, NomListe) VALUES (?, ?)";
+	    
+	    try (PreparedStatement insertStmt = ConnectionMySql.cx.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+	        
+	        insertStmt.setInt(1, 1);
+	        insertStmt.setString(2, null); 
+	        
+	        // Exécuter l'insertion
+	        insertStmt.executeUpdate();
+	        
+	        
+	        ResultSet generatedKeys = insertStmt.getGeneratedKeys();
+	        if (generatedKeys.next()) {
+	            idListe = generatedKeys.getInt(1);
+	            System.out.println("Liste de courses ajoutée avec l'identifiant : " + idListe);
+	        } else {
+	            throw new SQLException("Échec de la récupération de l'identifiant de la liste de courses ajoutée.");
+	        }
+	    }
+
+	    ConnectionMySql.cx.close();
+	}
+
 	
 	
 
@@ -774,7 +802,7 @@ public class ConnectionMySql {
 //		getHoursOpenedByMagasinId("MeubleLand");
 //		getOpeningByMagasinName("ElectroPlus");
 		System.out.println(getContenuListe(1));
-		supprimerListeCourse("2ème liste");
+		addListeCourse();
 
 	}
 } /*----- Fin de la classe ConnectionMySql -----*/
