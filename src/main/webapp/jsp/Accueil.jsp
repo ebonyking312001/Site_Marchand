@@ -20,7 +20,18 @@
 			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
 				<p class="d-inline-flex gap-1">
 	 				<c:forEach var="cat" items="${listeCat}"> 
-						<button type="button" class="btn btn-secondary"><a  class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a></button>
+	 					<c:choose>
+                        <c:when test="${idCategorieChoisi != null && idCategorieChoisi == cat.idCategorie}">
+                            <button type="button" class="btn btn-secondary btn-info">
+                                <a class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
+                            </button>
+                        </c:when>
+                        <c:otherwise>
+                            <button type="button" class="btn btn-secondary">
+                                <a class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
+                            </button>
+                        </c:otherwise>
+                    </c:choose>
 					</c:forEach> 
 				</p>
 			</div>
@@ -30,7 +41,18 @@
 					<div id="productTypeContainer">
 						<p class="d-inline-flex gap-1">
 								<c:forEach var="typeProd" items="${listeTypeProd}">
-									<button type="button" class="btn btn-secondary"><a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a></button>
+									<c:choose>
+				                        <c:when test="${idTypeProduitChoisi != null && idTypeProduitChoisi == typeProd.idTypeProduit}">
+				                            <button type="button" class="btn btn-secondary btn-info">
+				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
+				                            </button>
+				                        </c:when>
+				                        <c:otherwise>
+				                            <button type="button" class="btn btn-secondary">
+				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
+				                            </button>
+				                        </c:otherwise>
+				                    </c:choose>
 								</c:forEach>
 						
 						</p>

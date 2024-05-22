@@ -72,12 +72,18 @@ public class CtrlArticleServlet extends HttpServlet {
 				listeArt = ConnectionMySql.afficherArticleByCategory(idCategorie);
 				listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);
 				System.out.println("liste d'articles changé : filtre par idCatégorie " + idCategorie + "/n" + listeArt);
+				// Renvoyer id catégorie choisie
+				request.setAttribute("idCategorieChoisi", idCategorie);
 			} else if (idTypeProd != null) {
 				listeArt = ConnectionMySql.afficherArticleByProductType(idTypeProd);
 				for (Article art : listeArt){
 					idCategorie =  String.valueOf(art.getIdCategorie());
 					listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);	
-					System.out.println("nouvelle liste type prod" +listeTypeProd);
+					System.out.println("nouvelle liste type prod" + listeTypeProd);
+					// Renvoyer id type de produit choisie
+					request.setAttribute("idTypeProduitChoisi", idTypeProd);
+					// Renvoyer id catégorie choisie
+					request.setAttribute("idCategorieChoisi", idCategorie);
 				}
 				System.out.println("liste d'articles changé : filtre par idCatégorie " + idTypeProd + "/n" + listeArt);
 
