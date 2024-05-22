@@ -79,7 +79,7 @@
 										class="btn btn-sm btn-secondary text-white byalphaRmPanier"
 										style="margin-right: 5px;" data-idArt="${article.EAN}">-</a>
                       <div class="form-control form-control-sm">
-                                    <input type="number"
+                                    <input type="number" data-idArtQuantity="${article.EAN}_quantity"
 											value="${article.quantite}" class="changeNbArt"
 											data-idArt="${article.EAN}">
                                 </div>
@@ -90,15 +90,16 @@
                             </div>
                         </c:forEach>
                     </div>
+                    <c:if test="${sessionScope.articleList != null}">
                     <div class="total">
                         <p class="fw-bold my-2">Prix : <fmt:formatNumber
-								value="${totalPrice}" minFractionDigits="1"
-								maxFractionDigits="1" /> €</p>
+									value="${totalPrice}" minFractionDigits="1"
+									maxFractionDigits="1" /> €</p>
                     </div>
                     <div class="row">
                     <div class="col-2">
                     <a href="ConfirmationPanierServlet"><button
-									class="checkout-btn" id="validate_card">Valider le panier</button></a>
+										class="checkout-btn" id="validate_card">Valider le panier</button></a>
                     
                     </div>
                     <div class="col-2">
@@ -106,6 +107,10 @@
 									class="checkout-btn btn btn-danger">Annuler le panier</button>
                     </div>
                     </div>
+					</c:if>
+					<c:if test="${sessionScope.articleList == null}">
+					Vous n'avez rien dans le panier
+					</c:if>
                     
                 </div>
             </div>

@@ -15,9 +15,12 @@ function addArticleByIdWithQuantity(event) {
 	xhr.open("GET", "ServletPanier?idArticle=" + event + "&quantity=" + nbArticlesToAdd.value, true);
 
 	xhr.onload = function() {
-		// Si la requête http s'est bien passée.
 		if (xhr.status === 200) {
-			alert("Ajouté au panier avec succès");
+			var doc = xhr.responseXML.getElementsByTagName("int");
+			var texte = doc[0].firstChild.nodeValue;
+
+			var elt = document.getElementById("intNbArtCard");
+			elt.innerHTML = texte;
 		}
 	};
 
@@ -43,6 +46,11 @@ function deleteArticlesCart() {
 		// Si la requête http s'est bien passée.
 		if (xhr.status === 200) {
 			location.reload();
+			var doc = xhr.responseXML.getElementsByTagName("int");
+			var texte = doc[0].firstChild.nodeValue;
+
+			var elt = document.getElementById("intNbArtCard");
+			elt.innerHTML = texte;
 		}
 	};
 	// Envoie de la requête.
@@ -156,8 +164,6 @@ function confirmCard() {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
 
-	console.log(document.getElementById("dateRetMag").value);
-	console.log(Date.now());
 	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
 		alert("La date est déjà passée");
 	}
@@ -169,6 +175,11 @@ function confirmCard() {
 			if (xhr.status === 200) {
 				alert("Commande réalisée avec succès");
 				location.href = "/Site_Marchand/";
+				var doc = xhr.responseXML.getElementsByTagName("int");
+				var texte = doc[0].firstChild.nodeValue;
+
+				var elt = document.getElementById("intNbArtCard");
+				elt.innerHTML = texte;
 
 			}
 		};

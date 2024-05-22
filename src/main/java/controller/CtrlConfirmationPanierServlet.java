@@ -87,6 +87,18 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					
 					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
 					session.setAttribute("articleList", null);
+					session.setAttribute("countArtCard", 0);
+					
+					/*----- Type de la réponse -----*/
+					response.setContentType("application/xml;charset=UTF-8");
+					response.setCharacterEncoding("UTF-8");
+					try (PrintWriter out = response.getWriter()) {
+						/*----- Ecriture de la page XML -----*/
+						out.println("<?xml version=\"1.0\"?>");
+						out.println("<cardHeader>");
+						out.println("<int>" + 0 + "</int>");
+						out.println("</cardHeader>");
+					}
 
 //					request.getRequestDispatcher("accueil").forward(request, response);
 
