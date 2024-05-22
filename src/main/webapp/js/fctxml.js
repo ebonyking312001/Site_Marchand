@@ -190,6 +190,41 @@ function confirmCard() {
 }
 
 /**
+ * ============================================= Listes de course =============================================
+ */
+
+/**
+ * Add new liste de course
+ */
+function addContenuListeCourse() {
+	// Objet XMLHttpRequest.
+	//	var xhr = new XMLHttpRequest();
+
+	var suggestions = document.getElementById("formAdd");
+	var nodeBtnAdd = suggestions.lastElementChild;
+
+	// Insert before the btn "+" a new input
+	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><select id="nomTypeProduit"><option>-----</option></select><input type="number" id="quantity" min="1" style="width: 3em" ></div>';
+	nodeBtnAdd.insertAdjacentHTML('beforebegin', newInput);
+	nodeBtnAdd.previousElementSibling.firstElementChild.focus();
+
+}
+
+function addListeCourse() {
+	// Objet XMLHttpRequest.
+	//	var xhr = new XMLHttpRequest();
+
+	var suggestions = document.getElementById("formListe");
+	var nodeBtnAdd = suggestions.lastElementChild;
+
+	// Insert before the btn "+" a new input
+	var newInput = '<div class="mt-5" id="formAdd"><input type="text" id="nomListe" style="width: 10em"><div class="mt-4"><select id="postit"><option>-----</option></select></div><div class="mt-2"><input type="button" value="+" id="plus_contenu" /></div></div>';
+	nodeBtnAdd.insertAdjacentHTML('afterend', newInput);
+	nodeBtnAdd.previousElementSibling.firstElementChild.focus();
+
+}
+
+/**
  * ============================================= After loading DOM =============================================
  */
 document.addEventListener("DOMContentLoaded", () => {
@@ -228,6 +263,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	$('#final_validation').on('click', function() {
 		confirmCard();
+	});
+
+	$('#plus_contenu').on('click', function() {
+		addContenuListeCourse();
+	});
+
+	$('#plus_liste').on('click', function() {
+		addListeCourse();
 	});
 
 	document.getElementById("heureRetMag").disabled = "disabled";

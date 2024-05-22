@@ -27,28 +27,31 @@
                     <div class="container">
                         <h2 class="fw-light py-3 fw-bold">Mes listes de courses</h2>
                         <div class="d-flex justify-content-end mb-3">
-                            <a href="AddListeCourse.jsp">
+<!--                             <a href="AddListeCourse.jsp"> -->
                                 <button type="button"
-									class="btn btn-success">
+								class="btn btn-success" id="plus_liste">
                                     <i class="fas fa-plus"></i> Ajouter une liste
                                 </button>
-                            </a>
+<!--                             </a> -->
                         </div>
+                        <div id="formListe" class="bg-light">
+                        <input type="text" id="nomListe" style="width: 10em">
                     	<div class="" id="formAdd">
-							<div>
-								<input type="text" name="zone" size="20" maxlength="20" /><span></span>
+							<div class="mt-4">
+								<select id="postit">
+									<option>-----</option>
+								</select>
 								<select id="nomTypeProduit">
 									<option>-----</option>
-<%-- 									<c:forEach var="mag" items="${requestScope.allMagasins}"> --%>
-<%-- 										<option value="${mag.nomMagasin}">${mag.nomMagasin}</option> --%>
-<%-- 									</c:forEach> --%>
-								
 								</select>
+								<input type="number" id="quantity" min="0" style="width: 3em">
 							</div>
 							<div class="mt-2">
-								<input type="button" value="+" id="plus" disabled />
+								<input type="button" value="+" id="plus_contenu" />
 							</div>
 						</div>
+						</div>
+						<hr>
 <!--                         <div class="row"> -->
 <%--                             <c:forEach var="liste" items="${listeCourses}"> --%>
 <!--                                 <div class="col-md-4 col-lg-4 col-sm-12"> -->
