@@ -15,6 +15,7 @@ import model.Article;
 import model.ArticleCommande;
 import model.Categorie;
 import model.Commande;
+import model.TypeProduit;
 import model.Magasin;
 
 /**
@@ -98,7 +99,111 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 		return liste;
 	}
+	
+	/**
+	 * Retourne la liste d'articles.
+	 */
+	public static ArrayList<Article> afficherArticleByCategory(String idCat) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
 
+		/*----- Interrogation de la base -----*/
+		ArrayList<Article> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+        String sql = "SELECT * FROM Articles WHERE IdCategorie = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+            st.setString(1, idCat);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+	/**
+	 * Retourne la liste d'articles.
+	 */
+	public static ArrayList<TypeProduit> afficherProductTypeByCategory(String idCat) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<TypeProduit> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+        String sql = "SELECT * FROM TypeProduit WHERE IdCategorie = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+            st.setString(1, idCat);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit"),rs.getInt("IdCategorie")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherProductTypeByCategory() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+	/**
+	 * Retourne la liste d'articles par type produit.
+	 */
+	public static ArrayList<Article> afficherArticleByProductType(String idTypeProd) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<Article> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+        String sql = "SELECT * FROM Articles WHERE IdTypeProduit = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+            st.setString(1, idTypeProd);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"), rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherArticle() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
 	/**
 	 * Gets article by Id.
 	 */
@@ -355,6 +460,68 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 		return liste;
 
+	}
+	
+	/**
+	 * Retourne la liste de catégories.
+	 */
+	public static ArrayList<Categorie> afficherCategorie() throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<Categorie> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * from Categories";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Categorie(rs.getInt("IdCategorie"), rs.getString("NomCategorie")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.afficherCategories() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+		}
+
+	
+	/**
+	 * Retourne la liste de type de produits.
+	 */
+	public static ArrayList<TypeProduit> afficherTypeProduit() throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<TypeProduit> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * from TypeProduit";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit"), rs.getInt("IdCategorie")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherTypeProduit() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
 	}
 
 	/**
@@ -670,7 +837,6 @@ public class ConnectionMySql {
 
 		ConnectionMySql.cx.close();
 	}
-	
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
@@ -678,6 +844,5 @@ public class ConnectionMySql {
 	public static void main(String[] s) throws Exception {
 //		getHoursOpenedByMagasinId("MeubleLand");
 //		getOpeningByMagasinName("ElectroPlus");
-
 	}
-} /*----- Fin de la classe ConnectionMySql -----*/
+		 } /*----- Fin de la classe ConnectionMySql -----*/

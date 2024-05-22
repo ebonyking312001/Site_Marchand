@@ -2,34 +2,45 @@ package model;
 
 public class TypeProduit {
 
-	private int IdTypeProduit;
-	private String NomTypeProduit;
+	private int idTypeProduit;
+	private String nomTypeProduit;
+	private int idCategorie;
 	
-	public TypeProduit(int IdTypeProduit, String NomTypeProduit) {
+	public TypeProduit(int idTypeProduit, String nomTypeProduit, int idCategorie) {
 		// TODO Auto-generated constructor stub
-		this.IdTypeProduit=IdTypeProduit;
-		this.NomTypeProduit=NomTypeProduit;
+		this.idTypeProduit=idTypeProduit;
+		this.nomTypeProduit=nomTypeProduit;
+		this.idCategorie=idCategorie;
 	}
 
 	public int getIdTypeProduit() {
-		return IdTypeProduit;
+		return idTypeProduit;
 	}
 
 	public void setIdTypeProduit(int idTypeProduit) {
-		IdTypeProduit = idTypeProduit;
+		idTypeProduit = idTypeProduit;
 	}
 
 	public String getNomTypeProduit() {
-		return NomTypeProduit;
+		return nomTypeProduit;
 	}
 
 	public void setNomTypeProduit(String nomTypeProduit) {
-		NomTypeProduit = nomTypeProduit;
+		nomTypeProduit = nomTypeProduit;
+	}
+
+	
+	public int getIdCategorie() {
+		return idCategorie;
+	}
+
+	public void setIdCategorie(int idCategorie) {
+		this.idCategorie = idCategorie;
 	}
 
 	@Override
 	public String toString() {
-		return "TypeProduit [IdTypeProduit=" + IdTypeProduit + ", NomTypeProduit=" + NomTypeProduit + "]";
+		return "TypeProduit [IdTypeProduit=" + idTypeProduit + ", NomTypeProduit=" + nomTypeProduit + "]";
 	}
 
 	

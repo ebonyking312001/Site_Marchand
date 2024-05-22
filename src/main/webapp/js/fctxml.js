@@ -116,8 +116,11 @@ function onKeyupQuantityArt(event) {
 	xhr.send();
 }
 
+
+
 /**
- * ============================================= Confirmation card jsp (lieu et heure de retrait) =============================================
+ * Loads after build of DOM
+ * ============================================= Confirmation card jsp (lieu et heure de retrait)=============================================
  */
 
 function getOpeningMagasin() {
@@ -191,6 +194,7 @@ function confirmCard() {
 
 /**
  * ============================================= After loading DOM =============================================
+
  */
 document.addEventListener("DOMContentLoaded", () => {
 
