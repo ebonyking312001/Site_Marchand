@@ -28,6 +28,30 @@
             <th>Categorie</th>
             <th>TypeProduit</th>
         </tr>
+        <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <select id="categoryFilter" class="form-control">
+                        <option value="">Toutes les catégories</option>
+                        <c:forEach var="category" items="${categories}">
+                            <option value="${category}">${category}</option>
+                        </c:forEach>
+                    </select>
+                </th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         <c:forEach var="article" items="${articles}">
@@ -45,7 +69,7 @@
                 <td>${article.marque}</td>
                 <td>${article.promoArticle}</td>
                 <td>${article.idRayon}</td>
-                <td>${article.idCategorie}</td>
+                <td>${article.getNomCategorie()}</td>
                 <td>${article.idTypeProduit}</td>
             </tr>
         </c:forEach>
@@ -73,13 +97,13 @@
         	
             "paging": true, 
             "pagingType": "simple_numbers", 
-            "pageLength": 10,
-            "ordering": true, 
+            "pageLength": 25,
+            "ordering": false, 
             "searching": true, 
             "scrollX": true, 
             "scrollY": "400px", 
             "scrollCollapse": true, 
-            "autoWidth": true 
+            "autoWidth": true
         });
     });
 </script>
@@ -89,5 +113,36 @@
             alert("Impossible d'ajouter l'article car il est déjà présent en base de données.");
         </script>
     <% } %>
+    
+    
+    <script>
+    // Récupérer la liste déroulante des catégories
+    const categoryFilter = document.getElementById('categoryFilter');
+
+    // Ajouter un gestionnaire d'événements onchange
+    categoryFilter.addEventListener('change', function() {
+        const selectedCategory = categoryFilter.value; // Récupérer la catégorie sélectionnée
+
+        // Parcourir toutes les lignes du tableau
+        const tableRows = document.querySelectorAll('#tableArticles tbody tr');
+        tableRows.forEach(function(row) {
+            const categoryCell = row.querySelector('td:nth-child(14)'); // Cellule de la catégorie (14ème colonne)
+            const category = categoryCell.textContent.trim(); // Récupérer le texte de la cellule de la catégorie
+
+            // Vérifier si la catégorie de la ligne correspond à la catégorie sélectionnée
+            if (selectedCategory === '' || category === selectedCategory) {
+                // Afficher la ligne si la catégorie correspond ou si aucune catégorie n'est sélectionnée
+                row.style.display = '';
+            } else {
+                // Masquer la ligne si la catégorie ne correspond pas à la catégorie sélectionnée
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+    
+    
+    
+    
 </body>
 </html>
