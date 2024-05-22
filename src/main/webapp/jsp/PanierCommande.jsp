@@ -1,26 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page import="model.Commande"%>
-<%@ page import="model.ArticleCommande"%>
-<%@ page import="java.util.ArrayList"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Panier Commande</title>
-<!-- Bootstrap CSS -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-</head>
-<body>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<t:genericpage>
+	<jsp:attribute name="header">
+      <%@ include file="Header.jsp"%>
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+      <%@ include file="Footer.jsp"%>
+    </jsp:attribute>
+	<jsp:body>
+ <main>
 	<div class="container mt-5">
 		<h1 class="mb-4">
-			les commandes à préparer</a>
+			les commandes à préparer
 		</h1>
-		<%
-		ArrayList<Commande> cEnCours = (ArrayList<Commande>) request.getAttribute("cEnCours");
-		%>
+		<c:if test="${not empty cEnCours}">
 		<table class="table table-bordered table-hover">
 			<thead class="thead-dark">
 				<tr>
@@ -33,31 +28,26 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%
-				for (Commande c : cEnCours) {
-				%>
+				<c:forEach var="c" items="${cEnCours}">
 				<tr>
-					<td><%=c.getDateRetrait()%></td>
-					<td><%=c.getDebutCreneau()%></td>
+					<td>${c.dateRetrait}</td>
+					<td>${c.debutCreneau}</td>
 					<td><a class="btn btn-primary"
-						href="${pageContext.request.contextPath}/CtrlDetailCommandeAdamServlet/<%=c.getIdCommande()%>"><%=c.getIdCommande()%></a></td>
-					<td><%=c.getNomMagasin()%></td>
-					<td><%=c.getIdUtilisateur()%></td>
-					<td><%=c.getEtatCommande()%></td>
+						href="${pageContext.request.contextPath}/CtrlDetailCommandeAdamServlet/${c.idCommande}">${c.idCommande}</a></td>
+					<td>${c.nomMagasin}</td>
+					<td>${c.idUtilisateur}</td>
+					<td>${c.etatCommande}</td>
 				</tr>
-				<%
-				}
-				
-				%>
+				</c:forEach>
 			</tbody>
 		</table>
+		</c:if>
 	</div>
+</main>
+    </jsp:body>
+</t:genericpage>
 
-	<!-- Bootstrap JS and dependencies -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
