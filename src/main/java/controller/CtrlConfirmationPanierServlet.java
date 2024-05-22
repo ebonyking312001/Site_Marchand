@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import bd.ConnectionMySql;
 import model.Article;
 import model.Magasin;
+import model.User;
 
 /**
  * Servlet implementation class CtrlConfirmationPanierServlet
@@ -33,7 +34,9 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		 if ( request.getSession().getAttribute("user") == null) {
+             request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+         }else {
 		// Gets session
 		HttpSession session = request.getSession();
 
@@ -44,7 +47,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 		try {
 			if (nomMagasin != null && heureRetrait == null && dateRetrait == null) {
 
-				/*----- Type de la réponse -----*/
+				/*----- Type de la rï¿½ponse -----*/
 				response.setContentType("application/xml;charset=UTF-8");
 				response.setCharacterEncoding("UTF-8");
 				try (PrintWriter out = response.getWriter()) {
@@ -85,11 +88,11 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					Time tDeb = java.sql.Time.valueOf(hDeb + ":00");
 					Time tFin = java.sql.Time.valueOf(hFin + ":00");
 					
-					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
+					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession,((User) session.getAttribute("user")).getId());
 					session.setAttribute("articleList", null);
 					session.setAttribute("countArtCard", 0);
 					
-					/*----- Type de la réponse -----*/
+					/*----- Type de la rï¿½ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
@@ -112,13 +115,12 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 				request.setAttribute("allMagasins", magasins);
 				request.getRequestDispatcher("jsp/ConfirmationPanier.jsp").forward(request, response);
 			}
-
+		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-	}
+		}}}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

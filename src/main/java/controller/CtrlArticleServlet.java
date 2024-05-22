@@ -31,9 +31,13 @@ public class CtrlArticleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		// Gets session
 		HttpSession session = request.getSession();
+		
+	  
+      
+
+
 		// Badge card
 		var countArtCard = session.getAttribute("countArtCard");
 		if (countArtCard == null) {
@@ -98,6 +102,9 @@ public class CtrlArticleServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+        
 		return;
 
 	}

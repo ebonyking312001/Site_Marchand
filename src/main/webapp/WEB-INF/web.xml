@@ -87,4 +87,23 @@
 		<url-pattern>/CtrlPreparationAdamServlet</url-pattern>
 	</servlet-mapping>
 
+
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>controller.Logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/logout.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>sitemarchand</servlet-name>
+		<servlet-class>controller.CtrlArticleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>sitemarchand</servlet-name>
+		<url-pattern>/Accueil.jsp</url-pattern>
+	</servlet-mapping>
+
 </web-app>

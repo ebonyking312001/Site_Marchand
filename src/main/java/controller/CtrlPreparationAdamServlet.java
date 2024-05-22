@@ -33,9 +33,13 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    try {
+	    	  if ( request.getSession().getAttribute("user") == null) {
+	              request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+	          } else {
 	            ArrayList<Commande> cEnCours = ConnectionMySql.panierCommande("en cours");
 	            request.setAttribute("cEnCours", cEnCours);
 	            request.getRequestDispatcher("/jsp/PanierCommande.jsp").forward(request, response);
+	          }
 	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
