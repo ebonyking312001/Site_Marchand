@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,21 +36,18 @@ public class CtrlArticleServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		// Badge card
 		var countArtCard = session.getAttribute("countArtCard");
-		if(countArtCard == null) {
+		if (countArtCard == null) {
 			session.setAttribute("countArtCard", 0);
 		}
-		
+
 		// get article id
 		String idArticle = request.getParameter("idArticle");
 		// get category id
 		String idCategorie = request.getParameter("idCategorie");
 		// get product type id
 		String idTypeProd = request.getParameter("idTypeProd");
-		// get product type id
-		String annuler = request.getParameter("annuler");
-		
+
 		try {
-			
 			// Afficher toutes les catégories
 			ArrayList<Categorie> listeCat = ConnectionMySql.afficherCategorie();
 			// Afficher tous les types produit
@@ -66,7 +62,7 @@ public class CtrlArticleServlet extends HttpServlet {
 				request.getRequestDispatcher("/jsp/Details.jsp").forward(request, response);
 				return;
 			}
-			
+
 			ArrayList<Article> listeArt = null;
 			ArrayList<TypeProduit> listeTypeProd = null;
 			// Afficher article par rapport aux filtres catégories, types produits
@@ -84,20 +80,18 @@ public class CtrlArticleServlet extends HttpServlet {
 				request.setAttribute("idTypeProduitChoisi", idTypeProd);
 				// Renvoyer id catégorie choisie
 				request.setAttribute("idCategorieChoisi", idCategorie);
-				
-				System.out.println("liste d'articles changé : filtre par idCatégorie " + idTypeProd + "/n" + listeArt);
-			} else {
+			}  else {
 				// Afficher tous détails de tous les articles
-				 listeArt = ConnectionMySql.afficherArticle();
+				listeArt = ConnectionMySql.afficherArticle();
 			}
-			
+
 			// Renvoyer liste de tous articles
 			request.setAttribute("listeArt", listeArt);
 			// Renvoyer liste de tous categories
 			request.setAttribute("listeCat", listeCat);
 			// Renvoyer liste de tous types produit
 			request.setAttribute("listeTypeProd", listeTypeProd);
-			
+
 			request.getRequestDispatcher("accueil").forward(request, response);
 
 		} catch (ClassNotFoundException | SQLException e) {

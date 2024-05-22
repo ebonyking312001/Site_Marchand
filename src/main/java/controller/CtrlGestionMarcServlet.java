@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,20 +19,32 @@ import javax.servlet.http.Part;
 import bd.ConnectionMySql;
 import model.Article;
 
-@WebServlet("/importCSV")
-@MultipartConfig
-public class CtrlGestionMarcServlet extends HttpServlet {
+/**
+ * Cette servlet retourne un flux XML.
+ */
 
-    public List<Article> readCSV(InputStream fileContent) throws IOException {
-        List<Article> articles = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent))) {
-            String line;
-            reader.readLine(); // Skip header line
-            while ((line = reader.readLine()) != null) {
-                String[] values = line.split(",");
-                if (values.length == 15) {
-                    try {
-                        int EAN = Integer.parseInt(values[0].replace("\"", "").trim());
+@WebServlet(value="/CtrlGestionMarcServlet")
+@MultipartConfig
+public class CtrlGestionMarcServlet extends HttpServlet
+{
+	
+	    public List<Article> readCSV(InputStream fileContent) throws IOException {
+	        List<Article> articles = new ArrayList<>();
+	        
+	        try (BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent))) {
+	            String line;
+	            // Skip header if exists
+	            reader.readLine();
+	            while ((line = reader.readLine()) != null) {
+	            	
+	            	
+	                String[] values = line.split(",");
+	                
+	                if (values.length == 15) {
+	                	
+	                try {
+	           
+	                	int EAN = Integer.parseInt(values[0].replace("\"", "").trim());
                         String vignetteArticle = values[1].replace("\"", "").trim();
                         float prixUnitaireArticle = Float.parseFloat(values[2].replace("\"", "").trim());
                         String NutriscoreArticle = values[3].replace("\"", "").trim();
@@ -45,62 +59,56 @@ public class CtrlGestionMarcServlet extends HttpServlet {
                         int idRayon = Integer.parseInt(values[12].replace("\"", "").trim());
                         int idCategorie = Integer.parseInt(values[13].replace("\"", "").trim());
                         int idTypeProduit = Integer.parseInt(values[14].replace("\"", "").trim());
+	                
+	                Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle,
+                            NutriscoreArticle, libelleArticle, poidsArticle, prixKgArticle,
+                            descriptionCourteArticle, descriptionLongueArticle, fournisseurArticle,
+                            marque, promoArticle, idRayon,idCategorie, idTypeProduit);
+	                
+	                articles.add(article);
+	                }
+	                catch(NumberFormatException e){
+	                	System.err.println("Erreur de format de nombre : " + e.getMessage());
+	                }
+	                }
+	                // Create Article object and add to list
+	                
+	                
+	            }
+	        }
+	        return articles;
+	    }
+	    
+	protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+		{
+			
+		}
 
-                        Article article = new Article(EAN, vignetteArticle, prixUnitaireArticle, NutriscoreArticle,
-                                libelleArticle, poidsArticle, prixKgArticle, descriptionCourteArticle,
-                                descriptionLongueArticle, fournisseurArticle, marque, promoArticle, idRayon,
-                                idCategorie, idTypeProduit);
-
-                        articles.add(article);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Erreur de format de nombre : " + e.getMessage());
-                    }
-                }
-            }
-        }
-        return articles;
-    }
+	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+		
+    Part filePart = request.getPart("file");
+    InputStream fileContent = filePart.getInputStream();
     
-    private boolean articleExists(String nomArticle, String fournisseurArticle) {
-        try {
-            List<Article> articles = ConnectionMySql.afficherArticle();
-            for (Article article : articles) {
-                if (article.getLibelleArticle().equalsIgnoreCase(nomArticle) && 
-                    article.getFournisseurArticle().equalsIgnoreCase(fournisseurArticle)) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    List<Article> articles = readCSV(fileContent);
+    
+    try {
+        for (Article article : articles) {
+            // Insérer chaque article dans la base de données
+            ConnectionMySql.insererArticle(article);
         }
-        return false;
-    }
-
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Part filePart = request.getPart("file");
-        if (filePart != null && filePart.getSize() > 0) {
-            InputStream fileContent = filePart.getInputStream();
-            List<Article> articles = readCSV(fileContent);
-            boolean articleExists = false;
-            
-            try {
-                for (Article article : articles) {
-                    if (!articleExists(article.getLibelleArticle(), article.getFournisseurArticle())) {
-                        ConnectionMySql.insererArticle(article);
-                    } else {
-                        articleExists = true;
-                    }
-                }
-                if (articleExists) {
-                    request.setAttribute("articleExists", true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.getWriter().println("Erreur : " + e.getMessage());
-                return;
-            }
-        }
+        
+        // Récupérer la liste mise à jour des articles depuis la base de données
+        articles = ConnectionMySql.afficherArticle();
+        
+        // Rediriger vers une page qui affiche la liste mise à jour des articles
+        request.setAttribute("articles", articles);
         request.getRequestDispatcher("catalogue").forward(request, response);
+    } catch (Exception e) {
+        e.printStackTrace();
+        response.getWriter().println("Erreur : " + e.getMessage());
     }
+
 }
+
+	}
+ /*----- Fin de la servlet ServletAuteur -----*/
