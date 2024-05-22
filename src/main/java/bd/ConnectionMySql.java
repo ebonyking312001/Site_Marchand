@@ -431,7 +431,7 @@ public class ConnectionMySql {
 	    
 	    /*----- Ouverture de l'espace de requête -----*/
 	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlLigneCmd)) {
-	    	st.setBoolean(1,Boolean.parseBoolean(etat));
+	    	st.setInt(1,Integer.parseInt(etat));
 	        st.setInt(2, Integer.parseInt(cmdId));
 	        st.setInt(3, Integer.parseInt(ean));
 	        st.executeUpdate();

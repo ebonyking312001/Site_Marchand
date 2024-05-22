@@ -5,24 +5,32 @@
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         const cmdId = "${cmdId}";
-        document.querySelectorAll('div[ligne-cmd-ean]').forEach(div => {
-            const etat = div.getAttribute('ligne-cmd-etat');
-            if (etat === "1") {
-                div.style.backgroundColor = "green";
-                div.style.color = "white";
-            } else {
-                div.style.backgroundColor = "";
-                div.style.color = "";
+        
+        /*
+        add colors of buttons
+        */
+        document.querySelectorAll('button.validerBtn').forEach(button => {
+        	  const parentDiv = button.closest('div[ligne-cmd-ean]'); 
+              const etat = parentDiv.getAttribute('ligne-cmd-etat');
+            if (etat == "1") { //validée
+                button.classList.add('btn-success');
+                button.classList.remove('btn-warning');
+            } else { //en cours
+                button.classList.add('btn-warning');
+                button.classList.remove('btn-success');
             }
         });
-
+        /*
+        when click button, change button color and get ean,etat
+        */
         document.querySelectorAll('button.validerBtn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const parentDiv = event.target.closest('div[ligne-cmd-ean]');
-                const ean = parentDiv.getAttribute('ligne-cmd-ean');
-                let etat = parentDiv.getAttribute('ligne-cmd-etat');
-                etat = etat == "1" ? "0" : "1"; // Toggle state
+            const parentDiv = button.closest('div[ligne-cmd-ean]');
+            const etat = parentDiv.getAttribute('ligne-cmd-etat');
+            const ean = parentDiv.getAttribute('ligne-cmd-ean');
 
+            button.addEventListener('click', (event) => {
+                let etat = parentDiv.getAttribute('ligne-cmd-etat');
+                etat = etat == "1" ? "0" : "1"; // get etat opposite
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", `${pageContext.request.contextPath}/ServletPreparation`, true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -33,11 +41,11 @@
                         parentDiv.setAttribute('ligne-cmd-etat', etat);
                         button.textContent = etat == "1" ? 'Validée' : 'En cours';
                         if (etat == "1") {
-                            parentDiv.style.backgroundColor = "green";
-                            parentDiv.style.color = "white";
+                            button.classList.add('btn-success');
+                            button.classList.remove('btn-warning');
                         } else {
-                            parentDiv.style.backgroundColor = "";
-                            parentDiv.style.color = "";
+                            button.classList.add('btn-warning');
+                            button.classList.remove('btn-success');
                         }
                     }
                 };
@@ -90,7 +98,7 @@
                                         </small>
                                     </c:if>
                                     <div class="mt-2 d-flex d-row">
-                                        <button type="button" class="btn btn-success mt-2 validerBtn">${article.estValide ? 'Validée' : 'En cours'}</button>
+                                        <button type="button"  class="btn  mt-2 validerBtn">${article.estValide ? 'Validée' : 'En cours'}</button>
                                     </div>
                                 </div>
                             </div>
