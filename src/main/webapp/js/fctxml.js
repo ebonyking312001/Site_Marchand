@@ -114,19 +114,24 @@ function onKeyupQuantityArt(event) {
 function filterCategories() {
 	alert("clicked");
 	// Récupérer chaque idCategorie choisi
-	var idCat = event.target.dataset.idcategorie;
-    console.log(idCat);
+/*	var idCat = event.target.dataset.idcategorie;
+    console.log(idCat);*/
 	// Objet XMLHttpRequest.
-	var xhr = new XMLHttpRequest();
-    xhr.open("GET", "CtrlRepArticleCategorieServlet?idCategorie=" + idCat, true);
+/*	var xhr = new XMLHttpRequest();
+    xhr.open("GET", "CtrlRepArticleCategorieServlet?idCategorie=" + idCat, true);*/
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log(xhr.responseText); // Replace this with your logic
+            document.getElementById("typeProduitContainer").style.display = "block";
         }
     };
 
     xhr.send();
+}
+
+function displayProductType(){
+	document.getElementById("typeProduitContainer").style.display = "block";
+	
 }
 
 /**
@@ -160,8 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	$("#delete_cart").on("click", deleteArticlesCart);
-/*	$("#buttonCategory").on("click", filterCategories);
-*/
+/*	$("#buttonCategory").on("click", filterCategories);*/
+
 
 
 

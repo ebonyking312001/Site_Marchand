@@ -43,7 +43,7 @@ public class CtrlArticleServlet extends HttpServlet {
 			// Afficher toutes les catégories
 			ArrayList<Categorie> listeCat = ConnectionMySql.afficherCategorie();
 			// Afficher tous les types produit
-			ArrayList<TypeProduit> listeTypeProd = ConnectionMySql.afficherTypeProduit();
+//			ArrayList<TypeProduit> listeTypeProd = ConnectionMySql.afficherTypeProduit();
 
 			// Renvoyer détails d'un article quand un article est choisi
 			if (idArticle != null) {
@@ -54,13 +54,21 @@ public class CtrlArticleServlet extends HttpServlet {
 				request.getRequestDispatcher("/jsp/Details.jsp").forward(request, response);
 				return;
 			}
+			
 			ArrayList<Article> listeArt = null;
+			ArrayList<TypeProduit> listeTypeProd = null;
 			// Afficher article par rapport aux filtres catégories, types produits
 			if (idCategorie != null) {
 				listeArt = ConnectionMySql.afficherArticleByCategory(idCategorie);
+				listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);
 				System.out.println("liste d'articles changé : filtre par idCatégorie " + idCategorie + "/n" + listeArt);
 			} else if (idTypeProd != null) {
 				listeArt = ConnectionMySql.afficherArticleByProductType(idTypeProd);
+				for (Article art : listeArt){
+					idCategorie =  String.valueOf(art.getIdCategorie());
+					listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(idCategorie);	
+					System.out.println("nouvelle liste type prod" +listeTypeProd);
+				}
 				System.out.println("liste d'articles changé : filtre par idCatégorie " + idTypeProd + "/n" + listeArt);
 
 			} else {

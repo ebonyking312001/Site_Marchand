@@ -131,6 +131,38 @@ public class ConnectionMySql {
 		return liste;
 	}
 	/**
+	 * Retourne la liste d'articles.
+	 */
+	public static ArrayList<TypeProduit> afficherProductTypeByCategory(String idCat) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<TypeProduit> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+        String sql = "SELECT * FROM TypeProduit WHERE IdCategorie = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+            st.setString(1, idCat);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit"),rs.getInt("IdCategorie")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException("Exception ConnectionMySql.afficherProductTypeByCategory() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+	/**
 	 * Retourne la liste d'articles par type produit.
 	 */
 	public static ArrayList<Article> afficherArticleByProductType(String idTypeProd) throws ClassNotFoundException, SQLException {
@@ -535,7 +567,7 @@ public class ConnectionMySql {
 			try (ResultSet rs = st.executeQuery()) {
 				/*----- Lecture du contenu du ResultSet -----*/
 				while (rs.next()) {
-					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit")));
+					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit"), rs.getInt("IdCategorie")));
 				}
 			}
 			st.close();
@@ -552,7 +584,7 @@ public class ConnectionMySql {
 
 	public static void main(String[] s) throws Exception {
 			System.out.println(panierCommande("en cours").get(0).getEtatCommande());
-			System.out.println("afficherArticleByProductType() \n" + afficherArticleByProductType("1"));
+//			System.out.println("afficherProductTypeByCategory() \n" + afficherProductTypeByCategory("2"));
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/
