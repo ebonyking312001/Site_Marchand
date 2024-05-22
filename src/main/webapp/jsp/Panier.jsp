@@ -55,7 +55,7 @@
 											test="${article.promoArticle == 0}">
                                             <small
 												class="text-body-secondary fw-bold">
-                                                Prix/unité : <fmt:formatNumber
+                                                Prix : <fmt:formatNumber
 													value="${article.prixUnitaireArticle}"
 													minFractionDigits="1" maxFractionDigits="1" /> €
                                             </small>
@@ -69,49 +69,33 @@
                                         </c:when>
                                         <c:otherwise>
                                             <c:set var="totalPrice"
-												value="${totalPrice + (article.promoArticle * article.quantite)}" />
+												value="${totalPrice + (article.prixUnitaireArticle * article.quantite)}" />
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
                                 <div
 									class="col-md-3 col-lg-3 col-xl-2 d-flex">
                       <a
-										class="btn btn-sm btn-secondary text-white byalphaRmPanier"
-										style="margin-right: 5px;" data-idArt="${article.EAN}">-</a>
+										class="btn btn-sm btn-secondary text-white byalphaRmPanier" style="margin-right:5px;"
+										data-idArt="${article.EAN}">-</a>
                       <div class="form-control form-control-sm">
-                                    <input type="number" data-idArtQuantity="${article.EAN}_quantity"
-											value="${article.quantite}" class="changeNbArt"
-											data-idArt="${article.EAN}">
+                                    <input type="number"
+											value="${article.quantite}" class="changeNbArt" data-idArt="${article.EAN}">
                                 </div>
 										<a
-										class="btn btn-sm btn-secondary text-white byalphaAddPanier"
-										style="margin-left: 5px;" data-idArt="${article.EAN}">+</a>
+										class="btn btn-sm btn-secondary text-white byalphaAddPanier" style="margin-left:5px;"
+										data-idArt="${article.EAN}">+</a>
                     </div>
                             </div>
                         </c:forEach>
                     </div>
-                    <c:if test="${sessionScope.articleList != null}">
                     <div class="total">
                         <p class="fw-bold my-2">Prix : <fmt:formatNumber
-									value="${totalPrice}" minFractionDigits="1"
-									maxFractionDigits="1" /> €</p>
+								value="${totalPrice}" minFractionDigits="1"
+								maxFractionDigits="1" /> €</p>
                     </div>
-                    <div class="row">
-                    <div class="col-2">
-                    <a href="ConfirmationPanierServlet"><button
-										class="checkout-btn" id="validate_card">Valider le panier</button></a>
-                    
-                    </div>
-                    <div class="col-2">
-                    <button id="delete_card"
-									class="checkout-btn btn btn-danger">Annuler le panier</button>
-                    </div>
-                    </div>
-					</c:if>
-					<c:if test="${sessionScope.articleList == null}">
-					Vous n'avez rien dans le panier
-					</c:if>
-                    
+                    <button class="checkout-btn">Valider le panier</button>
+                    <button id="delete_cart" class="btn btn-danger">Supprimer le panier</button>
                 </div>
             </div>
         </main>

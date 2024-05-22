@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ public class CtrlPanierServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -44,8 +42,6 @@ public class CtrlPanierServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		// Gets session
 		HttpSession session = request.getSession();
-
-		int countArtCard = 0;
 
 		try {
 			// Check for article id (without quantity)
@@ -90,21 +86,6 @@ public class CtrlPanierServlet extends HttpServlet {
 					article.setQuantite(article.getQuantite() + Integer.parseInt(quantity));
 					articleList.add(article);
 					session.setAttribute("articleList", articleList);
-
-					countArtCard = articleList.size();
-					session.setAttribute("countArtCard", countArtCard);
-
-					/*----- Type de la réponse -----*/
-					response.setContentType("application/xml;charset=UTF-8");
-					response.setCharacterEncoding("UTF-8");
-					try (PrintWriter out = response.getWriter()) {
-						/*----- Ecriture de la page XML -----*/
-						out.println("<?xml version=\"1.0\"?>");
-						out.println("<cardHeader>");
-						out.println("<int>" + countArtCard + "</int>");
-						out.println("</cardHeader>");
-					}
-
 				} else {
 					// If exists and doesn't has been added to the list, add the quantity to
 					// quantity article
@@ -113,21 +94,6 @@ public class CtrlPanierServlet extends HttpServlet {
 							.isEmpty()) {
 						article.setQuantite(article.getQuantite() + Integer.parseInt(quantity));
 						articlesInSession.add(article);
-
-						countArtCard = articlesInSession.size();
-						session.setAttribute("countArtCard", countArtCard);
-
-						/*----- Type de la réponse -----*/
-						response.setContentType("application/xml;charset=UTF-8");
-						response.setCharacterEncoding("UTF-8");
-						try (PrintWriter out = response.getWriter()) {
-							/*----- Ecriture de la page XML -----*/
-							out.println("<?xml version=\"1.0\"?>");
-							out.println("<cardHeader>");
-							out.println("<int>" + countArtCard + "</int>");
-							out.println("</cardHeader>");
-						}
-
 					} else {
 						// If exists and has been added to the list, add the quantity to quantity
 						// article
@@ -147,21 +113,6 @@ public class CtrlPanierServlet extends HttpServlet {
 						.findFirst();
 				if (art.get().getQuantite() - 1 <= 0) {
 					articlesInSession.removeIf(as -> as.getEAN() == article.getEAN());
-
-					countArtCard = articlesInSession.size();
-					session.setAttribute("countArtCard", countArtCard);
-
-					/*----- Type de la réponse -----*/
-					response.setContentType("application/xml;charset=UTF-8");
-					response.setCharacterEncoding("UTF-8");
-					try (PrintWriter out = response.getWriter()) {
-						/*----- Ecriture de la page XML -----*/
-						out.println("<?xml version=\"1.0\"?>");
-						out.println("<cardHeader>");
-						out.println("<int>" + countArtCard + "</int>");
-						out.println("</cardHeader>");
-					}
-
 				} else {
 					articlesInSession.stream().filter(as -> as.getEAN() == article.getEAN()).findFirst()
 							.ifPresent(a -> a.setQuantite(a.getQuantite() - 1));
@@ -179,19 +130,6 @@ public class CtrlPanierServlet extends HttpServlet {
 				// Delete articles from cart
 				case "deleteArticlesCart":
 					session.setAttribute("articleList", null);
-					
-					session.setAttribute("countArtCard", 0);
-
-					/*----- Type de la réponse -----*/
-					response.setContentType("application/xml;charset=UTF-8");
-					response.setCharacterEncoding("UTF-8");
-					try (PrintWriter out = response.getWriter()) {
-						/*----- Ecriture de la page XML -----*/
-						out.println("<?xml version=\"1.0\"?>");
-						out.println("<cardHeader>");
-						out.println("<int>" + 0 + "</int>");
-						out.println("</cardHeader>");
-					}
 					break;
 				// On keyup function to change quantity manually
 				case "changeArt":
@@ -218,13 +156,7 @@ public class CtrlPanierServlet extends HttpServlet {
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		try {
-			doGet(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 }
