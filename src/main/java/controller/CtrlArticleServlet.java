@@ -55,20 +55,24 @@ public class CtrlArticleServlet extends HttpServlet {
 		
 		// set sessions
 		if (idCategorie != null) {
+			
 			// Garder id_choisi dans session id_choisi
 			session.setAttribute("idCategorie", idCategorie);
 			session.removeAttribute("idTypeProd");
 		}
 		if (idTypeProd != null) {
+			
 			// Garder id_choisi dans session id_choisi
 			session.setAttribute("idTypeProd", idTypeProd);
 		}
 		if (ordre != null) {
+			
 			// Garder id_choisi dans session id_choisi
 			session.setAttribute("ordre", ordre);
 		}
 		// effacer session idCategorie, session idTypeProd, session ordre
 		if (action != null) {
+			
 			System.out.println("action="+action);
 			session.removeAttribute("idCategorie");
 			session.removeAttribute("idTypeProd");
@@ -85,11 +89,9 @@ public class CtrlArticleServlet extends HttpServlet {
 		try {
 			// Afficher toutes les catégories
 			ArrayList<Categorie> listeCat = ConnectionMySql.afficherCategorie();
-			// Afficher tous les types produit
-//			ArrayList<TypeProduit> listeTypeProd = ConnectionMySql.afficherTypeProduit();
-
 			// Renvoyer détails d'un article quand un article est choisi
 			if (idArticle != null) {
+				
 				// Récupérer info article par id article
 				Article article = ConnectionMySql.getArticleById(idArticle);
 
@@ -109,10 +111,12 @@ public class CtrlArticleServlet extends HttpServlet {
 				// Renvoyer id catégorie choisie
 				request.setAttribute("idCategorieChoisi", sessionIdCategorie);
 				if(sessionOrdre != null) {
+					
 					request.setAttribute("ordreChoisi", sessionOrdre);	
 					listeArt = sortArticleListByOrder(listeArt,sessionOrdre);
 				}
 			} else if (sessionIdTypeProd != null) {
+				
 				listeArt = ConnectionMySql.afficherArticleByProductType(sessionIdTypeProd);
 				listeTypeProd = ConnectionMySql.afficherProductTypeByCategory(sessionIdCategorie);	
 				// Renvoyer id type de produit choisie
@@ -120,13 +124,16 @@ public class CtrlArticleServlet extends HttpServlet {
 				// Renvoyer id catégorie choisie
 				request.setAttribute("idCategorieChoisi", sessionIdCategorie);
 				if(sessionOrdre != null) {
+					
 					request.setAttribute("ordreChoisi", sessionOrdre);
 					listeArt = sortArticleListByOrder(listeArt,sessionOrdre);
 				}
 			} else {
+				
 				// Afficher tous détails de tous les articles
 				listeArt = ConnectionMySql.afficherArticle();
 				if(sessionOrdre != null) {
+					
 					request.setAttribute("ordreChoisi", sessionOrdre);
 					listeArt = sortArticleListByOrder(listeArt,sessionOrdre);
 				}
@@ -162,11 +169,13 @@ public class CtrlArticleServlet extends HttpServlet {
 	 * Trier la liste d'articles par ordre (croissant/décroissant) par prix par kg
 	 */
 	public ArrayList<Article> sortArticleListByOrder(ArrayList<Article> listeArticle,String order){
+		
 		// Comparateur en croissant par défaut
         Comparator<Article> comparator = Comparator.comparing(Article::getPrixKgArticle);
-
+        
         // inverser comparateur si ordre=decroissant
         if ("decroissant".equalsIgnoreCase(order)) {
+        	
             comparator = comparator.reversed();
         }
 
