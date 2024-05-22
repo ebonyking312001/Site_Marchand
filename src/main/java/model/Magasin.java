@@ -17,6 +17,10 @@ public class Magasin {
 		this.NomMagasin=NomMagasin;
 	}
 
+	public Magasin() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getAdresseMagasin() {
 		return AdresseMagasin;
 	}

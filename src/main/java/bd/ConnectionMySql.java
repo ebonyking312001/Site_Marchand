@@ -6,11 +6,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
 
 import model.Article;
 import model.ArticleCommande;
+import model.Categorie;
 import model.Commande;
 import model.TypeProduit;
 import model.Magasin;
