@@ -482,15 +482,16 @@ public class ConnectionMySql {
 				/*----- Lecture du contenu du ResultSet -----*/
 				while (rs.next()) {
 					liste.add(new Categorie(rs.getInt("IdCategorie"), rs.getString("NomCategorie")));
-				
-
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
 			throw new SQLException("Exception ConnectionMySql.afficherCategories() : Problème SQL - " + ex.getMessage());
 		}
 		ConnectionMySql.cx.close();
 		return liste;
 		}
-	}
-	}
+
 	
 	/**
 	 * Retourne la liste de type de produits.
