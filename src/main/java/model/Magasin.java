@@ -2,66 +2,69 @@ package model;
 
 public class Magasin {
 	
-	private String AdresseMagasin;
-	private String HeureFermetureMagasin;
-	private String HeureOuvertureMagasin;
-	private int IdMagasin;
-	private String NomMagasin;
+	private String adresseMagasin;
+	private String heureFermetureMagasin;
+	private String heureOuvertureMagasin;
+	private int idMagasin;
+	private String nomMagasin;
 	
 	public Magasin(int IdMagasin, String NomMagasin, String AdresseMagasin, String HeureOuvertureMagasin, String HeureFermetureMagasin) {
-		// TODO Auto-generated constructor stub
-		this.AdresseMagasin=AdresseMagasin;
-		this.HeureFermetureMagasin=HeureFermetureMagasin;
-		this.HeureOuvertureMagasin=HeureOuvertureMagasin;
-		this.IdMagasin=IdMagasin;
-		this.NomMagasin=NomMagasin;
+		this.adresseMagasin=AdresseMagasin;
+		this.heureFermetureMagasin=HeureFermetureMagasin;
+		this.heureOuvertureMagasin=HeureOuvertureMagasin;
+		this.idMagasin=IdMagasin;
+		this.nomMagasin=NomMagasin;
+	}
+	
+	public Magasin() {
+		super();
 	}
 
 	public String getAdresseMagasin() {
-		return AdresseMagasin;
+		return adresseMagasin;
 	}
 
 	public void setAdresseMagasin(String adresseMagasin) {
-		AdresseMagasin = adresseMagasin;
+		this.adresseMagasin = adresseMagasin;
 	}
 
 	public String getHeureFermetureMagasin() {
-		return HeureFermetureMagasin;
+		return heureFermetureMagasin;
 	}
 
 	public void setHeureFermetureMagasin(String heureFermetureMagasin) {
-		HeureFermetureMagasin = heureFermetureMagasin;
+		this.heureFermetureMagasin = heureFermetureMagasin;
 	}
 
 	public String getHeureOuvertureMagasin() {
-		return HeureOuvertureMagasin;
+		return heureOuvertureMagasin;
 	}
 
 	public void setHeureOuvertureMagasin(String heureOuvertureMagasin) {
-		HeureOuvertureMagasin = heureOuvertureMagasin;
+		this.heureOuvertureMagasin = heureOuvertureMagasin;
 	}
 
 	public int getIdMagasin() {
-		return IdMagasin;
+		return idMagasin;
 	}
 
 	public void setIdMagasin(int idMagasin) {
-		IdMagasin = idMagasin;
+		this.idMagasin = idMagasin;
 	}
 
 	public String getNomMagasin() {
-		return NomMagasin;
+		return nomMagasin;
 	}
 
 	public void setNomMagasin(String nomMagasin) {
-		NomMagasin = nomMagasin;
+		this.nomMagasin = nomMagasin;
 	}
 
 	@Override
 	public String toString() {
-		return "Magasin [AdresseMagasin=" + AdresseMagasin + ", HeureFermetureMagasin=" + HeureFermetureMagasin
-				+ ", HeureOuvertureMagasin=" + HeureOuvertureMagasin + ", IdMagasin=" + IdMagasin + ", NomMagasin="
-				+ NomMagasin + "]";
+		return "Magasin [AdresseMagasin=" + adresseMagasin + ", HeureFermetureMagasin=" + heureFermetureMagasin
+				+ ", HeureOuvertureMagasin=" + heureOuvertureMagasin + ", IdMagasin=" + idMagasin + ", NomMagasin="
+				+ nomMagasin + "]";
 	}
 
 }
