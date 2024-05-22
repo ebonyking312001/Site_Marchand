@@ -16,6 +16,27 @@
 
 	<div class="album py-5 bg-body-tertiary ">
 		<div class="container">
+			<div id="categorieContainer" >
+			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
+				<p class="d-inline-flex gap-1">
+	 				<c:forEach var="cat" items="${listeCat}"> 
+						<button type="button" class="btn btn-secondary"><a  class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a></button>
+					</c:forEach> 
+				</p>
+			</div>
+			<div id=typeProduitContainer>
+			<c:if test="${listeTypeProd != null}">
+				<h2 class="fw-light py-3 fw-bold">Type Produit</h2>
+					<div id="productTypeContainer">
+						<p class="d-inline-flex gap-1">
+								<c:forEach var="typeProd" items="${listeTypeProd}">
+									<button type="button" class="btn btn-secondary"><a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a></button>
+								</c:forEach>
+						
+						</p>
+					</div>
+				</div>
+			</c:if>
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 
 			<div class="row">
@@ -25,13 +46,13 @@
 						<div class="card shadow-sm">
 							<a href="?idArticle=${art.EAN}">
 								<center>
-													<img src="${art.vignetteArticle}" width='250' />
-												</center>
+									<img src="${art.vignetteArticle}" width='250' />
+								</center>
 							</a>
 							<div class="card-body">
 								<p class="card-text">
 													<a class="text-decoration-none text-primary fw-bold"
-												href="?idArticle=${art.EAN}">${art.libelleArticle}</a>
+												href="?idArticle=${art.EAN}">${art.libelleArticle} <strong>${art.marque}</strong></a>
 												</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">

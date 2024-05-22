@@ -23,7 +23,7 @@
                         <div
 							class="col-md-6 d-flex align-items-center bg-light">
                             <div class="card-body p-5">
-                                <h2>${article.libelleArticle}</h2>
+                                <h2>${article.libelleArticle} - ${article.marque}</h2>
                                 <hr>
                                 <h4 class="fs-3">Prix</h4>
                                 <div class="col">

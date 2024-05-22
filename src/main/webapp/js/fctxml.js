@@ -97,6 +97,24 @@ function onKeyupQuantityArt(event) {
 	}
 	xhr.open("GET", "ServletPanier?action=changeArt&idArticle=" + idArticle + "&quantity=" + nbArticlesToAdd, true);
 
+	// Envoie de la requête.
+	xhr.send();
+}
+
+
+
+/**
+ * Loads after build of DOM
+ * ============================================= Confirmation card jsp (lieu et heure de retrait)=============================================
+ */
+
+function getOpeningMagasin() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// Requête au serveur avec les paramètres éventuels.
+	xhr.open("GET", "ConfirmationPanierServlet?nomM=" + document.getElementById("nomMagasin").value, true);
+
 	xhr.onload = function() {
 		// Si la requête http s'est bien passée.
 		if (xhr.status === 200) {
@@ -109,7 +127,8 @@ function onKeyupQuantityArt(event) {
 }
 
 /**
- * Loads after build of DOM
+ * ============================================= After loading DOM =============================================
+
  */
 document.addEventListener("DOMContentLoaded", () => {
 
