@@ -224,7 +224,12 @@ function addListeCourse() {
 	var tpProdSelectionnes = document.getElementsByName("tp");
 	console.log(tpProdSelectionnes);
 	// Requête au serveur avec les paramètres éventuels.
+<<<<<<< Updated upstream
 //	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
+=======
+	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
+
+>>>>>>> Stashed changes
 
 	xhr.onload = function() {
 		// Si la requête http s'est bien passée.
