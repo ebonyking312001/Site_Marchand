@@ -714,7 +714,7 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 	}
 
-	public static int addListeCourse(String nomLC) throws SQLException, ClassNotFoundException {
+	public static int addListeCourse(String nomLC, List<String> listIdTypeProduit) throws Exception {
 		ConnectionMySql.connexion();
 
 		int idListe = 0;
@@ -736,6 +736,21 @@ public class ConnectionMySql {
 				System.out.println("Liste de courses ajoutée avec l'identifiant : " + idListe + " " + nomLC);
 			} else {
 				throw new SQLException("Échec de la récupération de l'identifiant de la liste de courses ajoutée.");
+			}
+		}
+		
+		for (String idTypeProduit : listIdTypeProduit) {
+			String sqltypeProduitListeCourse = "INSERT INTO Contenu_Liste (IdListe, IdTypeProduit) VALUES (?, ?)";
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqltypeProduitListeCourse)) {
+
+				st.setInt(1, idListe);
+				st.setString(2, idTypeProduit);
+
+				st.executeUpdate();
+				st.close();
+
+			} catch (SQLException e) {
+				throw new Exception("Bd.addTypeProduitListe() - " + e.getMessage());
 			}
 		}
 
@@ -1035,6 +1050,52 @@ public class ConnectionMySql {
 
 		return courses;
 	}
+	
+	
+	public static ArrayList<Article> getAllArticlesByTypeProduit(int idTypeProduit) throws ClassNotFoundException, SQLException {
+	    ConnectionMySql.connexion();
+
+	    ArrayList<Article> liste = new ArrayList<>();
+
+	    String sql = "SELECT * FROM Articles a, TypeProduit t WHERE t.IdTypeProduit = a.IdTypeProduit AND a.IdTypeProduit = ?";
+
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+
+	        st.setInt(1, idTypeProduit);
+
+	        try (ResultSet rs = st.executeQuery()) {
+
+	            while (rs.next()) {
+	                Article article = new Article(
+	                    rs.getInt("EAN"), 
+	                    rs.getString("VignetteArticle"), 
+	                    rs.getFloat("PrixUnitaireArticle"), 
+	                    rs.getString("NutriscoreArticle"), 
+	                    rs.getString("LibelleArticle"), 
+	                    rs.getFloat("PoidsArticle"), 
+	                    rs.getFloat("PrixKgArticle"), 
+	                    rs.getString("DescriptionCourteArticle"), 
+	                    rs.getString("DescriptionLongueArticle"), 
+	                    rs.getString("FournisseurArticle"), 
+	                    rs.getString("Marque"), 
+	                    rs.getInt("PromoArticle"), 
+	                    rs.getInt("IdRayon"), 
+	                    rs.getInt("IdCategorie"), 
+	                    rs.getInt("IdTypeProduit"));
+	                	article.setNomTypeProduit(rs.getString("NomTypeProduit"));
+
+	                liste.add(article);
+	            }
+	        }
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception ConnectionMySql.getAllArticlesByTypeProduit() : Problème SQL - " + ex.getMessage());
+	    }
+
+	    // Fermeture de la connexion
+	    ConnectionMySql.cx.close();
+
+	    return liste;
+	}
 
 	/*----------------------------*/
 	/* Programme principal (test) */
@@ -1044,11 +1105,11 @@ public class ConnectionMySql {
 //		getHoursOpenedByMagasinId("MeubleLand");
 //		getOpeningByMagasinName("ElectroPlus");
 
-		System.out.println(getContenuListe(1));
-		insererLigneListe(1, 18, 23, 4);
+//		System.out.println(getContenuListe(1));
+//		insererLigneListe(1, 18, 23, 4);
 
 //		System.out.println(getContenuListe(1));
-		System.out.println(getAllCommandeWithArticles());
+		System.out.println(getAllArticlesByTypeProduit(1));
 
 
 	}

@@ -86,4 +86,13 @@
         <servlet-name>JspModificationMagasin</servlet-name>
         <url-pattern>/ModificationCreneau</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>JspArticleParTypeProduit</servlet-name>
+        <jsp-file>/jsp/ArticleTypeProduit.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JspArticleParTypeProduit</servlet-name>
+        <url-pattern>/ArticleTypeProduit</url-pattern>
+    </servlet-mapping>
 </web-app>
