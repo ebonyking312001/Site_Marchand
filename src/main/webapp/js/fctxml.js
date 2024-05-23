@@ -221,41 +221,17 @@ function addListeCourse() {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
 
+	var tpProdSelectionnes = document.getElementsByName("tp");
+	console.log(tpProdSelectionnes);
 	// Requête au serveur avec les paramètres éventuels.
-	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
-
+//	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
 
 	xhr.onload = function() {
 		// Si la requête http s'est bien passée.
 		if (xhr.status === 200) {
-			//			var doc = xhr.responseXML.getElementsByTagName("id");
-			//			var texteId = doc[0].firstChild.nodeValue;
-			//			var docTPs = xhr.responseXML.getElementsByTagName("tProd");
-			//
-			//			//var newInput = '<div class="mt-5" id="formAdd" data-idL=' + texteId + '><input type="text" id="nomListe" style="width: 10em"><div class="mt-4"><select id="postit" data-idSelect=' + texteId + '_selectTP><option>-----</option></select></div><div class="mt-2"><input type="button" value="+" id="plus_contenu" data-idMoreContent=' + texteId + '_plus_contenu/></div><hr></div>';
-			//			var newInput = '<div class="mt-5" id="formAdd" data-idL=' + texteId + '><input type="text" id="nomListe" style="width: 10em"><div class="mt-4"><select id="postit" data-idSelect=' + texteId + '_selectTP><option>-----</option>';
-			//
-			//			for (i = 0; i < docTPs.length; i++) {
-			//				newInput += '<option value="' + docTPs[i].firstChild.nodeValue + '">' + docTPs[i].firstChild.nodeValue + "</option>";
-			//			}
-			//
-			//			newInput += '</select></div><div class="mt-2"><input class="plus_contenu" type="button" value="+" id="plusLContenu" data-idMoreContent=' + texteId + '_plus_contenu/></div><div class="row text-right"><div class="col-2"><button id="ajouterListePanier" class="checkout-btn btn btn-danger">Ajouter au panier</button></div><div class="col-2"><button id="enregistrerListe" class="checkout-btn btn btn-danger">Enregistrer la liste</button></div><div class="col-2"><button id="supprListe" class="checkout-btn btn btn-danger">Supprimer liste</button></div></div><hr></div>';
-			//
-			//			suggestions.insertAdjacentHTML('afterend', newInput);
-			//
-			//			console.log(document.getElementsByClassName("plus_contenu"));
-
-			//			$('#ModalListeCourse').modal('hide');
+			document.getElementById("message-titleList").value = '';
 		}
 	};
-
-	document.getElementById("message-titleList").value = '';
-
-	$('#ModalListeCourse').on('click', function() {
-		$('#ModalListeCourse').modal('hide');
-	});
-
-	//	$('#ModalListeCourse').modal('hide');
 
 	// Envoie de la requête.
 	xhr.send();

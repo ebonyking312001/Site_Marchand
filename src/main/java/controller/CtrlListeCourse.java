@@ -40,22 +40,21 @@ public class CtrlListeCourse extends HttpServlet {
 		if (action == null && nomTP == null && nomListeCourse != null) {
 			try {
 				int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse);
-				ArrayList<TypeProduit> typesProd = ConnectionMySql.afficherTypeProduit();
 
 				/*----- Type de la réponse -----*/
-				response.setContentType("application/xml;charset=UTF-8");
-				response.setCharacterEncoding("UTF-8");
-				try (PrintWriter out = response.getWriter()) {
-					/*----- Ecriture de la page XML -----*/
-					out.println("<?xml version=\"1.0\"?>");
-					out.println("<intIdListe>");
-					out.println("<id>" + idNewListe + "</id>");
-
-					for (TypeProduit tp : typesProd) {
-						out.println("<tProd>" + tp.getNomTypeProduit() + "</tProd>");
-					}
-					out.println("</intIdListe>");
-				}
+//				response.setContentType("application/xml;charset=UTF-8");
+//				response.setCharacterEncoding("UTF-8");
+//				try (PrintWriter out = response.getWriter()) {
+//					/*----- Ecriture de la page XML -----*/
+//					out.println("<?xml version=\"1.0\"?>");
+//					out.println("<intIdListe>");
+//					out.println("<id>" + idNewListe + "</id>");
+//
+//					for (TypeProduit tp : typesProd) {
+//						out.println("<tProd>" + tp.getNomTypeProduit() + "</tProd>");
+//					}
+//					out.println("</intIdListe>");
+//				}
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -65,7 +64,7 @@ public class CtrlListeCourse extends HttpServlet {
 		} else if (nomTP != null) {
 			try {
 				ArrayList<Article> articles = ConnectionMySql.getArticlesByTPName(nomTP);
-				
+
 				/*----- Type de la réponse -----*/
 				response.setContentType("application/xml;charset=UTF-8");
 				response.setCharacterEncoding("UTF-8");
@@ -86,9 +85,12 @@ public class CtrlListeCourse extends HttpServlet {
 			}
 		} else {
 			try {
+				ArrayList<TypeProduit> typesProd = ConnectionMySql.afficherTypeProduit();
+				request.setAttribute("typesProduits", typesProd);
+				
 				ArrayList<ListeCourse> courses = ConnectionMySql.getListesCourses();
 				request.setAttribute("listeCourses", courses);
-				
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

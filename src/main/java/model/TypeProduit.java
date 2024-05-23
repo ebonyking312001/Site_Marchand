@@ -2,43 +2,43 @@ package model;
 
 public class TypeProduit {
 
-	private int IdTypeProduit;
-	private String NomTypeProduit;
-	private int IdCategorie;
+	private int idTypeProduit;
+	private String nomTypeProduit;
+	private int idCategorie;
 	
 	public TypeProduit(int IdTypeProduit, String NomTypeProduit, int idCategorie) {
-		this.IdTypeProduit=IdTypeProduit;
-		this.NomTypeProduit=NomTypeProduit;
-		this.IdCategorie = idCategorie;
+		this.idTypeProduit=IdTypeProduit;
+		this.nomTypeProduit=NomTypeProduit;
+		this.idCategorie = idCategorie;
 	}
 
 	public int getIdTypeProduit() {
-		return IdTypeProduit;
+		return idTypeProduit;
 	}
 
 	public void setIdTypeProduit(int idTypeProduit) {
-		this.IdTypeProduit = idTypeProduit;
+		this.idTypeProduit = idTypeProduit;
 	}
 
 	public String getNomTypeProduit() {
-		return NomTypeProduit;
+		return nomTypeProduit;
 	}
 
 	public void setNomTypeProduit(String nomTypeProduit) {
-		this.NomTypeProduit = nomTypeProduit;
+		this.nomTypeProduit = nomTypeProduit;
 	}
 
 	public int getIdCategorie() {
-		return IdCategorie;
+		return idCategorie;
 	}
 
 	public void setIdCategorie(int idCategorie) {
-		this.IdCategorie = idCategorie;
+		this.idCategorie = idCategorie;
 	}
 
 	@Override
 	public String toString() {
-		return "TypeProduit [IdTypeProduit=" + IdTypeProduit + ", NomTypeProduit=" + NomTypeProduit + "]";
+		return "TypeProduit [IdTypeProduit=" + idTypeProduit + ", NomTypeProduit=" + nomTypeProduit + "]";
 	}
 
 	

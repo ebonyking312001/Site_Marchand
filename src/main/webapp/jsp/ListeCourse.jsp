@@ -68,7 +68,8 @@
 <!--                         <div class="row"> -->
                             <c:forEach var="liste"
 							items="${listeCourses}">
-                                <div class="col-md-4 col-lg-4 col-sm-12 mt-5">
+                                <div
+								class="col-md-4 col-lg-4 col-sm-12 mt-5">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
                                             <p class="card-text">
@@ -81,6 +82,11 @@
                                     </div>
                                 </div>
                             </c:forEach>
+                            <c:forEach var="typeP" items="${typesProduits}">
+                <input type="checkbox" id="${typeP.idTypeProduit}"
+								name="tp" />
+				<label for="horns">${typeP.nomTypeProduit}</label>
+            </c:forEach>
 <!--                         </div> -->
                     </div>
                 </div>
@@ -102,7 +108,17 @@
         <div class="form-group">
             <label for="message-text"
 										class="col-form-label lblTitleList">Nom de la liste :</label>
-            <textarea class="form-control" id="message-titleList"></textarea>
+            <input type="text" class="form-control" id="message-titleList"></input>
+            
+            <label for="message-text"
+										class="col-form-label lblTitleList">Choisissez les types de produits :</label>
+										<div>
+										 <c:forEach var="typeP" items="${typesProduits}">
+                <input type="checkbox" id="${typeP.idTypeProduit}"
+											name="tp" />
+				<label for="horns">${typeP.nomTypeProduit}</label>
+            </c:forEach>
+										</div>
           </div>
       </div>
       <div class="modal-footer">
@@ -112,52 +128,7 @@
       </div>
     </div>
   </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="idListeCreated" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Ajouter des post-its</h5>
-        <button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-                    	<label for="message-text"
-										class="col-form-label lblTitleList">Liste d'articles (nom général du type de produit):</label>
-            <textarea class="form-control" id="message-titleList" placeholder="beurre, pomme, ..."></textarea>
-<!-- 						<div class="row text-right"> -->
-<!-- 							<div class="col-2"> -->
-<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Ajouter au panier</button> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-2"> -->
-<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Enregistrer la liste</button> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-2"> -->
-<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Supprimer liste</button> -->
-<!-- 							</div> -->
-<!--                     	</div> -->
-<!--                         <div class="row"> -->
-<!--          <input class="plus_contenu" type="button" value="+" -->
-<!-- 											id="plusLContenu" data-idMoreContent="plus_contenu" /> -->
-<!--           </div> -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"
-										data-dismiss="modal">Fermer</button>
-		<button id="supprListe" class="btn btn-primary">Enregistrer articles</button>
-		<button id="enregistrerListe" class="checkout-btn btn btn-danger">Supprimer liste</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-            
+</div>            
 			
 			</main>
         </jsp:body>
