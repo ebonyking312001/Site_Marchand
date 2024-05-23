@@ -34,50 +34,16 @@ public class CtrlListeCourse extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		String action = request.getParameter("action");
-		String nomTP = request.getParameter("nomTP");
 		String nomListeCourse = request.getParameter("nomListeCourse");
+		String listeIdTp = request.getParameter("listeIdTp");
 
-		if (action == null && nomTP == null && nomListeCourse != null) {
+		if (action == null && nomListeCourse != null) {
 			try {
+				if(listeIdTp != null) {
+					
+				}
 				int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse);
 
-				/*----- Type de la réponse -----*/
-//				response.setContentType("application/xml;charset=UTF-8");
-//				response.setCharacterEncoding("UTF-8");
-//				try (PrintWriter out = response.getWriter()) {
-//					/*----- Ecriture de la page XML -----*/
-//					out.println("<?xml version=\"1.0\"?>");
-//					out.println("<intIdListe>");
-//					out.println("<id>" + idNewListe + "</id>");
-//
-//					for (TypeProduit tp : typesProd) {
-//						out.println("<tProd>" + tp.getNomTypeProduit() + "</tProd>");
-//					}
-//					out.println("</intIdListe>");
-//				}
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} else if (nomTP != null) {
-			try {
-				ArrayList<Article> articles = ConnectionMySql.getArticlesByTPName(nomTP);
-
-				/*----- Type de la réponse -----*/
-				response.setContentType("application/xml;charset=UTF-8");
-				response.setCharacterEncoding("UTF-8");
-				try (PrintWriter out = response.getWriter()) {
-					/*----- Ecriture de la page XML -----*/
-					out.println("<?xml version=\"1.0\"?>");
-					out.println("<nomArt>");
-
-					for (Article a : articles) {
-						out.println("<nArt>" + a.getLibelleArticle() + "</nArt>");
-					}
-					out.println("</nomArt>");
-				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

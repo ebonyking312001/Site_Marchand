@@ -82,11 +82,7 @@
                                     </div>
                                 </div>
                             </c:forEach>
-                            <c:forEach var="typeP" items="${typesProduits}">
-                <input type="checkbox" id="${typeP.idTypeProduit}"
-								name="tp" />
-				<label for="horns">${typeP.nomTypeProduit}</label>
-            </c:forEach>
+                          
 <!--                         </div> -->
                     </div>
                 </div>
@@ -114,8 +110,8 @@
 										class="col-form-label lblTitleList">Choisissez les types de produits :</label>
 										<div>
 										 <c:forEach var="typeP" items="${typesProduits}">
-                <input type="checkbox" id="${typeP.idTypeProduit}"
-											name="tp" />
+                <input class="tpCheck" type="checkbox" id="${typeP.idTypeProduit}"
+											name="tp" value="${typeP.idTypeProduit}" />
 				<label for="horns">${typeP.nomTypeProduit}</label>
             </c:forEach>
 										</div>
