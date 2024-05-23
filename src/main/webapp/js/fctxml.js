@@ -168,7 +168,7 @@ function confirmCard() {
 	var xhr = new XMLHttpRequest();
 
 	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
-		alert("La date est déjà passée");
+		alert("La date est deja passee");
 	}
 	else {
 		// Requête au serveur avec les paramètres éventuels.
@@ -176,7 +176,7 @@ function confirmCard() {
 
 		xhr.onload = function() {
 			if (xhr.status === 200) {
-				alert("Commande réalisée avec succès");
+				alert("Commande realisee avec succes");
 				location.href = "/Site_Marchand/";
 				var doc = xhr.responseXML.getElementsByTagName("int");
 				var texte = doc[0].firstChild.nodeValue;
@@ -299,31 +299,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
 document.addEventListener('DOMContentLoaded', function() {
     function parseDateTime(dateString, timeString) {
         // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
-        const longdate = dateString+"T"+timeString
+        const longdate = dateString + "T" + timeString;
         return new Date(longdate);
     }
 
-    function sortTable(table, dateColumn, timeColumn, asc = true) {
-        const rows = Array.from(table.querySelector('tbody').rows);
-        rows.sort((rowA, rowB) => {
-            const dateA = rowA.cells[dateColumn].innerText.trim();
-            const timeA = rowA.cells[timeColumn].innerText.trim();
-            const dateB = rowB.cells[dateColumn].innerText.trim();
-            const timeB = rowB.cells[timeColumn].innerText.trim();
+    function sortCards(container, dateClass, timeClass, asc = true) {
+        const cards = Array.from(container.querySelectorAll('.id-div-commande'));
+        cards.sort((cardA, cardB) => {
+            const dateA = cardA.querySelector(dateClass).innerText.trim();
+            const timeA = cardA.querySelector(timeClass).innerText.trim();
+            const dateB = cardB.querySelector(dateClass).innerText.trim();
+            const timeB = cardB.querySelector(timeClass).innerText.trim();
             const a = parseDateTime(dateA, timeA);
             const b = parseDateTime(dateB, timeB);
-            console.log(dateA);
-        	console.log(timeA);
-        	console.log(a);
             return (a - b) * (asc ? 1 : -1);
         });
 
-        rows.forEach(row => table.querySelector('tbody').appendChild(row));
+        cards.forEach(card => container.appendChild(card));
     }
 
-    const table = document.getElementById('tab-cmds');
+    const container = document.getElementById('tab-cmds');
     document.getElementById('sort-datetime').addEventListener('click', () => {
-        sortTable(table, 0, 1);
+        sortCards(container, '.order-date', '.order-time');
     });
 });
+
 

@@ -18,21 +18,15 @@
 		<div class="container">
 			<div id="categorieContainer" >
 			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
-			<c:if test="${idTypeProduitChoisi != null || idCategorieChoisi != null}">
-				<div><a href="?">Annuler</a></div>
-			</c:if>
+		
 				<p class="d-inline-flex gap-1">
 	 				<c:forEach var="cat" items="${listeCat}"> 
 	 					<c:choose>
                         <c:when test="${idCategorieChoisi != null && idCategorieChoisi == cat.idCategorie}">
-                            <button type="button" class="btn btn-secondary btn-info">
-                                <a class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
-                            </button>
+                                <a class="card shadow-sm btn btn-secondary" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
                         </c:when>
                         <c:otherwise>
-                            <button type="button" class="btn btn-secondary">
-                                <a class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
-                            </button>
+                                <a class="card shadow-sm btn btn-secondary" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
                         </c:otherwise>
                     </c:choose>
 					</c:forEach> 
@@ -44,22 +38,12 @@
 					<div id="productTypeContainer">
 						<p class="d-inline-flex gap-1">
 								<c:forEach var="typeProd" items="${listeTypeProd}">
-									<c:choose>
-				                        <c:when test="${idTypeProduitChoisi != null && idTypeProduitChoisi == typeProd.idTypeProduit}">
-				                            <button type="button" class="btn btn-secondary btn-info">
-				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
-				                            </button>
-				                        </c:when>
-				                        <c:otherwise>
-				                            <button type="button" class="btn btn-secondary">
-				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
-				                            </button>
-				                        </c:otherwise>
-				                    </c:choose>
+				                                <a class="card shadow-sm btn btn-secondary" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
+				           
 								</c:forEach>
 						</p>
 					</div>
-				</div>
+			
 			</c:if>
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 
