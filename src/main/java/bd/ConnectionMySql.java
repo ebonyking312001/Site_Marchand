@@ -656,26 +656,6 @@ public class ConnectionMySql {
 		return contenuListeMap;
 	}
 
-	public static void updateContenuListe(int idListe, int newEAN, int newIdTypeProduit, int newQuantite)
-			throws SQLException, ClassNotFoundException {
-		ConnectionMySql.connexion();
-
-		// Requête SQL pour la mise à jour
-		String updateQuery = "UPDATE Contenu_Liste SET EAN = ?, IdTypeProduit = ?, quantite = ? WHERE IdListe = ?";
-
-		try (PreparedStatement updateStmt = ConnectionMySql.cx.prepareStatement(updateQuery)) {
-			// Remplacer les paramètres de requête par les nouvelles valeurs
-			updateStmt.setInt(1, newEAN);
-			updateStmt.setInt(2, newIdTypeProduit);
-			updateStmt.setInt(3, newQuantite);
-			updateStmt.setInt(4, idListe);
-
-			// Exécuter la mise à jour
-			updateStmt.executeUpdate();
-		}
-
-		ConnectionMySql.cx.close();
-	}
 
 	public static void insererLigneListe(int idListe, int idTypeProduit, int EAN, int quantite)
 			throws SQLException, ClassNotFoundException {
@@ -763,7 +743,7 @@ public class ConnectionMySql {
 		ArrayList<Commande> liste = new ArrayList<>();
 		connexion();
 
-		String sql = "SELECT * FROM Commandes c, CreneauRetrait cr, Magasins m, Articles_Commandes ac, Articles a WHERE c.IdCreneau = cr.IdCreneau AND a.EAN=ac.EAN AND c.IdCommande = ac.IdCommande AND m.IdMagasin = c.IdMagasin AND IdUtilisateur = 1 AND EtatCommande = 'En cours'";
+		String sql = "SELECT * FROM Commandes c, CreneauRetrait cr, Magasins m, Articles_Commandes ac, Articles a WHERE c.IdCreneau = cr.IdCreneau AND a.EAN=ac.EAN AND c.IdCommande = ac.IdCommande AND m.IdMagasin = c.IdMagasin AND IdUtilisateur = 1 AND EtatCommande = 'En cours' GROUP BY(c.IdCommande)";
 		try (PreparedStatement st = cx.prepareStatement(sql)) {
 			try (ResultSet rs = st.executeQuery()) {
 				while (rs.next()) {
@@ -1057,7 +1037,7 @@ public class ConnectionMySql {
 
 	    ArrayList<Article> liste = new ArrayList<>();
 
-	    String sql = "SELECT * FROM Articles a, TypeProduit t WHERE t.IdTypeProduit = a.IdTypeProduit AND a.IdTypeProduit = ?";
+	    String sql = "SELECT DISTINCT * FROM Articles a, TypeProduit t, Contenu_Liste c WHERE t.IdTypeProduit = a.IdTypeProduit AND c.IdTypeProduit = a.IdTypeProduit AND a.IdTypeProduit = ? GROUP BY a.EAN";
 
 	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 
@@ -1083,7 +1063,6 @@ public class ConnectionMySql {
 	                    rs.getInt("IdCategorie"), 
 	                    rs.getInt("IdTypeProduit"));
 	                	article.setNomTypeProduit(rs.getString("NomTypeProduit"));
-
 	                liste.add(article);
 	            }
 	        }
@@ -1174,6 +1153,34 @@ public class ConnectionMySql {
 
 	    return liste;
 	}
+	
+	
+	public static void updateContenuListe(int newEAN, int newQuantite, int idListe, int idTypeProduit) throws ClassNotFoundException, SQLException {
+	    connexion(); // Ouvre la connexion à la base de données
+
+	    // Requête SQL d'update
+	    String sql = "UPDATE Contenu_Liste " +
+	                 "SET EAN = ?, quantite = ? " +
+	                 "WHERE idListe = ? AND idTypeProduit = ? AND EAN IS NULL AND quantite IS NULL";
+
+	    try (PreparedStatement st = cx.prepareStatement(sql)) {
+	        // Assignation des valeurs aux paramètres de la requête
+	        st.setInt(1, newEAN);
+	        st.setInt(2, newQuantite);
+	        st.setInt(3, idListe);
+	        st.setInt(4, idTypeProduit);
+
+	        // Exécution de la requête
+	        st.executeUpdate();
+	    } catch (SQLException sqle) {
+	        throw new SQLException("Erreur lors de la mise à jour du contenu de la liste : " + sqle.getMessage());
+	    } finally {
+	        // Fermeture de la connexion à la base de données
+	        if (cx != null) {
+	            cx.close();
+	        }
+	    }
+	}
 
 	/*----------------------------*/
 	/* Programme principal (test) */
@@ -1187,7 +1194,7 @@ public class ConnectionMySql {
 //		insererLigneListe(1, 18, 23, 4);
 
 //		System.out.println(getContenuListe(1));
-		System.out.println(getContenuListeByIdForArticle(1));
+		System.out.println(getAllArticlesByTypeProduit(1));
 
 
 	}

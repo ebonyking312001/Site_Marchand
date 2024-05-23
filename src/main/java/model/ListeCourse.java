@@ -1,10 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 public class ListeCourse {
 
 	private int idListe;
 	private int idUtilisateur;
 	private String nomListe;
+	private ArrayList<ContenuListe> contenuTypeProduit;
+	private ArrayList<ContenuListe> contenuArticle;
 	
 	public ListeCourse(int idListe, String nomListe, int idUtilisateur) {
 		this.idListe = idListe;
@@ -34,6 +38,22 @@ public class ListeCourse {
 
 	public void setNomListe(String nomListe) {
 		this.nomListe = nomListe;
+	}
+
+	public ArrayList<ContenuListe> getContenuTypeProduit() {
+		return contenuTypeProduit;
+	}
+
+	public ArrayList<ContenuListe> getContenuArticle() {
+		return contenuArticle;
+	}
+	
+	public void setContenuTypeProduit(ArrayList<ContenuListe> contenuTypeProduit) {
+	    this.contenuTypeProduit = contenuTypeProduit;
+	}
+	
+	public void setContenuArticle(ArrayList<ContenuListe> contenuArticle) {
+	    this.contenuArticle = contenuArticle;
 	}
 
 }

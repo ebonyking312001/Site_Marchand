@@ -198,6 +198,8 @@ public class Article {
 	public void setNomTypeProduit(String nomTypeProduit) {
 		this.nomTypeProduit = nomTypeProduit;
 	}
+	
+	
 
 	@Override
 	public String toString() {

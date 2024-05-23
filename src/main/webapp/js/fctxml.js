@@ -224,7 +224,6 @@ function addListeCourse() {
 	var tpProdSelectionnes = document.getElementsByClassName("tpCheck");
 	
 	const stringIdsTPs = '';
-	var
 	for (var i = 0; tpProdSelectionnes[i]; ++i) {
 		if (tpProdSelectionnes[i].checked) {
 			stringIdsTPs += tpProdSelectionnes[i].value + "_";

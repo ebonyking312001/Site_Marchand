@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class ContenuListe {
 
 	private int idListe;
@@ -9,6 +11,8 @@ public class ContenuListe {
 	private String nomTypeProduit;
 	private String libelleArticle;
 	private String marque;
+
+
 	
 	public ContenuListe(int idListe, int EAN, int idTypeProduit, int quantite) {
 		this.EAN = EAN;
@@ -72,6 +76,8 @@ public class ContenuListe {
 	public void setMarque(String marque) {
 		this.marque = marque;
 	}
+	
+
 	
 	
 	

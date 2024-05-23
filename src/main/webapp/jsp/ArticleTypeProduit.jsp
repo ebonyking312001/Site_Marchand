@@ -54,21 +54,30 @@
     <h1>Liste des Articles du type "${nomTypeProduit}"</h1>
     <ul>
         <c:forEach var="article" items="${articles}">
+        <form name = "ajoutArticle" action = "${pageContext.request.contextPath}/CtrlChoixArticleListe" method = "get">
+           
             <li>
                 <div class="article-container">
+                
                     <img src="${article.vignetteArticle}" alt="Vignette" class="article-image">
                     <div class="article-details">
                         <h2>${article.libelleArticle}</h2>
                         <p>Prix unitaire: ${article.prixUnitaireArticle} €</p>
                         <p>Marque: ${article.marque}</p>
                         <p>Promo: ${article.promoArticle}</p>
+                        <input name = "idListe" style= "display:none" value="${idListe}">
+                        <input name = "idTypeProduit" style= "display:none" value = "${idTypeProduit}">
+                        <input name = "EAN" style= "display:none" value="${article.EAN}">
+                        
+                       
                     </div>
                     <div class="quantity-input">
-                        <input type="number" value="1" min="1">
-                        <button class="choose-button">Choisir</button>
+                        <input name = "quantite" type="number" value="1" min="1" id="quantityInput_${article.EAN}">
+                        <input name="submitAll" type="submit" value="Choisir">
                     </div>
                 </div>
             </li>
+            </form>
         </c:forEach>
     </ul>
 </body>
