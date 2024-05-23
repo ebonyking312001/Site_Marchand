@@ -148,7 +148,7 @@ function getOpeningMagasin() {
 			var texteOpt = "";
 
 			for (i = 0; i < doc.length; i++) {
-				texteOpt += '<option value="' + doc[i].firstChild.nodeValue + '">' + doc[i].firstChild.nodeValue + "</option>";
+				texteOpt += '<option value="' + doc[i].lastChild.firstChild.nodeValue + '">' + doc[i].firstChild.nodeValue + "</option>";
 			}
 
 			var elt = document.getElementById("heureRetMag");
@@ -310,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const timeA = cardA.querySelector(timeClass).innerText.trim();
             const dateB = cardB.querySelector(dateClass).innerText.trim();
             const timeB = cardB.querySelector(timeClass).innerText.trim();
+
             const a = parseDateTime(dateA, timeA);
             const b = parseDateTime(dateB, timeB);
             return (a - b) * (asc ? 1 : -1);

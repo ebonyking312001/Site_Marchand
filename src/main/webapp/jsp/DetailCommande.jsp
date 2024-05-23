@@ -17,11 +17,11 @@
                     <div class="col-3 col-sm-12 mb-4"
                          ligne-cmd-ean="${article.EAN}" ligne-cmd-etat="${article.estValide ? '1' : '0'}">
                         <div class="container card shadow-sm">
-                            <a href="?idArticle=${article.EAN}">
+                            <a href="/Site_Marchand/?idArticle=${article.EAN}">
                                 <img src="${article.vignetteArticle}" class="card-img-top" alt="${article.libelleArticle}">
                             </a>
                             <h5 class="card-title">
-                                <a class="text-decoration-none text-primary fw-bold" href="?idArticle=${article.EAN}">
+                                <a class="text-decoration-none text-primary fw-bold" href="/Site_Marchand/?idArticle=${article.EAN}">
                                     ${article.libelleArticle}
                                 </a>
                             </h5>

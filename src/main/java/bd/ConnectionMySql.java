@@ -19,6 +19,7 @@ import model.Commande;
 import model.TypeProduit;
 import model.User;
 import model.Magasin;
+import model.Magasin_CreneauRetrait;
 
 /**
  * Classe en charge de la base de données.
@@ -923,6 +924,40 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 	}
 	
+	/**
+	 * returen MagCreneaux dispo
+	 * @throws Exception 
+	 */
+	public static ArrayList<Magasin_CreneauRetrait> creneauxDispo (String magasinNom) throws Exception {
+		ArrayList<Magasin_CreneauRetrait> creneauxDispo =new ArrayList<Magasin_CreneauRetrait>();
+		ConnectionMySql.connexion();
+		String sql = "SELECT CreneauRetrait.IdCreneau,Magasins.IdMagasin,Magasins.NomMagasin,CreneauRetrait.DebutCreneau,CreneauRetrait.FinCreneau,NbDispoCreneau "
+				+ "FROM Magasins_CreneauRetraits,CreneauRetrait,Magasins "
+				+ "WHERE Magasins_CreneauRetraits.IdCreneau=CreneauRetrait.IdCreneau "
+				+ "AND Magasins_CreneauRetraits.IdMagasin=Magasins.IdMagasin "
+				+ "AND Magasins.NomMagasin= ? ";
+
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			st.setString(1,magasinNom);
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					Magasin_CreneauRetrait mc = new Magasin_CreneauRetrait(
+							rs.getInt(1), 
+							rs.getInt(2),
+							rs.getString(3), 
+							rs.getTime(4),
+							rs.getTime(5),
+							rs.getInt(6));
+					creneauxDispo.add(mc);
+				}
+			st.close();
+		} catch (Exception sqle) {
+			throw new Exception("Erreur creneauxDispo : " + sqle.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return creneauxDispo;
+		}
+	}
 		public static User authenticate(String email, String password) throws Exception {
 	        ConnectionMySql.connexion();
 	        User user = null;
@@ -962,7 +997,9 @@ public class ConnectionMySql {
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-
+		System.out.println("hi");
+		System.out.println(creneauxDispo ("Supermarché A").get(0).getDebutCreneau());
+		System.out.println(creneauxDispo ("Supermarché A").get(1).getDebutCreneau());
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/
