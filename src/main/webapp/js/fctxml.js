@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Date(longdate);
     }
 
-    function sortTable(table, dateColumn, timeColumn, asc = true) {
+    function sortTable(table, dateColumn, timeColumn, asc = false) {
         const rows = Array.from(table.querySelector('tbody').rows);
         rows.sort((rowA, rowB) => {
             const dateA = rowA.cells[dateColumn].innerText.trim();
