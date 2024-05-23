@@ -68,4 +68,22 @@
         <servlet-name>JspListeCourse</servlet-name>
         <url-pattern>/ListeCourse</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>JspListeCommande</servlet-name>
+        <jsp-file>/jsp/ListeCommande.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JspListeCommande</servlet-name>
+        <url-pattern>/ListeCommande</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>JspModificationMagasin</servlet-name>
+        <jsp-file>/jsp/ModificationCréneauMagasin.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JspModificationMagasin</servlet-name>
+        <url-pattern>/ModificationCreneau</url-pattern>
+    </servlet-mapping>
 </web-app>

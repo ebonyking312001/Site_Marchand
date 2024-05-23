@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class Commande {
@@ -8,6 +9,10 @@ public class Commande {
 	private int IdCommande;
 	private int IdMagasin;
 	private int IdUtilisateur;
+	private int idCreneau;
+	private Time DebutCreneau;
+	private Time FinCreneau;
+	private String NomMagasin;
 	
 	public Commande(Date DateRetrait,String EtatCommande,int IdCommande,int IdMagasin,int IdUtilisateur){
 		this.DateRetrait=DateRetrait;
@@ -47,4 +52,45 @@ public class Commande {
 	public void setIdUtilisateur(int idUtilisateur) {
 		IdUtilisateur = idUtilisateur;
 	}
+
+	public Time getDebutCreneau() {
+		return DebutCreneau;
+	}
+
+	public void setDebutCreneau(Time debutCreneau) {
+		DebutCreneau = debutCreneau;
+	}
+
+	public Time getFinCreneau() {
+		return FinCreneau;
+	}
+
+	public void setFinCreneau(Time finCreneau) {
+		FinCreneau = finCreneau;
+	}
+
+	public String getNomMagasin() {
+		return NomMagasin;
+	}
+
+	public void setNomMagasin(String nomMagasin) {
+		NomMagasin = nomMagasin;
+	}
+
+	public int getIdCreneau() {
+		return idCreneau;
+	}
+
+	public void setIdCreneau(int idCreneau) {
+		this.idCreneau = idCreneau;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
