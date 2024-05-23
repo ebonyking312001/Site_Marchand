@@ -714,7 +714,7 @@ public class ConnectionMySql {
 		ConnectionMySql.cx.close();
 	}
 
-	public static int addListeCourse(String nomLC) throws SQLException, ClassNotFoundException {
+	public static int addListeCourse(String nomLC, List<String> listIdTypeProduit) throws Exception {
 		ConnectionMySql.connexion();
 
 		int idListe = 0;
@@ -736,6 +736,21 @@ public class ConnectionMySql {
 				System.out.println("Liste de courses ajoutée avec l'identifiant : " + idListe + " " + nomLC);
 			} else {
 				throw new SQLException("Échec de la récupération de l'identifiant de la liste de courses ajoutée.");
+			}
+		}
+		
+		for (String idTypeProduit : listIdTypeProduit) {
+			String sqltypeProduitListeCourse = "INSERT INTO Contenu_Liste (IdListe, IdTypeProduit) VALUES (?, ?)";
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqltypeProduitListeCourse)) {
+
+				st.setInt(1, idListe);
+				st.setString(2, idTypeProduit);
+
+				st.executeUpdate();
+				st.close();
+
+			} catch (SQLException e) {
+				throw new Exception("Bd.addTypeProduitListe() - " + e.getMessage());
 			}
 		}
 

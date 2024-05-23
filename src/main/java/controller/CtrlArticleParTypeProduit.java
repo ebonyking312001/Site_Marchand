@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import bd.ConnectionMySql;
 import model.Article;
 
-@WebServlet("/ListeArticlesParTypeProduit/*")
+@WebServlet("/ListeArticlesParTypeProduit")
 public class CtrlArticleParTypeProduit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       int idTypeProduit = Integer.parseInt(request.getParameter("idTypeProduit"));
+       //int idTypeProduit = Integer.parseInt(request.getParameter("idTypeProduit"));
+    	int idTypeProduit = 1;
         try {
             ArrayList<Article> articles = ConnectionMySql.getAllArticlesByTypeProduit(idTypeProduit);
             String nomTypeProduit = articles.get(0).getNomTypeProduit();
