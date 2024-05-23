@@ -33,44 +33,47 @@ public class CtrlListeCourse extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        String action = request.getParameter("action");
-        String nomListeCourse = request.getParameter("nomListeCourse");
-        String listeIdTp = request.getParameter("listeIdTp");
 
-        if (action == null && nomListeCourse != null) {
-            try {
-                if(listeIdTp != null) {    
-                }
+		String nomListeCourse = request.getParameter("nomListeCourse");
+		String listeIdTp = request.getParameter("listeIdTp");
 
-                int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse, null);
+		if (nomListeCourse != null) {
+			if(listeIdTp != null) {
+				String[] listeIds = listeIdTp.split("_");
+				ArrayList<String> listIdStrings = new ArrayList<>();
+				for(String id : listeIds) {
+					listIdStrings.add(id);
+				}
+				try {
+					int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse, listIdStrings);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else  {
+				try {
+					int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+				
+		} else {
+			try {
+				ArrayList<TypeProduit> typesProd = ConnectionMySql.afficherTypeProduit();
+				request.setAttribute("typesProduits", typesProd);
+				
+				ArrayList<ListeCourse> courses = ConnectionMySql.getListesCourses();
+				request.setAttribute("listeCourses", courses);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			request.getRequestDispatcher("ListeCourse").forward(request, response);
+		}
+	}
 
-        } else {
-            try {
-                ArrayList<TypeProduit> typesProd = ConnectionMySql.afficherTypeProduit();
-                request.setAttribute("typesProduits", typesProd);
-                
-                ArrayList<ListeCourse> courses = ConnectionMySql.getListesCourses();
-                request.setAttribute("listeCourses", courses);
-                
-                // Récupérer les détails de chaque liste de courses
-                for (ListeCourse course : courses) {
-                    int idListe = course.getIdListe();
-                    ArrayList<ContenuListe> contenuTypeProduit = ConnectionMySql.getContenuListeByIdForTypeProduit(idListe);
-                    ArrayList<ContenuListe> contenuArticle = ConnectionMySql.getContenuListeByIdForArticle(idListe);
-                    course.setContenuTypeProduit(contenuTypeProduit);
-                    course.setContenuArticle(contenuArticle);
-                }
-
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
-            }
-            request.getRequestDispatcher("ListeCourse").forward(request, response);
-        }
-    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
