@@ -55,6 +55,7 @@ public class CtrlListeCourse extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
+				
 		} else {
 			try {
 				ArrayList<TypeProduit> typesProd = ConnectionMySql.afficherTypeProduit();
