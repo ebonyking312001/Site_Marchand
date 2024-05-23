@@ -76,7 +76,7 @@
 
         <b>Choix du magasin de retrait</b>
         <div class="row mt-5">
-        <div class="col-2">
+        <div class="col-3">
         <select id="nomMagasin">
 		<option>-----</option>
 			<c:forEach var="mag" items="${requestScope.allMagasins}">
@@ -85,24 +85,24 @@
 		
 		</select>
         </div>
-        <div class="col-2">
+        <div class="col-3">
         <input type="date" id="dateRetMag" name="datRetMag" />
         </div>
-		<div class="col-2">
+		<div class="col-3">
 		<select id="heureRetMag"><option>-----</option></select>
 <!-- 		<input type="time" id="heureRetMag" name="retMag" min="00:00" -->
 <!-- 									max="23:59" required /> -->
 		</div>
 		
-		<div class="col-2" id="HoraireMagasin"></div>
+		<div class="col-4" id="HoraireMagasin"></div>
         </div>
         <div class="row mt-5">
-									<div class="col-2">
+									<div class="col-3">
 									<div>
 		<button class="checkout-btn" id="final_validation">Valider la commande</button>
 </div>
 									</div>
-									<div class="col-2">
+									<div class="col-3">
 											<a href="ServletPanier">
 			<button type="button" class="btn btn-sm btn-outline-secondary">Retour au panier</button>
 		</a>

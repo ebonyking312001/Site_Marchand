@@ -148,7 +148,7 @@ function getOpeningMagasin() {
 			var texteOpt = "";
 
 			for (i = 0; i < doc.length; i++) {
-				texteOpt += '<option value="' + doc[i].firstChild.nodeValue + '">' + doc[i].firstChild.nodeValue + "</option>";
+				texteOpt += '<option value="' + doc[i].lastChild.firstChild.nodeValue + '">' + doc[i].firstChild.nodeValue + "</option>";
 			}
 
 			var elt = document.getElementById("heureRetMag");

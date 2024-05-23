@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import bd.ConnectionMySql;
 import model.Article;
 import model.Magasin;
+import model.Magasin_CreneauRetrait;
 
 /**
  * Servlet implementation class CtrlConfirmationPanierServlet
@@ -44,7 +45,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 		try {
 			if (nomMagasin != null && heureRetrait == null && dateRetrait == null) {
 
-				/*----- Type de la réponse -----*/
+				/*----- Type de la rï¿½ponse -----*/
 				response.setContentType("application/xml;charset=UTF-8");
 				response.setCharacterEncoding("UTF-8");
 				try (PrintWriter out = response.getWriter()) {
@@ -53,18 +54,20 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					out.println("<horaire_journee>");
 
 					try {
-						/*----- Lecture de liste de mots dans la BD -----*/
 						String horaire = ConnectionMySql.getOpeningByMagasinName(nomMagasin);
 
 						out.println("<hof>" + horaire + "</hof>");
-						ArrayList<String> heuresDispo = ConnectionMySql.getHoursOpenedByMagasinId(nomMagasin);
+						ArrayList<Magasin_CreneauRetrait> heuresDispo = ConnectionMySql.creneauxDispo(nomMagasin);
 						
-						for(String h : heuresDispo) {
-							out.println("<hr>" + h + "</hr>");
+						for(Magasin_CreneauRetrait mc : heuresDispo) {
+							out.println("<hr>"+
+									mc.getDebutCreneau().toString().substring(0, 5)+"-"+mc.getFinCreneau().toString().substring(0, 5) +
+									" nombre disponibie : "+ mc.getNbDispoCreneau()+ 
+									"<idC>" + mc.getIdCreneau()+"</idC></hr>");
 						}
 						
-					} catch (ClassNotFoundException | SQLException ex) {
-						out.println("<hof>Erreur - " + ex.getMessage() + "</hof>");
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 					out.println("</horaire_journee>");
@@ -89,7 +92,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					session.setAttribute("articleList", null);
 					session.setAttribute("countArtCard", 0);
 					
-					/*----- Type de la réponse -----*/
+					/*----- Type de la rï¿½ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
