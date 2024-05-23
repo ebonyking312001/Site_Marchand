@@ -67,14 +67,14 @@
                             </div>
                         </c:forEach>
                     </div>
-                     <div class="total">
-                        <p class="fw-bold my-2">Prix total à payer : <fmt:formatNumber
+                     <div class="total" id="totalPrice" data-value="${totalPrice}">
+                        <p class="fw-bold my-2" >Prix total à payer : <fmt:formatNumber
 								value="${totalPrice}" minFractionDigits="1"
-								maxFractionDigits="1" /> €</p>
+								maxFractionDigits="1"/> €</p>
                     </div>
-                    <div>point de fidélité à gagner : ${pointFidelite}</div>
+                    <div id="addLoyaltyPoints">Je cagnotte <b>${pointFidelite}</b> points</div>
         <div class="mt-5">
-
+	
         <b>Choix du magasin de retrait</b>
         <div class="row mt-5">
         <div class="col-2">
@@ -97,9 +97,18 @@
 		
 		<div class="col-2" id="HoraireMagasin"></div>
         </div>
+        
+        <div><b>Saisir le montant à décagnotter</b></div>
+	    <div id="pointsFideliteDispo" data-value="${pointFideliteDispo}">Solde : ${pointFideliteDispo}</div>
+	    <div>
+	        <input type="number" id="pointsInput" value="0" step="10" min=0 max="${pointFideliteDispo}"/>
+	        <button id="decagnotter">Décagnotter</button>
+	        <div class="text-danger" id="errorPoints"></div>
+	    </div>
+        
         <div class="row mt-5">
 									<div class="col-2">
-									<div>
+									<div >
 		<button class="checkout-btn" id="final_validation">Valider la commande</button>
 </div>
 									</div>

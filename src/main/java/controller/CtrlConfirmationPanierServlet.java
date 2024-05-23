@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import bd.ConnectionMySql;
 import model.Article;
 import model.Magasin;
+import model.Utilisateur;
 
 /**
  * Servlet implementation class CtrlConfirmationPanierServlet
@@ -42,23 +43,70 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 		String heureRetrait = request.getParameter("hRet");
 		String dateRetrait = request.getParameter("dtRet");
 		String totalPrice = request.getParameter("totalPrice");
-		// get idUtilisateur
-		int idUtilisateur = 5;
+		System.out.println("total price="+totalPrice);
+		String pointsInput = request.getParameter("pointsInput");
+		String newTotalPrice = request.getParameter("newTotalPrice");
 		
+		// Récupérer session loyalty points
+		String sessionLoyaltyPoints = (String) session.getAttribute("sessionLoyaltyPoints");
+		
+		// get utilisateur - A ENLEVER!!
+		Utilisateur client = new Utilisateur(5, "John", "Doe", "john.doe@example.com","client", "123 Main St", 90);
+		// set session utilisateur - A ENLEVER!!
+		session.setAttribute("sessionClient", client);
+		// get session utilisateur 
+		Utilisateur sessionClient = (Utilisateur) session.getAttribute("sessionClient");
+		
+		// set session points input
+		if (pointsInput != null) {
+			session.setAttribute("sessionPointsInput", pointsInput);
+		}
 		// set session point fidelite
 		if (totalPrice != null) {
 			// Convert totalPrice to int
-            float totalPriceInt = Float.parseFloat(totalPrice);
+            float totalPriceFloat = Float.parseFloat(totalPrice);
+            // set session totalPrice
+    		session.setAttribute("totalPrice", totalPriceFloat);
 			// Set session loyalty points
-			session.setAttribute("sessionLoyaltyPoints", getLoyaltyPointsBySpending(totalPriceInt));
+			session.setAttribute("sessionLoyaltyPoints", String.valueOf(getLoyaltyPointsBySpending(totalPriceFloat)));
+			// Récupérer session loyalty points
+			sessionLoyaltyPoints = (String) session.getAttribute("sessionLoyaltyPoints");
 		}
-		// Récupérer session Id Categorie
-		int sessionLoyaltyPoints = (int) session.getAttribute("sessionLoyaltyPoints");
+		// set session point fidelite si il ya un nouveau prix
+		if (newTotalPrice != null) {
+			// Convert totalPrice to int
+            float newTotalPriceFloat = Float.parseFloat(newTotalPrice);
+			// Set session loyalty points pour nouveau points à gagner
+			session.setAttribute("sessionLoyaltyPoints", String.valueOf(getLoyaltyPointsBySpending(newTotalPriceFloat)));
+			// Récupérer session loyalty points
+			sessionLoyaltyPoints = (String) session.getAttribute("sessionLoyaltyPoints");
+			
+			/*----- Type de la r�ponse -----*/
+			response.setContentType("application/xml;charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			
+			try (PrintWriter out = response.getWriter()) {
+				/*----- Ecriture de la page XML -----*/
+				out.println("<?xml version=\"1.0\"?>");
+				out.println("<loyaltyPoints>");
+				out.println("<points>" + sessionLoyaltyPoints + "</points>");
+				out.println("</loyaltyPoints>");
+				
+			}
+		}
+		System.out.println("sessionLoyalyPoints="+sessionLoyaltyPoints);
+		
+		// Récupérer session loyalty points à soustraire
+		String sessionPointsInput = (String) session.getAttribute("sessionPointsInput");
 
 		try {
 			// afficher points de fidelite lorsqu'un utilisateur est identifie
-			if (idUtilisateur > 0) {
+			if (sessionClient.getIdUtilisateur() > 0) {
+				// Récuperer infos utilisateurs
+				// Afficher point de fidelite a gagner
 				request.setAttribute("pointFidelite", sessionLoyaltyPoints);
+				// afficher point de fidelite disponible
+				request.setAttribute("pointFideliteDispo", sessionClient.getPointsFideliteUtilisateur());
 			}
 			if (nomMagasin != null && heureRetrait == null && dateRetrait == null) {
 
@@ -81,6 +129,9 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 							out.println("<hr>" + h + "</hr>");
 						}
 						
+						// set xml nouveau points fidélité à gagner
+						out.println("<points>" + sessionLoyaltyPoints + "</points>");
+						
 					} catch (ClassNotFoundException | SQLException ex) {
 						out.println("<hof>Erreur - " + ex.getMessage() + "</hof>");
 					}
@@ -102,8 +153,19 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					Date d = java.sql.Date.valueOf(dateFormated);
 					Time tDeb = java.sql.Time.valueOf(hDeb + ":00");
 					Time tFin = java.sql.Time.valueOf(hFin + ":00");
-					
-					ConnectionMySql.updateLoyaltyPoints(idUtilisateur, sessionLoyaltyPoints, "add");
+										
+					// ajouter points de fidélité sur le compte de l'utilisateur
+					if (sessionLoyaltyPoints != null) {
+						int points = Integer.parseInt(sessionLoyaltyPoints);
+						ConnectionMySql.updateLoyaltyPoints(sessionClient.getIdUtilisateur(), points, "add");
+					}
+					// enlever points de fidélité sur le compte de l'utilisateur
+					if (sessionPointsInput != null) {
+						System.out.println("sessionPointsInput="+sessionPointsInput);
+						// convert string to int
+						int points = Integer.parseInt(sessionPointsInput);
+						ConnectionMySql.updateLoyaltyPoints(sessionClient.getIdUtilisateur(), points, "substract");
+					}
 					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
 					session.setAttribute("articleList", null);
 					session.setAttribute("countArtCard", 0);
@@ -116,7 +178,9 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 						out.println("<?xml version=\"1.0\"?>");
 						out.println("<cardHeader>");
 						out.println("<int>" + 0 + "</int>");
+						out.println("<points>" + sessionLoyaltyPoints + "</points>");
 						out.println("</cardHeader>");
+						
 					}
 
 //					request.getRequestDispatcher("accueil").forward(request, response);
@@ -127,10 +191,11 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 				
 
 			} else {
+							
 				ArrayList<Magasin> magasins = ConnectionMySql.getAllMagasins();
-
 				request.setAttribute("allMagasins", magasins);
 				request.getRequestDispatcher("jsp/ConfirmationPanier.jsp").forward(request, response);
+
 			}
 			
 
@@ -152,7 +217,11 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 	}
 	
 	public int getLoyaltyPointsBySpending(float sommeDepense) {
-		 return (int) sommeDepense / 5;
+		int discount = 0;
+		if ((int)sommeDepense > 5) {
+			discount = (int) sommeDepense / 5;
+		}
+		return discount;
 	}
 
 }

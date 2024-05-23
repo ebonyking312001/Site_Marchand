@@ -923,7 +923,10 @@ public class ConnectionMySql {
 		ConnectionMySql.connexion();
 		// requête SQL 
 		String sql;
+		System.out.println("updateLoyaltyPoints()");
 	    if ("substract".equalsIgnoreCase(operation)) {
+	    	System.out.println("idUtilisateur="+idUtilisateur);
+	    	System.out.println("substract sql");
 	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur - ? WHERE IdUtilisateur = ?";
 	    } else {
 	        // Default to "add" operation
