@@ -49,7 +49,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" height="30" width="32.5" viewBox="0 0 24 24">
                     <path fill="#ffffff" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 8h12v-2H7v2zm0-4h12v-2H7v2zm0-6v2h12V7H7z"/>
                 </svg>
-      </a>
+      		</a>
+      		<a href="ServletCommandes" class="text-white ms-3" style="text-decoration: none; border: 1px solid #ffffff; padding: 5px 10px; border-radius: 5px;">
+    Mes commandes
+</a>
 		</div>
 	</div>
 </header>

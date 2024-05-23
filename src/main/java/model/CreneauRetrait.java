@@ -5,13 +5,13 @@ public class CreneauRetrait {
 	private String DebutCreneau;
 	private String FinCreneau;
 	private int IdCreneau;
-	private int NbDispoCreneau;
+
+	public CreneauRetrait() {}
 	
-	public CreneauRetrait(int IdCreneau, String DebutCreneau, String FinCreneau,  int NbDispoCreneau) {
+	public CreneauRetrait(int IdCreneau, String DebutCreneau, String FinCreneau) {
 		this.DebutCreneau = DebutCreneau;
 		this.FinCreneau = FinCreneau;
-		this.IdCreneau = IdCreneau;
-		this.NbDispoCreneau = IdCreneau;	
+		this.IdCreneau = IdCreneau;	
 	}
 
 	public String getDebutCreneau() {
@@ -36,20 +36,6 @@ public class CreneauRetrait {
 
 	public void setIdCreneau(int idCreneau) {
 		IdCreneau = idCreneau;
-	}
-
-	public int getNbDispoCreneau() {
-		return NbDispoCreneau;
-	}
-
-	public void setNbDispoCreneau(int nbDispoCreneau) {
-		NbDispoCreneau = nbDispoCreneau;
-	}
-
-	@Override
-	public String toString() {
-		return "CreneauRetrait [DebutCreneau=" + DebutCreneau + ", FinCreneau=" + FinCreneau + ", IdCreneau="
-				+ IdCreneau + ", NbDispoCreneau=" + NbDispoCreneau + "]";
 	}
 	
 }
