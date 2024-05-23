@@ -222,27 +222,28 @@ function addListeCourse() {
 	var xhr = new XMLHttpRequest();
 
 	var tpProdSelectionnes = document.getElementsByClassName("tpCheck");
-	
-	const stringIdsTPs = '';
-	var
+
+	let stringIdsTPs = '';
+
 	for (var i = 0; tpProdSelectionnes[i]; ++i) {
 		if (tpProdSelectionnes[i].checked) {
-			stringIdsTPs += tpProdSelectionnes[i].value + "_";
+			stringIdsTPs += String(tpProdSelectionnes[i].value) + "_";
 		}
 	}
-	
-	// Requête au serveur avec les paramètres éventuels.
-	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value + "&listeIdTp=" + stringIdsTPs, true);
 
-	xhr.onload = function() {
-		// Si la requête http s'est bien passée.
-		if (xhr.status === 200) {
-			document.getElementById("message-titleList").value = '';
+	// Requête au serveur avec les paramètres éventuels.
+	//	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value + "&listeIdTp=" + stringIdsTPs, true);
+
+	document.getElementById("message-titleList").value = '';
+
+	for (var i = 0; tpProdSelectionnes[i]; ++i) {
+		if (tpProdSelectionnes[i].checked) {
+			tpProdSelectionnes[i].checked = false;
 		}
 	};
 
-	// Envoie de la requête.
-	xhr.send();
+	$('#ModalListeCourse').modal('hide');
+
 }
 
 /**

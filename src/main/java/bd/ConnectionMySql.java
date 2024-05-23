@@ -739,18 +739,20 @@ public class ConnectionMySql {
 			}
 		}
 		
-		for (String idTypeProduit : listIdTypeProduit) {
-			String sqltypeProduitListeCourse = "INSERT INTO Contenu_Liste (IdListe, IdTypeProduit) VALUES (?, ?)";
-			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqltypeProduitListeCourse)) {
+		if(listIdTypeProduit != null) {
+			for (String idTypeProduit : listIdTypeProduit) {
+				String sqltypeProduitListeCourse = "INSERT INTO Contenu_Liste (IdListe, IdTypeProduit) VALUES (?, ?)";
+				try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqltypeProduitListeCourse)) {
 
-				st.setInt(1, idListe);
-				st.setString(2, idTypeProduit);
+					st.setInt(1, idListe);
+					st.setString(2, idTypeProduit);
 
-				st.executeUpdate();
-				st.close();
+					st.executeUpdate();
+					st.close();
 
-			} catch (SQLException e) {
-				throw new Exception("Bd.addTypeProduitListe() - " + e.getMessage());
+				} catch (SQLException e) {
+					throw new Exception("Bd.addListeCourse() - " + e.getMessage());
+				}
 			}
 		}
 

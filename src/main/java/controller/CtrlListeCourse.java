@@ -33,21 +33,27 @@ public class CtrlListeCourse extends HttpServlet {
 		// Gets session
 		HttpSession session = request.getSession();
 
-		String action = request.getParameter("action");
 		String nomListeCourse = request.getParameter("nomListeCourse");
 		String listeIdTp = request.getParameter("listeIdTp");
 
-		if (action == null && nomListeCourse != null) {
-			try {
-				if(listeIdTp != null) {
-					
+		if (nomListeCourse != null) {
+			if(listeIdTp != null) {
+				String[] listeIds = listeIdTp.split("_");
+				ArrayList<String> listIdStrings = new ArrayList<>();
+				for(String id : listeIds) {
+					listIdStrings.add(id);
 				}
-				int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse);
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
+				try {
+					int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse, listIdStrings);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else  {
+				try {
+					int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} else {
 			try {
