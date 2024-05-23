@@ -68,7 +68,7 @@
 <!--                         <div class="row"> -->
                             <c:forEach var="liste"
 							items="${listeCourses}">
-                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                <div class="col-md-4 col-lg-4 col-sm-12 mt-5">
                                     <div class="card shadow-sm">
                                         <div class="card-body">
                                             <p class="card-text">
@@ -128,17 +128,9 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-                    	<div class="" id="formAdd">
-							<div class="mt-4">
-								<select id="postit">
-									<option>-----</option>
-								</select>
-								<input type="number" id="quantity" min="0" style="width: 3em">
-							</div>
-							<div class="mt-2">
-								<input type="button" class="plus_contenu" value="+" id="plusLContenu" data-idMoreContent="plus_contenu"/>
-							</div>
-						</div>
+                    	<label for="message-text"
+										class="col-form-label lblTitleList">Liste d'articles (nom général du type de produit):</label>
+            <textarea class="form-control" id="message-titleList" placeholder="beurre, pomme, ..."></textarea>
 <!-- 						<div class="row text-right"> -->
 <!-- 							<div class="col-2"> -->
 <!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Ajouter au panier</button> -->
@@ -156,8 +148,9 @@
 <!--           </div> -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-		<button id="supprListe" class="btn btn-primary">Enregistrer les post-its</button>
+        <button type="button" class="btn btn-secondary"
+										data-dismiss="modal">Fermer</button>
+		<button id="supprListe" class="btn btn-primary">Enregistrer articles</button>
 		<button id="enregistrerListe" class="checkout-btn btn btn-danger">Supprimer liste</button>
       </div>
     </div>

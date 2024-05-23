@@ -207,9 +207,9 @@ function addContenuListeCourse(event) {
 	var nodeBtnAdd = suggestions.lastElementChild;
 
 	// Insert before the btn "+" a new input
-//	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><select id="nomTypeProduit"><option>-----</option></select><input type="number" id="quantity" min="1" style="width: 3em" ></div>';
+	//	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><select id="nomTypeProduit"><option>-----</option></select><input type="number" id="quantity" min="1" style="width: 3em" ></div>';
 	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><input type="number" id="quantity" min="0" style="width: 3em">';
-	
+
 	nodeBtnAdd.insertAdjacentHTML('beforebegin', newInput);
 
 }
@@ -222,7 +222,7 @@ function addListeCourse() {
 	var xhr = new XMLHttpRequest();
 
 	// Requête au serveur avec les paramètres éventuels.
-	//	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
+	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
 
 
 	xhr.onload = function() {
