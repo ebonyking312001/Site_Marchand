@@ -238,3 +238,92 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("dateRetMag").disabled = "disabled";
 
 });
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const cmdId = "${cmdId}";
+    
+    /*
+    add colors of buttons
+    */
+    document.querySelectorAll('button.validerBtn').forEach(button => {
+    	  const parentDiv = button.closest('div[ligne-cmd-ean]'); 
+          const etat = parentDiv.getAttribute('ligne-cmd-etat');
+        if (etat == "1") { //validée
+            button.classList.add('btn-success');
+            button.classList.remove('btn-warning');
+        } else { //en cours
+            button.classList.add('btn-warning');
+            button.classList.remove('btn-success');
+        }
+    });
+    /*
+    when click button, change button color and get ean,etat
+    */
+    document.querySelectorAll('button.validerBtn').forEach(button => {
+        const parentDiv = button.closest('div[ligne-cmd-ean]');
+        const etat = parentDiv.getAttribute('ligne-cmd-etat');
+        const ean = parentDiv.getAttribute('ligne-cmd-ean');
+
+        button.addEventListener('click', (event) => {
+            let etat = parentDiv.getAttribute('ligne-cmd-etat');
+            etat = etat == "1" ? "0" : "1"; // get etat opposite
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `${pageContext.request.contextPath}/ServletPreparation`, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Response received: ", xhr.responseText);
+                    // Update the parent div and button based on the new state
+                    parentDiv.setAttribute('ligne-cmd-etat', etat);
+                    button.textContent = etat == "1" ? 'Validée' : 'En cours';
+                    if (etat == "1") {
+                        button.classList.add('btn-success');
+                        button.classList.remove('btn-warning');
+                    } else {
+                        button.classList.add('btn-warning');
+                        button.classList.remove('btn-success');
+                    }
+                }
+            };
+            var data = "cmdId="+cmdId+"&ean="+ean+"&etat="+etat;
+            console.log(data);
+            xhr.send(data);
+        });
+    });
+});
+
+
+/**
+ * sort by date time (preparer cmd
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    function parseDateTime(dateString, timeString) {
+        // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
+        const longdate = dateString+"T"+timeString
+        return new Date(longdate);
+    }
+
+    function sortTable(table, dateColumn, timeColumn, asc = true) {
+        const rows = Array.from(table.querySelector('tbody').rows);
+        rows.sort((rowA, rowB) => {
+            const dateA = rowA.cells[dateColumn].innerText.trim();
+            const timeA = rowA.cells[timeColumn].innerText.trim();
+            const dateB = rowB.cells[dateColumn].innerText.trim();
+            const timeB = rowB.cells[timeColumn].innerText.trim();
+            const a = parseDateTime(dateA, timeA);
+            const b = parseDateTime(dateB, timeB);
+            console.log(dateA);
+        	console.log(timeA);
+        	console.log(a);
+            return (a - b) * (asc ? 1 : -1);
+        });
+
+        rows.forEach(row => table.querySelector('tbody').appendChild(row));
+    }
+
+    const table = document.getElementById('tab-cmds');
+    document.getElementById('sort-datetime').addEventListener('click', () => {
+        sortTable(table, 0, 1);
+    });
+});
+
