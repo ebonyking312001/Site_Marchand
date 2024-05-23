@@ -64,13 +64,13 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 						
 						for(Magasin_CreneauRetrait mc : heuresDispo) {
 							out.println("<hr>"+
-									mc.getDebutCreneau().toString().substring(0, 5)+"-"+mc.getFinCreneau().toString().substring(0, 5) +
+									mc.getDebutCreneau().toString().substring(0, 5)+" - "+mc.getFinCreneau().toString().substring(0, 5) +
 									" nombre disponibie : "+ mc.getNbDispoCreneau()+ 
-									"<idC>" + mc.getIdCreneau()+"</idC></hr>");
+									"<idC>" + mc.getDebutCreneau().toString().substring(0, 5)+" - "+mc.getFinCreneau().toString().substring(0, 5)+"</idC></hr>");
 						}
 						
-					} catch (Exception e) {
-						e.printStackTrace();
+					} catch (Exception ex) {
+						out.println("<hof>Erreur - " + ex.getMessage() + "</hof>");
 					}
 
 					out.println("</horaire_journee>");
