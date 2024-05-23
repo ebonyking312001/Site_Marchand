@@ -54,35 +54,3 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    function parseDateTime(dateString, timeString) {
-        // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
-        const longdate = dateString+"T"+timeString
-        return new Date(longdate);
-    }
-
-    function sortTable(table, dateColumn, timeColumn, asc = true) {
-        const rows = Array.from(table.querySelector('tbody').rows);
-        rows.sort((rowA, rowB) => {
-            const dateA = rowA.cells[dateColumn].innerText.trim();
-            const timeA = rowA.cells[timeColumn].innerText.trim();
-            const dateB = rowB.cells[dateColumn].innerText.trim();
-            const timeB = rowB.cells[timeColumn].innerText.trim();
-            const a = parseDateTime(dateA, timeA);
-            const b = parseDateTime(dateB, timeB);
-            console.log(dateA);
-        	console.log(timeA);
-        	console.log(a);
-            return (a - b) * (asc ? 1 : -1);
-        });
-
-        rows.forEach(row => table.querySelector('tbody').appendChild(row));
-    }
-
-    const table = document.getElementById('tab-cmds');
-    document.getElementById('sort-datetime').addEventListener('click', () => {
-        sortTable(table, 0, 1);
-    });
-});
-</script>
