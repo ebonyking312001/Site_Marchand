@@ -4,11 +4,12 @@ public class TypeProduit {
 
 	private int IdTypeProduit;
 	private String NomTypeProduit;
+	private int IdCategorie;
 	
-	public TypeProduit(int IdTypeProduit, String NomTypeProduit) {
-		// TODO Auto-generated constructor stub
+	public TypeProduit(int IdTypeProduit, String NomTypeProduit, int idCategorie) {
 		this.IdTypeProduit=IdTypeProduit;
 		this.NomTypeProduit=NomTypeProduit;
+		this.IdCategorie = idCategorie;
 	}
 
 	public int getIdTypeProduit() {
@@ -16,7 +17,7 @@ public class TypeProduit {
 	}
 
 	public void setIdTypeProduit(int idTypeProduit) {
-		IdTypeProduit = idTypeProduit;
+		this.IdTypeProduit = idTypeProduit;
 	}
 
 	public String getNomTypeProduit() {
@@ -24,7 +25,15 @@ public class TypeProduit {
 	}
 
 	public void setNomTypeProduit(String nomTypeProduit) {
-		NomTypeProduit = nomTypeProduit;
+		this.NomTypeProduit = nomTypeProduit;
+	}
+
+	public int getIdCategorie() {
+		return IdCategorie;
+	}
+
+	public void setIdCategorie(int idCategorie) {
+		this.IdCategorie = idCategorie;
 	}
 
 	@Override

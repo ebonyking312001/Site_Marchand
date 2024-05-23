@@ -173,7 +173,7 @@ function confirmCard() {
 
 		xhr.onload = function() {
 			if (xhr.status === 200) {
-				alert("Commande réalisée avec succès");
+				alert(("Commande réalisée avec succès").normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
 				location.href = "/Site_Marchand/";
 				var doc = xhr.responseXML.getElementsByTagName("int");
 				var texte = doc[0].firstChild.nodeValue;
@@ -194,84 +194,176 @@ function confirmCard() {
  */
 
 /**
- * Add new liste de course
+ * Add new content to liste de course
  */
-function addContenuListeCourse() {
+function addContenuListeCourse(event) {
 	// Objet XMLHttpRequest.
 	//	var xhr = new XMLHttpRequest();
+
+	var idPlus = event.target.dataset.idmorecontent;
+	console.log(idPlus);
 
 	var suggestions = document.getElementById("formAdd");
 	var nodeBtnAdd = suggestions.lastElementChild;
 
 	// Insert before the btn "+" a new input
-	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><select id="nomTypeProduit"><option>-----</option></select><input type="number" id="quantity" min="1" style="width: 3em" ></div>';
+//	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><select id="nomTypeProduit"><option>-----</option></select><input type="number" id="quantity" min="1" style="width: 3em" ></div>';
+	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><input type="number" id="quantity" min="0" style="width: 3em">';
+	
 	nodeBtnAdd.insertAdjacentHTML('beforebegin', newInput);
-	nodeBtnAdd.previousElementSibling.firstElementChild.focus();
 
 }
 
+/**
+ * Add new liste de course
+ */
 function addListeCourse() {
 	// Objet XMLHttpRequest.
-	//	var xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 
-	var suggestions = document.getElementById("formListe");
-	var nodeBtnAdd = suggestions.lastElementChild;
+	// Requête au serveur avec les paramètres éventuels.
+	//	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value, true);
 
-	// Insert before the btn "+" a new input
-	var newInput = '<div class="mt-5" id="formAdd"><input type="text" id="nomListe" style="width: 10em"><div class="mt-4"><select id="postit"><option>-----</option></select></div><div class="mt-2"><input type="button" value="+" id="plus_contenu" /></div></div>';
-	nodeBtnAdd.insertAdjacentHTML('afterend', newInput);
-	nodeBtnAdd.previousElementSibling.firstElementChild.focus();
 
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			//			var doc = xhr.responseXML.getElementsByTagName("id");
+			//			var texteId = doc[0].firstChild.nodeValue;
+			//			var docTPs = xhr.responseXML.getElementsByTagName("tProd");
+			//
+			//			//var newInput = '<div class="mt-5" id="formAdd" data-idL=' + texteId + '><input type="text" id="nomListe" style="width: 10em"><div class="mt-4"><select id="postit" data-idSelect=' + texteId + '_selectTP><option>-----</option></select></div><div class="mt-2"><input type="button" value="+" id="plus_contenu" data-idMoreContent=' + texteId + '_plus_contenu/></div><hr></div>';
+			//			var newInput = '<div class="mt-5" id="formAdd" data-idL=' + texteId + '><input type="text" id="nomListe" style="width: 10em"><div class="mt-4"><select id="postit" data-idSelect=' + texteId + '_selectTP><option>-----</option>';
+			//
+			//			for (i = 0; i < docTPs.length; i++) {
+			//				newInput += '<option value="' + docTPs[i].firstChild.nodeValue + '">' + docTPs[i].firstChild.nodeValue + "</option>";
+			//			}
+			//
+			//			newInput += '</select></div><div class="mt-2"><input class="plus_contenu" type="button" value="+" id="plusLContenu" data-idMoreContent=' + texteId + '_plus_contenu/></div><div class="row text-right"><div class="col-2"><button id="ajouterListePanier" class="checkout-btn btn btn-danger">Ajouter au panier</button></div><div class="col-2"><button id="enregistrerListe" class="checkout-btn btn btn-danger">Enregistrer la liste</button></div><div class="col-2"><button id="supprListe" class="checkout-btn btn btn-danger">Supprimer liste</button></div></div><hr></div>';
+			//
+			//			suggestions.insertAdjacentHTML('afterend', newInput);
+			//
+			//			console.log(document.getElementsByClassName("plus_contenu"));
+
+			//			$('#ModalListeCourse').modal('hide');
+		}
+	};
+
+	document.getElementById("message-titleList").value = '';
+
+	$('#ModalListeCourse').on('click', function() {
+		$('#ModalListeCourse').modal('hide');
+	});
+
+	//	$('#ModalListeCourse').modal('hide');
+
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
+ * Get all products by product type
+ */
+function getProductsFromTPChoosed(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+	var idTp = event.target.dataset.idart;
+	console.log(idTp);
+
+	// Requête au serveur avec les paramètres éventuels.
+	xhr.open("GET", "ServletListeCourse?nomTP=" + document.getElementById("postit").value, true);
+
+	var suggestions = document.getElementById("postit");
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			var doc = xhr.responseXML.getElementsByTagName("nArt");
+
+			var newInput = '<select id="nomArt" data-idSelectArt=' + idTp + '_selectNArt><option>-----</option>';
+
+			for (i = 0; i < doc.length; i++) {
+				newInput += '<option value="' + docTPs[i].firstChild.nodeValue + '">' + docTPs[i].firstChild.nodeValue + "</option>";
+			}
+
+			newInput += '</select><input type="number" id="quantity_' + idTp + ' min="0" style="width: 3em">';
+
+			suggestions.insertAdjacentHTML('afterend', newInput);
+
+		}
+	};
 }
 
 /**
  * ============================================= After loading DOM =============================================
  */
+
+$('.byalpha').on('click',
+	function(event) {
+		addArticleByIdWithQuantity(event.target.dataset.idart);
+	}
+);
+
+$('.byalphaAddPanier').on('click',
+	function(event) {
+		addArticleByIdFromCart(event.target.dataset.idart);
+	}
+);
+
+$('.byalphaRmPanier').on('click',
+	function(event) {
+		rmArticleByIdFromCart(event.target.dataset.idart);
+	}
+);
+
+$('.changeNbArt').on('keyup',
+	function(event) {
+		onKeyupQuantityArt(event);
+	}
+);
+
+$('#delete_card').on('click', function() {
+	deleteArticlesCart();
+});
+
+$('#nomMagasin').on('change', function() {
+	getOpeningMagasin();
+});
+
+$('#final_validation').on('click', function() {
+	confirmCard();
+});
+
+$('#plusLContenu').on('click', function(event) {
+	addContenuListeCourse(event);
+});
+
+$('#plus_liste').on('click', function() {
+	addListeCourse();
+});
+
+$('#postit').on('change', function(event) {
+	getProductsFromTPChoosed(event);
+});
+
+$('#supprListe').on('click', function(event) {
+	getProductsFromTPChoosed(event);
+});
+
+$('#envoyerListePanier').on('click', function(event) {
+	getProductsFromTPChoosed(event);
+});
+
+$('#enregistrerListe').on('click', function(event) {
+	getProductsFromTPChoosed(event);
+});
+
+$(document).on("click", ".modalC", function() {
+	var listeId = $(this).data('id');
+	$(".modal-body #listeId").val(listeId);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
-
-	$('.byalpha').on('click',
-		function(event) {
-			addArticleByIdWithQuantity(event.target.dataset.idart);
-		}
-	);
-
-	$('.byalphaAddPanier').on('click',
-		function(event) {
-			addArticleByIdFromCart(event.target.dataset.idart);
-		}
-	);
-
-	$('.byalphaRmPanier').on('click',
-		function(event) {
-			rmArticleByIdFromCart(event.target.dataset.idart);
-		}
-	);
-
-	$('.changeNbArt').on('keyup',
-		function(event) {
-			onKeyupQuantityArt(event);
-		}
-	);
-
-	$('#delete_card').on('click', function() {
-		deleteArticlesCart();
-	});
-
-	$('#nomMagasin').on('change', function() {
-		getOpeningMagasin();
-	});
-
-	$('#final_validation').on('click', function() {
-		confirmCard();
-	});
-
-	$('#plus_contenu').on('click', function() {
-		addContenuListeCourse();
-	});
-
-	$('#plus_liste').on('click', function() {
-		addListeCourse();
-	});
 
 	document.getElementById("heureRetMag").disabled = "disabled";
 	document.getElementById("dateRetMag").disabled = "disabled";

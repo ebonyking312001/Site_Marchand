@@ -27,58 +27,146 @@
                     <div class="container">
                         <h2 class="fw-light py-3 fw-bold">Mes listes de courses</h2>
                         <div class="d-flex justify-content-end mb-3">
-<!--                             <a href="AddListeCourse.jsp"> -->
                                 <button type="button"
-								class="btn btn-success" id="plus_liste">
+								class="btn btn-success" id="addL" data-toggle="modal"
+								data-target="#ModalListeCourse">
                                     <i class="fas fa-plus"></i> Ajouter une liste
                                 </button>
-<!--                             </a> -->
                         </div>
-                        <div id="formListe" class="bg-light">
-                        <input type="text" id="nomListe" style="width: 10em">
+<!--                         <input class="plus_contenu" type="button" -->
+<!-- 							value="+" id="plusLContenu" data-idMoreContent="plus_contenu" /> -->
+<!--                         <div id="formListe"> -->
+<!--                         <input type="text" id="nomListe" -->
+<!-- 								style="width: 10em"> -->
+<!--                     	<div class="" id="formAdd"> -->
+<!-- 							<div class="mt-4"> -->
+<!-- 								<select id="postit"> -->
+<!-- 									<option>-----</option> -->
+<!-- 								</select> -->
+<!-- 								<select id="nomTypeProduit"> -->
+<!-- 									<option>-----</option> -->
+<!-- 								</select> -->
+<!-- 								<input type="number" id="quantity" min="0" style="width: 3em"> -->
+<!-- 							</div> -->
+<!-- 							<div class="mt-2"> -->
+<!-- 								<input type="button" value="+" id="plus_contenu" /> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="row text-right"> -->
+<!-- 							<div class="col-2"> -->
+<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Ajouter au panier</button> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-2"> -->
+<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Enregistrer la liste</button> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-2"> -->
+<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Supprimer liste</button> -->
+<!-- 							</div> -->
+<!--                     	</div> -->
+<!-- 						<hr> -->
+<!-- 						</div> -->
+<!--                         <div class="row"> -->
+                            <c:forEach var="liste"
+							items="${listeCourses}">
+                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                            <a data-toggle="modalC"
+												data-id="${liste.idListe}" data-target="#idListeCreated"><button
+													type="button" class="" id="addL" data-toggle="modal"
+													data-target="#idListeCreated">${liste.nomListe}</button></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+<!--                         </div> -->
+                    </div>
+                </div>
+                
+                <!-- Modal -->
+<div class="modal fade" id="ModalListeCourse" tabindex="-1"
+					role="dialog" aria-labelledby="exampleModalCenterTitle"
+					aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Nouvelle liste de courses</h5>
+        <button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="message-text"
+										class="col-form-label lblTitleList">Nom de la liste :</label>
+            <textarea class="form-control" id="message-titleList"></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Fermer</button>
+        <button type="button" id="plus_liste" class="btn btn-primary">Sauvegarder liste</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="idListeCreated" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ajouter des post-its</h5>
+        <button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
                     	<div class="" id="formAdd">
 							<div class="mt-4">
 								<select id="postit">
 									<option>-----</option>
 								</select>
-								<select id="nomTypeProduit">
-									<option>-----</option>
-								</select>
 								<input type="number" id="quantity" min="0" style="width: 3em">
 							</div>
 							<div class="mt-2">
-								<input type="button" value="+" id="plus_contenu" />
+								<input type="button" class="plus_contenu" value="+" id="plusLContenu" data-idMoreContent="plus_contenu"/>
 							</div>
 						</div>
-						</div>
-						<hr>
+<!-- 						<div class="row text-right"> -->
+<!-- 							<div class="col-2"> -->
+<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Ajouter au panier</button> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-2"> -->
+<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Enregistrer la liste</button> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-2"> -->
+<!-- 								<button id="delete_card" class="checkout-btn btn btn-danger">Supprimer liste</button> -->
+<!-- 							</div> -->
+<!--                     	</div> -->
 <!--                         <div class="row"> -->
-<%--                             <c:forEach var="liste" items="${listeCourses}"> --%>
-<!--                                 <div class="col-md-4 col-lg-4 col-sm-12"> -->
-<!--                                     <div class="card shadow-sm"> -->
-<!--                                         <div class="card-body"> -->
-<!--                                             <p class="card-text"> -->
-<!--                                                 <a class="text-decoration-none text-primary fw-bold" -->
-<%--                                                    href="DetailListeCourse.jsp?id=${liste.idListeCourse}"> --%>
-<%--                                                     ${liste.nomListe} --%>
-<!--                                                 </a> -->
-<!--                                             </p> -->
-<!--                                             <div class="d-flex justify-content-between align-items-center"> -->
-<!--                                                 <div class="btn-group"> -->
-<%--                                                     <a href="DetailListeCourse.jsp?id=${liste.idListeCourse}"> --%>
-<!--                                                         <button type="button" class="btn btn-sm btn-outline-secondary">Voir les détails</button> -->
-<!--                                                     </a> -->
-<!--                                                 </div> -->
-<%--                                                 <small class="text-muted">${liste.dateCreation}</small> --%>
-<!--                                             </div> -->
-<!--                                         </div> -->
-<!--                                     </div> -->
-<!--                                 </div> -->
-<%--                             </c:forEach> --%>
-<!--                         </div> -->
-                    </div>
-                </div>
-            </main>
+<!--          <input class="plus_contenu" type="button" value="+" -->
+<!-- 											id="plusLContenu" data-idMoreContent="plus_contenu" /> -->
+<!--           </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+		<button id="supprListe" class="btn btn-primary">Enregistrer les post-its</button>
+		<button id="enregistrerListe" class="checkout-btn btn btn-danger">Supprimer liste</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+            
+			
+			</main>
         </jsp:body>
 	</t:genericpage>
 
