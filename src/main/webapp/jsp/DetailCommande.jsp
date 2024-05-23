@@ -14,7 +14,7 @@
             <h4 class="m-2">Articles à valider pour la commande ${cmdId} :</h4>
             <div class="row">
                 <c:forEach var="article" items="${articles}">
-                    <div class="col-md-3 col-sm-6 mb-4"
+                    <div class="col-3 col-sm-12 mb-4"
                          ligne-cmd-ean="${article.EAN}" ligne-cmd-etat="${article.estValide ? '1' : '0'}">
                         <div class="container card shadow-sm">
                             <a href="/Site_Marchand/?idArticle=${article.EAN}">
@@ -42,8 +42,8 @@
                                             Prix : ${article.prixUnitaireArticle} €
                                         </small>
                                     </c:if>
-                                    <div class="mt-2 d-flex d-row">
-                                        <button type="button"  class="btn  mt-2 validerBtn">${article.estValide ? 'Validée' : 'En cours'}</button>
+                                    <div class="mt-2 d-flex d-row w-100">
+                                        <button type="button"  class="btn w-100 mt-2 validerBtn  btn-lg">${article.estValide ? 'Validée' : 'En cours'}</button>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                     </div>
                 </c:forEach>
             </div>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/ServletPreparation">Revenir à la liste commandes</a>
+            <a class="btn btn-primary btn-lg w-100" href="${pageContext.request.contextPath}/ServletPreparation">Revenir à la liste commandes</a>
         </div>
     </jsp:body>
 </t:genericpage>
