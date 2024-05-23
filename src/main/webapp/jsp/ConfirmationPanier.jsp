@@ -72,6 +72,7 @@
 								value="${totalPrice}" minFractionDigits="1"
 								maxFractionDigits="1" /> €</p>
                     </div>
+                    <div>point de fidélité à gagner : ${pointFidelite}</div>
         <div class="mt-5">
 
         <b>Choix du magasin de retrait</b>

@@ -912,12 +912,49 @@ public class ConnectionMySql {
 
 		ConnectionMySql.cx.close();
 	}
+	
+	/**
+	 * update user loyalty points
+	 * 
+	 * @throws Exception
+	 */
+	public static void updateLoyaltyPoints(int idUtilisateur, int pointFidelite, String operation) throws Exception {
+		// Cr�er la connexion � la base de donn�es
+		ConnectionMySql.connexion();
+		// requête SQL 
+		String sql;
+	    if ("substract".equalsIgnoreCase(operation)) {
+	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur - ? WHERE IdUtilisateur = ?";
+	    } else {
+	        // Default to "add" operation
+	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur + ? WHERE IdUtilisateur = ?";
+	    }
+
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	        // Set the parameters for the prepared statement
+	        st.setInt(1, pointFidelite);
+	        st.setInt(2, idUtilisateur);
+
+	        // Execute the update
+	        int rowsUpdated = st.executeUpdate();
+
+	        // Check if the update was successful
+	        if (rowsUpdated == 0) {
+	            throw new Exception("Erreur lors de la mise à jour des points de fidélité : aucun utilisateur trouvé avec l'ID " + idUtilisateur);
+	        }
+
+	        st.close();
+	    } catch (SQLException sqle) {
+	        throw new Exception("Erreur lors de la mise à jour des points de fidélité : " + sqle.getMessage());
+	    }
+
+	    ConnectionMySql.cx.close();
+	}
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

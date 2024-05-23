@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.ObjectInputStream.GetField;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -40,11 +41,28 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 		String nomMagasin = request.getParameter("nomM");
 		String heureRetrait = request.getParameter("hRet");
 		String dateRetrait = request.getParameter("dtRet");
+		String totalPrice = request.getParameter("totalPrice");
+		// get idUtilisateur
+		int idUtilisateur = 5;
+		
+		// set session point fidelite
+		if (totalPrice != null) {
+			// Convert totalPrice to int
+            float totalPriceInt = Float.parseFloat(totalPrice);
+			// Set session loyalty points
+			session.setAttribute("sessionLoyaltyPoints", getLoyaltyPointsBySpending(totalPriceInt));
+		}
+		// RÃ©cupÃ©rer session Id Categorie
+		int sessionLoyaltyPoints = (int) session.getAttribute("sessionLoyaltyPoints");
 
 		try {
+			// afficher points de fidelite lorsqu'un utilisateur est identifie
+			if (idUtilisateur > 0) {
+				request.setAttribute("pointFidelite", sessionLoyaltyPoints);
+			}
 			if (nomMagasin != null && heureRetrait == null && dateRetrait == null) {
 
-				/*----- Type de la réponse -----*/
+				/*----- Type de la rï¿½ponse -----*/
 				response.setContentType("application/xml;charset=UTF-8");
 				response.setCharacterEncoding("UTF-8");
 				try (PrintWriter out = response.getWriter()) {
@@ -85,11 +103,12 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					Time tDeb = java.sql.Time.valueOf(hDeb + ":00");
 					Time tFin = java.sql.Time.valueOf(hFin + ":00");
 					
+					ConnectionMySql.updateLoyaltyPoints(idUtilisateur, sessionLoyaltyPoints, "add");
 					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
 					session.setAttribute("articleList", null);
 					session.setAttribute("countArtCard", 0);
 					
-					/*----- Type de la réponse -----*/
+					/*----- Type de la rï¿½ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
@@ -105,6 +124,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
 
 			} else {
 				ArrayList<Magasin> magasins = ConnectionMySql.getAllMagasins();
@@ -112,6 +132,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 				request.setAttribute("allMagasins", magasins);
 				request.getRequestDispatcher("jsp/ConfirmationPanier.jsp").forward(request, response);
 			}
+			
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -128,6 +149,10 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		doGet(request, response);
+	}
+	
+	public int getLoyaltyPointsBySpending(float sommeDepense) {
+		 return (int) sommeDepense / 5;
 	}
 
 }
