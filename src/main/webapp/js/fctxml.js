@@ -166,9 +166,14 @@ function getOpeningMagasin() {
 function confirmCard() {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
-
+	const mot=document.getElementById("heureRetMag").innerText;
+	console.log(mot);
+	nbC=mot.substring(mot.length-2,mot.length);
+	console.log(nbC);
 	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
 		alert("La date est déjà passée");
+	}else if(nbC==" 0"){
+		alert("pas de créneau disponible !");
 	}
 	else {
 		// Requête au serveur avec les paramètres éventuels.
@@ -296,34 +301,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 /**
  * sort by date time (preparer cmd
  */
-document.addEventListener('DOMContentLoaded', function() {
-    function parseDateTime(dateString, timeString) {
-        // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
-        const longdate = dateString+"T"+timeString
-        return new Date(longdate);
-    }
 
-    function sortTable(table, dateColumn, timeColumn, asc = false) {
-        const rows = Array.from(table.querySelector('tbody').rows);
-        rows.sort((rowA, rowB) => {
-            const dateA = rowA.cells[dateColumn].innerText.trim();
-            const timeA = rowA.cells[timeColumn].innerText.trim();
-            const dateB = rowB.cells[dateColumn].innerText.trim();
-            const timeB = rowB.cells[timeColumn].innerText.trim();
-            const a = parseDateTime(dateA, timeA);
-            const b = parseDateTime(dateB, timeB);
-            console.log(dateA);
-        	console.log(timeA);
-        	console.log(a);
-            return (a - b) * (asc ? 1 : -1);
-        });
 
-        rows.forEach(row => table.querySelector('tbody').appendChild(row));
-    }
 
-    const table = document.getElementById('tab-cmds');
-    document.getElementById('sort-datetime').addEventListener('click', () => {
-        sortTable(table, 0, 1);
-    });
-});
 
