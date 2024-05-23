@@ -39,11 +39,56 @@ public class CtrlListeCourse extends HttpServlet {
 
 		if (action == null && nomListeCourse != null) {
 			try {
+<<<<<<< Updated upstream
 				if(listeIdTp != null) {
 					
 				}
 				int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse);
 
+=======
+				int idNewListe = ConnectionMySql.addListeCourse(nomListeCourse, null);
+
+				/*----- Type de la réponse -----*/
+//				response.setContentType("application/xml;charset=UTF-8");
+//				response.setCharacterEncoding("UTF-8");
+//				try (PrintWriter out = response.getWriter()) {
+//					/*----- Ecriture de la page XML -----*/
+//					out.println("<?xml version=\"1.0\"?>");
+//					out.println("<intIdListe>");
+//					out.println("<id>" + idNewListe + "</id>");
+//
+//					for (TypeProduit tp : typesProd) {
+//						out.println("<tProd>" + tp.getNomTypeProduit() + "</tProd>");
+//					}
+//					out.println("</intIdListe>");
+//				}
+
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if (nomTP != null) {
+			try {
+				ArrayList<Article> articles = ConnectionMySql.getArticlesByTPName(nomTP);
+
+				/*----- Type de la réponse -----*/
+				response.setContentType("application/xml;charset=UTF-8");
+				response.setCharacterEncoding("UTF-8");
+				try (PrintWriter out = response.getWriter()) {
+					/*----- Ecriture de la page XML -----*/
+					out.println("<?xml version=\"1.0\"?>");
+					out.println("<nomArt>");
+
+					for (Article a : articles) {
+						out.println("<nArt>" + a.getLibelleArticle() + "</nArt>");
+					}
+					out.println("</nomArt>");
+				}
+>>>>>>> Stashed changes
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

@@ -1096,6 +1096,84 @@ public class ConnectionMySql {
 
 	    return liste;
 	}
+	
+	
+	
+	
+	public static ArrayList<ContenuListe> getContenuListeByIdForTypeProduit(int idListe) throws SQLException, ClassNotFoundException {
+        ArrayList<ContenuListe> liste = new ArrayList<>();
+        
+        // Establish the database connection
+        ConnectionMySql.connexion();
+
+        String sql = "SELECT c.*, t.NomTypeProduit " +
+                     "FROM Contenu_Liste c " +
+                     "JOIN TypeProduit t ON c.IdTypeProduit = t.IdTypeProduit " +
+                     "WHERE c.EAN IS NULL AND c.quantite IS NULL AND c.idListe = ?";
+        
+        try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+            st.setInt(1, idListe);
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    ContenuListe contenu = new ContenuListe(
+                        rs.getInt("IdListe"),
+                        rs.getInt("EAN"),
+                        rs.getInt("IdTypeProduit"),
+                        rs.getInt("quantite")
+                        
+                    );
+                    contenu.setNomTypeProduit(rs.getString("NomTypeProduit"));
+                    liste.add(contenu);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("Exception in getContenuListeById: " + ex.getMessage());
+        } finally {
+            ConnectionMySql.cx.close();
+        }
+
+        return liste;
+    }
+
+	
+	
+	public static ArrayList<ContenuListe> getContenuListeByIdForArticle(int idListe) throws SQLException, ClassNotFoundException {
+	    ArrayList<ContenuListe> liste = new ArrayList<>();
+
+	    // Establish the database connection
+	    ConnectionMySql.connexion();
+
+	    String sql = "SELECT c.*, t.NomTypeProduit, a.LibelleArticle, a.Marque " +
+	                 "FROM Contenu_Liste c " +
+	                 "JOIN TypeProduit t ON c.IdTypeProduit = t.IdTypeProduit " +
+	                 "JOIN Articles a ON c.EAN = a.EAN " +
+	                 "WHERE c.EAN IS NOT NULL AND c.quantite IS NOT NULL AND c.idListe = ?";
+
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	        st.setInt(1, idListe);
+
+	        try (ResultSet rs = st.executeQuery()) {
+	            while (rs.next()) {
+	                ContenuListe contenu = new ContenuListe(
+	                    rs.getInt("IdListe"),
+	                    rs.getInt("EAN"),
+	                    rs.getInt("IdTypeProduit"),
+	                    rs.getInt("quantite")
+	                );
+	                contenu.setLibelleArticle(rs.getString("LibelleArticle"));
+	                contenu.setMarque(rs.getString("Marque"));
+	                liste.add(contenu);
+	            }
+	        }
+	    } catch (SQLException ex) {
+	        throw new SQLException("Exception in getContenuListeDetailsById: " + ex.getMessage());
+	    } finally {
+	        ConnectionMySql.cx.close();
+	    }
+
+	    return liste;
+	}
 
 	/*----------------------------*/
 	/* Programme principal (test) */
@@ -1109,7 +1187,7 @@ public class ConnectionMySql {
 //		insererLigneListe(1, 18, 23, 4);
 
 //		System.out.println(getContenuListe(1));
-		System.out.println(getAllArticlesByTypeProduit(1));
+		System.out.println(getContenuListeByIdForArticle(1));
 
 
 	}
