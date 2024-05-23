@@ -4,6 +4,8 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
+<title>Site Marchant</title>
 <style type="text/css">
 .cart {
 	display: flex;

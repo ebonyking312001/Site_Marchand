@@ -5,6 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <t:genericpage>
+	<jsp:attribute name="header">
+        <%@ include file="Header.jsp"%>
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+        <%@ include file="Footer.jsp"%>
+    </jsp:attribute>
 	<jsp:body>
         <main>
         <div class="container">

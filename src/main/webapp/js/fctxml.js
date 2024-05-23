@@ -181,7 +181,7 @@ function confirmCard() {
 
 		xhr.onload = function() {
 			if (xhr.status === 200) {
-				alert("Commande réalisée avec succès");
+				alert("Commande realisee avec succes");
 				location.href = "/Site_Marchand/";
 				var doc = xhr.responseXML.getElementsByTagName("int");
 				var texte = doc[0].firstChild.nodeValue;
@@ -301,7 +301,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
 /**
  * sort by date time (preparer cmd
  */
+document.addEventListener('DOMContentLoaded', function() {
+    function parseDateTime(dateString, timeString) {
+        // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
+        const longdate = dateString + "T" + timeString;
+        return new Date(longdate);
+    }
 
+    function sortCards(container, dateClass, timeClass, asc = true) {
+        const cards = Array.from(container.querySelectorAll('.id-div-commande'));
+        cards.sort((cardA, cardB) => {
+            const dateA = cardA.querySelector(dateClass).innerText.trim();
+            const timeA = cardA.querySelector(timeClass).innerText.trim();
+            const dateB = cardB.querySelector(dateClass).innerText.trim();
+            const timeB = cardB.querySelector(timeClass).innerText.trim();
 
+            const a = parseDateTime(dateA, timeA);
+            const b = parseDateTime(dateB, timeB);
+            return (a - b) * (asc ? 1 : -1);
+        });
+
+        cards.forEach(card => container.appendChild(card));
+    }
+
+    const container = document.getElementById('tab-cmds');
+    document.getElementById('sort-datetime').addEventListener('click', () => {
+        sortCards(container, '.order-date', '.order-time');
+    });
+});
 
 

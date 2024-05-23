@@ -54,7 +54,7 @@ public class CtrlAuthentification extends HttpServlet {
 	                } else if (user.getEmail().equals("marc@gmail.com")) {
 	                    response.sendRedirect("catalogue");
 	                } else {
-	                    response.sendRedirect("sitemarchand");
+	                    response.sendRedirect("ServletPanier");
 	                }
 
 	            	
