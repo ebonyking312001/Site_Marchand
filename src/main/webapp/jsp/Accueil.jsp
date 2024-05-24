@@ -17,7 +17,13 @@
 	<div class="album py-5 bg-body-tertiary ">
 		<div class="container">
 			<div id="categorieContainer" >
-			<h2 class="fw-light py-3 fw-bold">Catégories</h2>
+			<div class="d-flex d-row py-3  align-items-center">
+			<h2 class="fw-light  fw-bold">Catégories</h2>
+				<c:if test="${idTypeProduitChoisi != null || idCategorieChoisi != null}">
+			<a class="text-decoration-none p-2" href="?action=annuler">❌</a>
+			</c:if>
+			</div>
+			
 		
 				<p class="d-inline-flex gap-1">
 	 				<c:forEach var="cat" items="${listeCat}"> 
