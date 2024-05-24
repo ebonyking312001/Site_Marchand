@@ -188,13 +188,78 @@ function confirmCard() {
 
 				var elt = document.getElementById("intNbArtCard");
 				elt.innerHTML = texte;
-
+				
 			}
 		};
 
 		// Envoie de la requête.
 		xhr.send();
 	}
+}
+
+function calculateNewTotalPrice() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+	// get input points
+	var pointsInput = parseInt(document.getElementById("pointsInput").value) || 0;
+	// get discount amount
+	var discount = Math.floor(pointsInput/10);
+	// get loyalty points
+	var pointsFideliteDispo = document.getElementById("pointsFideliteDispo").dataset.value;
+	// get total price
+	var totalPrice = parseFloat(document.getElementById("totalPrice").dataset.value) || 0.0;
+	// get new total price 
+	var newTotalPrice = totalPrice - discount;
+	// get new pointsFideliteDispo
+	var newPointsFideliteDispo = pointsFideliteDispo - pointsInput;
+	// get bouton validation commande
+	var button = document.getElementById("final_validation");
+	
+   	if (pointsInput > pointsFideliteDispo) {
+        document.getElementById("errorPoints").innerHTML = "Points insuffisants";
+        button.disabled = true;
+        button.style.backgroundColor = "#ccc"; // Change background color to grey
+   		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
+    } else if (newTotalPrice < 0) {
+        document.getElementById("errorPoints").innerHTML = "Le prix total ne peut pas être inférieur à 0. Veuillez ajuster le montant des points.";
+        button.disabled = true;
+        button.style.backgroundColor = "#ccc"; // Change background color to grey
+   		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
+    } else if (pointsInput < 0){
+		document.getElementById("errorPoints").innerHTML = "La valeur saisie ne peut pas être inférieure à 0. Veuillez ajuster le montant des points.";
+		button.disabled = true;
+		button.style.backgroundColor = "#ccc"; // Change background color to grey
+    	button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
+	} else {
+		document.getElementById("errorPoints").innerHTML = "";
+		button.style.cursor = "pointer"; 
+		button.style.backgroundColor = "#007bff"; 
+
+		
+		var eltPrice = document.getElementById("totalPrice");
+		eltPrice.innerHTML = '<b>Prix total à payer : '+newTotalPrice.toFixed(1)+'€</b>';
+		
+		// envoyer pointsInput et newTotalPrice au servlet ConfirmationPanierServlet
+        xhr.open("GET", "ConfirmationPanierServlet?pointsInput="+ pointsInput+"&newTotalPrice="+newTotalPrice, true);
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				// get nouveau points de fidélité à gagner
+				var doc = xhr.responseXML.getElementsByTagName("points");
+				var texte = doc[0].firstChild.nodeValue;
+				// update nouveau points de fidélité dans div addLoyaltyPoints
+				var eltPoints = document.getElementById("addLoyaltyPoints");
+				eltPoints.innerHTML = "Je cagnotte <b>"+texte+"</b> points";
+				// update nouveau points de fidélité disponible
+				var eltNewPoints = document.getElementById("pointsFideliteDispo");
+				eltNewPoints.innerHTML = "Solde : "+ newPointsFideliteDispo;
+				button.disabled = false;
+			}
+		};
+		
+    // Send the request
+    xhr.send();
+    }
+	
 }
 
 /**
@@ -238,9 +303,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	$('#final_validation').on('click', function() {
 		confirmCard();
 	});
-
+	$('#decagnotter').on('click', function() {
+		calculateNewTotalPrice();
+	});
 	document.getElementById("heureRetMag").disabled = "disabled";
 	document.getElementById("dateRetMag").disabled = "disabled";
+	
+	
 
 });
 

@@ -85,6 +85,6 @@ public class Utilisateur {
 				+ ", RoleUtilisateur=" + RoleUtilisateur + "]";
 	}
 	
-	
+		
 
 }

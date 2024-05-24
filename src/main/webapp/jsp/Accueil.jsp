@@ -29,7 +29,7 @@
 	 				<c:forEach var="cat" items="${listeCat}"> 
 	 					<c:choose>
                         <c:when test="${idCategorieChoisi != null && idCategorieChoisi == cat.idCategorie}">
-                                <a class="card shadow-sm btn btn-secondary" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
+                                <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
                         </c:when>
                         <c:otherwise>
                                 <a class="card shadow-sm btn btn-secondary" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
@@ -44,14 +44,37 @@
 					<div id="productTypeContainer">
 						<p class="d-inline-flex gap-1">
 								<c:forEach var="typeProd" items="${listeTypeProd}">
-				                                <a class="card shadow-sm btn btn-secondary" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
-				           
+									<c:choose>
+				                        <c:when test="${idTypeProduitChoisi != null && idTypeProduitChoisi == typeProd.idTypeProduit}">
+				                            <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
+				                        </c:when>
+				                        <c:otherwise>
+				                            <a class="card shadow-sm btn btn-secondary" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
+				                        </c:otherwise>
+				                    </c:choose>       
 								</c:forEach>
 						</p>
 					</div>
 			
 			</c:if>
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
+			<p class="d-inline-flex gap-1">
+				<c:choose>
+	                <c:when test="${ordreChoisi == 'croissant'}">
+	                    <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?ordre=croissant">Prix/kg Croissant</a>
+		                <a class="card shadow-sm btn btn-secondary" href="?ordre=decroissant">Prix/kg Décroissant</a>
+	                </c:when>
+	                <c:when test="${ordreChoisi == 'decroissant'}">
+	                    <a class="card shadow-sm btn btn-secondary" href="?ordre=croissant">Prix/kg Croissant</a>
+		                <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?ordre=decroissant">Prix/kg Décroissant</a>
+	                </c:when>
+	                <c:otherwise>
+	                    <a class="card shadow-sm btn btn-secondary" href="?ordre=croissant">Prix/kg Croissant</a>
+		                <a class="card shadow-sm btn btn-secondary" href="?ordre=decroissant">Prix/kg Décroissant</a>
+	                </c:otherwise>
+	            </c:choose>
+
+			</p>
 
 			<div class="row">
 				<c:forEach var="art" items="${listeArt}">

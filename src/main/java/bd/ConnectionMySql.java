@@ -71,11 +71,9 @@ public class ConnectionMySql {
 		ConnectionMySql.connexion();
 
 		ArrayList<Article> liste = new ArrayList<>();
-		String sqlorder = "order by price";
-		
 		String sql = "SELECT a.*, c.nomCategorie " + "FROM Articles a "
 				+ "INNER JOIN Categories c ON a.IdCategorie = c.IdCategorie";
-
+		
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 			try (ResultSet rs = st.executeQuery()) {
 				while (rs.next()) {
@@ -925,7 +923,47 @@ public class ConnectionMySql {
 	}
 	
 	/**
-	 * returen MagCreneaux dispo
+	 * update user loyalty points
+	 * 
+	 * @throws Exception
+	 */
+	public static void updateLoyaltyPoints(int idUtilisateur, int pointFidelite, String operation) throws Exception {
+		// Cr�er la connexion � la base de donn�es
+		ConnectionMySql.connexion();
+		// requête SQL 
+		String sql;
+		System.out.println("updateLoyaltyPoints()");
+	    if ("substract".equalsIgnoreCase(operation)) {
+	    	System.out.println("idUtilisateur="+idUtilisateur);
+	    	System.out.println("substract sql");
+	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur - ? WHERE IdUtilisateur = ?";
+	    } else {
+	        // Default to "add" operation
+	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur + ? WHERE IdUtilisateur = ?";
+	    }
+
+	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+	        // Set the parameters for the prepared statement
+	        st.setInt(1, pointFidelite);
+	        st.setInt(2, idUtilisateur);
+
+	        // Execute the update
+	        int rowsUpdated = st.executeUpdate();
+
+	        // Check if the update was successful
+	        if (rowsUpdated == 0) {
+	            throw new Exception("Erreur lors de la mise à jour des points de fidélité : aucun utilisateur trouvé avec l'ID " + idUtilisateur);
+	        }
+
+	        st.close();
+	    } catch (SQLException sqle) {
+	        throw new Exception("Erreur lors de la mise à jour des points de fidélité : " + sqle.getMessage());
+	    }
+
+	    ConnectionMySql.cx.close();
+	}
+
+	 /* returen MagCreneaux dispo
 	 * @throws Exception 
 	 */
 	public static ArrayList<Magasin_CreneauRetrait> creneauxDispo (String magasinNom) throws Exception {
@@ -991,15 +1029,12 @@ public class ConnectionMySql {
 
 	        return user;
 	}
-	
+
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
-		System.out.println("hi");
-		System.out.println(creneauxDispo ("Supermarché A").get(0).getDebutCreneau());
-		System.out.println(creneauxDispo ("Supermarché A").get(1).getDebutCreneau());
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

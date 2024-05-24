@@ -98,7 +98,7 @@
                     </div>
                     <div class="row">
                     <div class="col-2">
-                    <a href="ConfirmationPanierServlet"><button
+                    <a href="ConfirmationPanierServlet?totalPrice=${totalPrice}"><button
 										class="checkout-btn" id="validate_card">Valider le panier</button></a>
                     
                     </div>
