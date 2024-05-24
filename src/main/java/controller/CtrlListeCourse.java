@@ -33,6 +33,11 @@ public class CtrlListeCourse extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		if ( request.getSession().getAttribute("user") == null) {
+            request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+        }else {
+        	
+        
 		HttpSession session = request.getSession();
 
 		String nomListeCourse = request.getParameter("nomListeCourse");
@@ -95,7 +100,7 @@ public class CtrlListeCourse extends HttpServlet {
 					session.setAttribute("articleList", articleList);
 					session.setAttribute("countArtCard", countArtCard);
 
-					/*----- Type de la réponse -----*/
+					/*----- Type de la rï¿½ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
@@ -121,7 +126,7 @@ public class CtrlListeCourse extends HttpServlet {
 					session.setAttribute("articleList", articlesInSession);
 					session.setAttribute("countArtCard", countArtCard);
 
-					/*----- Type de la réponse -----*/
+					/*----- Type de la rï¿½ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
@@ -163,6 +168,7 @@ public class CtrlListeCourse extends HttpServlet {
 			}
 			request.getRequestDispatcher("ListeCourse").forward(request, response);
 		}
+        }
 	}
 
 	/**

@@ -32,6 +32,11 @@ public class CtrlListeCommande extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 if ( request.getSession().getAttribute("user") == null) {
+             request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+         } else {
+        	 
+       
 			HashMap<Commande, ArrayList<Article>> commandesArticlesMap = new HashMap<>();
 			try {
 				commandesArticlesMap = ConnectionMySql.getAllCommandeWithArticles();
@@ -51,6 +56,7 @@ public class CtrlListeCommande extends HttpServlet {
 			}
             request.setAttribute("commandes", commandes);
             request.getRequestDispatcher("ListeCommande").forward(request, response);
+         }
         
     }
 

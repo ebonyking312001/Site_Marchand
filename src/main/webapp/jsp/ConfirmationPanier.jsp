@@ -108,7 +108,7 @@
 	    <div id="pointsFideliteDispo" data-value="${pointFideliteDispo}">Solde : ${pointFideliteDispo}</div>
 	    <div>
 	        <input type="number" id="pointsInput" value="0" step="10" min=0 max="${pointFideliteDispo}"/>
-	        <button id="decagnotter">Décagnotter</button>
+			<button class="btn btn-sm btn-warning" id="decagnotter">Décagnotter</button>
 	        <div class="text-danger" id="errorPoints"></div>
 	    </div>
         
