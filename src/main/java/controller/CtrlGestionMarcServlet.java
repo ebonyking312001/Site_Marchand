@@ -23,7 +23,7 @@ import model.Article;
  * Cette servlet retourne un flux XML.
  */
 
-@WebServlet(value="/CtrlGestionMarcServlet")
+@WebServlet("/CtrlGestionMarcServlet")
 @MultipartConfig
 public class CtrlGestionMarcServlet extends HttpServlet
 {

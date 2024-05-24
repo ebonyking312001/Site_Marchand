@@ -77,7 +77,7 @@
 			</tbody>
 		</table>
 
-		<form action="importCSV" method="POST" enctype="multipart/form-data"
+		<form action="CtrlGestionMarcServlet" method="POST" enctype="multipart/form-data"
 			class="mt-4">
 			<div class="form-group">
 				<label for="file">Importer un fichier CSV</label> <input type="file"
