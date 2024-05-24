@@ -14,7 +14,7 @@
             <h4 class="m-2">Articles à valider pour la commande ${cmdId} :</h4>
             <div class="row">
                 <c:forEach var="article" items="${articles}">
-                    <div class="col-3 col-sm-12 mb-4"
+                    <div class="col-lg-3 col-sm-12 mb-4"
                          ligne-cmd-ean="${article.EAN}" ligne-cmd-etat="${article.estValide ? '1' : '0'}">
                         <div class="container card shadow-sm">
                             <a href="/Site_Marchand/?idArticle=${article.EAN}">

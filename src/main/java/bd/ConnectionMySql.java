@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.sql.Date;
 import java.util.List;
 
@@ -19,6 +20,10 @@ import model.Commande;
 import model.TypeProduit;
 import model.User;
 import model.Magasin;
+import model.TypeProduit;
+import model.ContenuListe;
+import model.ListeCourse;
+import model.CreneauRetrait;
 import model.Magasin_CreneauRetrait;
 
 /**
@@ -73,7 +78,7 @@ public class ConnectionMySql {
 		ArrayList<Article> liste = new ArrayList<>();
 		String sql = "SELECT a.*, c.nomCategorie " + "FROM Articles a "
 				+ "INNER JOIN Categories c ON a.IdCategorie = c.IdCategorie";
-		
+
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
 			try (ResultSet rs = st.executeQuery()) {
 				while (rs.next()) {
@@ -108,6 +113,7 @@ public class ConnectionMySql {
 		ArrayList<Article> liste = new ArrayList<>();
 
 		/*----- RequÃªte SQL -----*/
+
 		String sql = "SELECT * FROM Articles WHERE IdCategorie = ?";
 
 		/*----- Ouverture de l'espace de requÃªte -----*/
@@ -247,6 +253,9 @@ public class ConnectionMySql {
 		return article;
 	}
 
+	/**
+	 * Gets articles from the search box
+	 */
 	public static ArrayList<Article> afficherArticleCatalogue() throws ClassNotFoundException, SQLException {
 		// Crï¿½er la connexion ï¿½ la base de donnï¿½es
 		ConnectionMySql.connexion();
@@ -332,49 +341,6 @@ public class ConnectionMySql {
 		return liste;
 	}
 
-	/**
-	 * InsÃ©rer un texte dans la table mot
-	 * 
-	 * @throws Exception
-	 */
-//	public static int inserer(String motSaisi) throws Exception {
-//		/*----- CrÃ©ation de la connexion Ã  la base de donnÃ©es -----*/
-//		ConnectionMySql.connexion();
-//
-//		int nb = 0;
-//	    // Requï¿½te SQL d'insertion
-//	    String sql = "INSERT INTO Articles (EAN, VignetteArticle, PrixUnitaireArticle, NutriscoreArticle, LibelleArticle, PoidsArticle, PrixKgArticle, DescriptionCourteArticle, DescriptionLongueArticle, FournisseurArticle, Marque, PromoArticle, IdRayon, IdCategorie, IdTypeProduit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//
-//	    try (PreparedStatement st = cx.prepareStatement(sql)) {
-//	        // Assigner les valeurs des paramï¿½tres de la requï¿½te
-//	        st.setDouble(1, article.getEAN());
-//	        st.setString(2, article.getVignetteArticle());
-//	        st.setDouble(3, article.getPrixUnitaireArticle());
-//	        st.setString(4, article.getNutriscoreArticle());
-//	        st.setString(5, article.getLibelleArticle());
-//	        st.setDouble(6, article.getPoidsArticle());
-//	        st.setDouble(7, article.getPrixKgArticle());
-//	        st.setString(8, article.getDescriptionCourteArticle());
-//	        st.setString(9, article.getDescriptionLongueArticle());
-//	        st.setString(10, article.getFournisseurArticle());
-//	        st.setString(11, article.getMarque());
-//	        st.setInt(12, article.getPromoArticle());
-//	        st.setInt(13, article.getIdRayon());
-//	        st.setInt(14, article.getIdCategorie());
-//	        st.setInt(15, article.getIdTypeProduit());
-//	        
-//
-//	        // Exï¿½cuter la requï¿½te
-//	        st.executeUpdate();
-//	        st.close();
-//	    } catch (SQLException sqle) {
-//	        throw new Exception("Erreur lors de l'insertion de l'article : " + sqle.getMessage());
-//	    }
-//		ConnectionMySql.cx.close();
-//
-//		return nb;
-//	}
-
 	public static void insererArticle(Article article) throws Exception {
 
 		// Crï¿½er la connexion ï¿½ la base de donnï¿½es si elle n'est pas dï¿½jï¿½
@@ -436,8 +402,7 @@ public class ConnectionMySql {
 		/*----- RequÃªte SQL -----*/
 		String sql = "SELECT Commandes.DateRetrait, CreneauRetrait.DebutCreneau,Commandes.IdCommande, Magasins.NomMagasin,Utilisateurs.IdUtilisateur,Commandes.EtatCommande FROM Commandes,Utilisateurs,CreneauRetrait,Magasins WHERE EtatCommande LIKE ? "
 				+ "AND Utilisateurs.IdUtilisateur=Commandes.IdUtilisateur "
-				+ "AND Commandes.IdMagasin=Magasins.IdMagasin "
-				+ "AND Commandes.IdCreneau=CreneauRetrait.IdCreneau;";
+				+ "AND Commandes.IdMagasin=Magasins.IdMagasin " + "AND Commandes.IdCreneau=CreneauRetrait.IdCreneau;";
 
 		/*----- Ouverture de l'espace de requÃªte -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
@@ -462,7 +427,8 @@ public class ConnectionMySql {
 	public static ArrayList<Commande> resToCommandes(ResultSet rs) throws SQLException {
 		ArrayList<Commande> liste = new ArrayList<>();
 		while (rs.next()) {
-			Commande c = new Commande(rs.getDate("DateRetrait"), rs.getTime("DebutCreneau"), rs.getInt("IdCommande"),rs.getString("NomMagasin"),rs.getInt("IdUtilisateur"),rs.getString("EtatCommande"));
+			Commande c = new Commande(rs.getDate("DateRetrait"), rs.getTime("DebutCreneau"), rs.getInt("IdCommande"),
+					rs.getString("NomMagasin"), rs.getInt("IdUtilisateur"), rs.getString("EtatCommande"));
 			liste.add(c);
 		}
 		return liste;
@@ -519,7 +485,7 @@ public class ConnectionMySql {
 				+ "SELECT Commandes.IdCommande " + "FROM Commandes "
 				+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
 				+ "WHERE Articles_Commandes.estValide=0" + ");";
-		
+
 		String sqlCmd2 = "UPDATE Commandes " + "SET EtatCommande = 'En cours' " + "WHERE IdCommande IN ("
 				+ "SELECT Commandes.IdCommande " + "FROM Commandes "
 				+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
@@ -576,56 +542,20 @@ public class ConnectionMySql {
 	}
 
 	/**
-	 * Retourne la liste de type de produits.
-	 */
-	public static ArrayList<TypeProduit> afficherTypeProduit() throws ClassNotFoundException, SQLException {
-		/*----- CrÃ©ation de la connexion Ã  la base de donnÃ©es -----*/
-		ConnectionMySql.connexion();
-
-		/*----- Interrogation de la base -----*/
-		ArrayList<TypeProduit> liste = new ArrayList<>();
-
-		/*----- RequÃªte SQL -----*/
-		String sql = "SELECT * from TypeProduit";
-
-		/*----- Ouverture de l'espace de requÃªte -----*/
-		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-			/*----- ExÃ©cution de la requÃªte -----*/
-			try (ResultSet rs = st.executeQuery()) {
-				/*----- Lecture du contenu du ResultSet -----*/
-				while (rs.next()) {
-					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit"),
-							rs.getInt("IdCategorie")));
-				}
-			}
-			st.close();
-		} catch (SQLException ex) {
-
-			throw new SQLException(
-					"Exception ConnectionMySql.afficherTypeProduit() : ProblÃ¨me SQL - " + ex.getMessage());
-		}
-		ConnectionMySql.cx.close();
-		return liste;
-	}
-
-	/**
 	 * Gets all magasins info
 	 */
 	public static ArrayList<Magasin> getAllMagasins() throws ClassNotFoundException, SQLException {
-		// Crï¿½er la connexion ï¿½ la base de donnï¿½es
+
 		ConnectionMySql.connexion();
 
-		// Liste pour stocker les articles
 		ArrayList<Magasin> listeMag = new ArrayList<>();
 
-		// Requï¿½te SQL
 		String sql = "SELECT * from Magasins";
 
-		// Ouverture de l'espace de requï¿½te
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-			// Exï¿½cution de la requï¿½te
+
 			try (ResultSet rs = st.executeQuery()) {
-				// Lecture du contenu du ResultSet
+
 				while (rs.next()) {
 					String adresseMagasin = rs.getString("AdresseMagasin");
 					String heureFermetureMagasin = rs.getTime("HeureFermetureMagasin").toString();
@@ -633,7 +563,6 @@ public class ConnectionMySql {
 					int idMagasin = rs.getInt("IdMagasin");
 					String nomMagasin = rs.getString("NomMagasin");
 
-					// Crï¿½er un nouvel article et l'ajouter ï¿½ la liste
 					Magasin mag = new Magasin(idMagasin, nomMagasin, adresseMagasin, heureOuvertureMagasin,
 							heureFermetureMagasin);
 					listeMag.add(mag);
@@ -872,7 +801,7 @@ public class ConnectionMySql {
 	 * @throws Exception
 	 */
 	public static void addCommande(String nomMag, Date dateRetrait, Time heureRetraitDeb, Time heureRetraitFin,
-			List<Article> articles,int id) throws Exception {
+			List<Article> articles, int id) throws Exception {
 		// Crï¿½er la connexion ï¿½ la base de donnï¿½es
 		ConnectionMySql.connexion();
 
@@ -921,7 +850,626 @@ public class ConnectionMySql {
 
 		ConnectionMySql.cx.close();
 	}
-	
+
+	public static HashMap<String, List<Object[]>> getContenuListe(int idListe)
+			throws ClassNotFoundException, SQLException {
+
+		HashMap<String, List<Object[]>> contenuListeMap = new HashMap<>();
+
+		try {
+			ConnectionMySql.connexion();
+
+			/* Requête SQL */
+			String sql = "SELECT l.NomListe, t.NomTypeProduit, a.LibelleArticle, c.quantite "
+					+ "FROM Contenu_Liste c, Liste_Courses l, TypeProduit t, Articles a "
+					+ "WHERE t.IdTypeProduit = c.IdTypeProduit AND c.IdListe = l.IdListe AND c.EAN = a.EAN AND c.IdListe = ?";
+
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+				st.setInt(1, idListe);
+				try (ResultSet rs = st.executeQuery()) {
+					while (rs.next()) {
+						String nomListe = rs.getString("NomListe");
+						String NomTypeProduit = rs.getString("NomTypeProduit");
+						String libelleArticle = rs.getString("LibelleArticle");
+						int quantite = rs.getInt("quantite");
+
+						Object[] contenuListe = { NomTypeProduit, libelleArticle, quantite };
+
+						contenuListeMap.computeIfAbsent(nomListe, k -> new ArrayList<>()).add(contenuListe);
+					}
+				}
+			} catch (SQLException ex) {
+				throw new SQLException(
+						"Exception ConnectionMySql.getContenuListe() : Problème SQL - " + ex.getMessage());
+			}
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.getContenuListe() : Problème SQL - " + ex.getMessage());
+		}
+		return contenuListeMap;
+	}
+
+	public static void insererLigneListe(int idListe, int idTypeProduit, int EAN, int quantite)
+			throws SQLException, ClassNotFoundException {
+		ConnectionMySql.connexion();
+		String insertQuery = "INSERT INTO Contenu_Liste(EAN, IdTypeProduit, quantite, IdListe) VALUES (?,?,?,?)";
+
+		try (PreparedStatement insertStmt = ConnectionMySql.cx.prepareStatement(insertQuery)) {
+			// Remplacer les paramètres de requête par les nouvelles valeurs
+			insertStmt.setInt(1, EAN);
+			insertStmt.setInt(2, idTypeProduit);
+			insertStmt.setInt(3, quantite);
+			insertStmt.setInt(4, idListe);
+
+			// Exécuter la mise à jour
+			insertStmt.executeUpdate();
+		}
+
+		ConnectionMySql.cx.close();
+
+	}
+
+	public static void supprimerListeCourse(String nomListe) throws SQLException, ClassNotFoundException {
+		ConnectionMySql.connexion();
+
+		// Requête SQL pour la suppression
+		String deleteQuery = "DELETE FROM Liste_Courses WHERE NomListe = ?";
+
+		try (PreparedStatement deleteStmt = ConnectionMySql.cx.prepareStatement(deleteQuery)) {
+			// Remplacer le paramètre de requête par le nom de la liste à supprimer
+			deleteStmt.setString(1, nomListe);
+
+			// Exécuter la suppression
+			deleteStmt.executeUpdate();
+		}
+
+		ConnectionMySql.cx.close();
+	}
+
+	public static int addListeCourse(String nomLC, List<String> listIdTypeProduit) throws Exception {
+		ConnectionMySql.connexion();
+
+		int idListe = 0;
+
+		String insertQuery = "INSERT INTO Liste_Courses(IdUtilisateur, NomListe) VALUES (?, ?)";
+
+		try (PreparedStatement insertStmt = ConnectionMySql.cx.prepareStatement(insertQuery,
+				Statement.RETURN_GENERATED_KEYS)) {
+
+			insertStmt.setInt(1, 1);
+			insertStmt.setString(2, nomLC);
+
+			// Exécuter l'insertion
+			insertStmt.executeUpdate();
+
+			ResultSet generatedKeys = insertStmt.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				idListe = generatedKeys.getInt(1);
+				System.out.println("Liste de courses ajoutée avec l'identifiant : " + idListe + " " + nomLC);
+			} else {
+				throw new SQLException("Échec de la récupération de l'identifiant de la liste de courses ajoutée.");
+			}
+		}
+
+		if (listIdTypeProduit != null) {
+			for (String idTypeProduit : listIdTypeProduit) {
+				String sqltypeProduitListeCourse = "INSERT INTO Contenu_Liste (IdListe, IdTypeProduit) VALUES (?, ?)";
+				try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqltypeProduitListeCourse)) {
+
+					st.setInt(1, idListe);
+					st.setString(2, idTypeProduit);
+
+					st.executeUpdate();
+					st.close();
+
+				} catch (SQLException e) {
+					throw new Exception("Bd.addListeCourse() - " + e.getMessage());
+				}
+			}
+		}
+
+		ConnectionMySql.cx.close();
+
+		return idListe;
+	}
+
+	public static ArrayList<Commande> getAllCommande() throws ClassNotFoundException, SQLException {
+		ArrayList<Commande> liste = new ArrayList<>();
+		connexion();
+
+		String sql = "SELECT * FROM Commandes c, CreneauRetrait cr, Magasins m, Articles_Commandes ac, Articles a WHERE c.IdCreneau = cr.IdCreneau AND a.EAN=ac.EAN AND c.IdCommande = ac.IdCommande AND m.IdMagasin = c.IdMagasin AND IdUtilisateur = 1 AND EtatCommande = 'En cours' GROUP BY(c.IdCommande)";
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					Commande commande = new Commande(rs.getDate("DateRetrait"), rs.getString("EtatCommande"),
+							rs.getInt("IdCommande"), rs.getInt("IdMagasin"), rs.getInt("IdUtilisateur"));
+					commande.setDebutCreneau(rs.getTime("DebutCreneau"));
+					commande.setFinCreneau(rs.getTime("FinCreneau"));
+					commande.setNomMagasin(rs.getString("NomMagasin"));
+					;
+					liste.add(commande);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.getAllCommande() : Problème SQL - " + ex.getMessage());
+		} finally {
+			cx.close();
+		}
+		return liste;
+	}
+
+	public static Commande getCommandeById(int idCommande) throws ClassNotFoundException, SQLException {
+		connexion(); // Créez la connexion à la base de données
+
+		Commande commande = null;
+
+		String sql = "SELECT c.*, cr.DebutCreneau, cr.FinCreneau, m.NomMagasin FROM Commandes c "
+				+ "JOIN CreneauRetrait cr ON c.IdCreneau = cr.IdCreneau "
+				+ "JOIN Magasins m ON c.IdMagasin = m.IdMagasin " + "WHERE c.IdCommande = ?";
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			st.setInt(1, idCommande);
+			try (ResultSet rs = st.executeQuery()) {
+				if (rs.next()) {
+					commande = new Commande(rs.getDate("DateRetrait"), rs.getString("EtatCommande"),
+							rs.getInt("IdCommande"), rs.getInt("IdUtilisateur"), rs.getInt("IdMagasin"));
+					commande.setDebutCreneau(rs.getTime("DebutCreneau"));
+					commande.setFinCreneau(rs.getTime("FinCreneau"));
+					commande.setNomMagasin(rs.getString("NomMagasin"));
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.getCommandeById() : Problème SQL - " + ex.getMessage());
+		} finally {
+			cx.close(); // Fermez la connexion à la base de données
+		}
+		return commande;
+	}
+
+	public static void updateCommande(int idCommande, int idCreneau, int idMagasin)
+			throws ClassNotFoundException, SQLException {
+		connexion();
+
+		String sql = "UPDATE Commandes SET IdCreneau = ?, IdMagasin = ? WHERE IdCommande = ?";
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			st.setInt(1, idCreneau);
+			st.setInt(2, idMagasin);
+			st.setInt(3, idCommande);
+
+			st.executeUpdate();
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.updateCommande() : Problème SQL - " + ex.getMessage());
+		} finally {
+			cx.close();
+		}
+	}
+
+	public static ArrayList<CreneauRetrait> getHoursOpenedByMagasin(String nomMagasin)
+			throws ClassNotFoundException, SQLException {
+		connexion();
+
+		String sql = "SELECT * FROM CreneauRetrait c, Magasins m, Magasins_CreneauRetraits mag WHERE c.IdCreneau = mag.IdCreneau AND m.IdMagasin = mag.Idmagasin AND nomMagasin = ?";
+		ArrayList<CreneauRetrait> creneaux = new ArrayList<>();
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			st.setString(1, nomMagasin);
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					CreneauRetrait creneau = new CreneauRetrait();
+					creneau.setIdCreneau(rs.getInt("idCreneau"));
+					creneau.setDebutCreneau(rs.getString("debutCreneau"));
+					creneau.setFinCreneau(rs.getString("finCreneau"));
+					creneaux.add(creneau);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException(
+					"Exception ConnectionMySql.getHoursOpenedByMagasinId() : Problème SQL - " + ex.getMessage());
+		} finally {
+			cx.close();
+		}
+		return creneaux;
+	}
+
+	public static HashMap<Commande, ArrayList<Article>> getAllCommandeWithArticles()
+			throws ClassNotFoundException, SQLException {
+		HashMap<Commande, ArrayList<Article>> commandesArticlesMap = new HashMap<>();
+		connexion();
+
+		String sql = "SELECT * FROM Commandes c " + "JOIN CreneauRetrait cr ON c.IdCreneau = cr.IdCreneau "
+				+ "JOIN Magasins m ON m.IdMagasin = c.IdMagasin "
+				+ "JOIN Articles_Commandes ac ON c.IdCommande = ac.IdCommande " + "JOIN Articles a ON a.EAN = ac.EAN "
+				+ "WHERE IdUtilisateur = 1 AND EtatCommande = 'En cours'";
+
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					// Création de la commande
+					Commande commande = new Commande(rs.getDate("DateRetrait"), rs.getString("EtatCommande"),
+							rs.getInt("IdCommande"), rs.getInt("IdMagasin"), rs.getInt("IdUtilisateur"));
+					commande.setDebutCreneau(rs.getTime("DebutCreneau"));
+					commande.setFinCreneau(rs.getTime("FinCreneau"));
+					commande.setNomMagasin(rs.getString("NomMagasin"));
+
+					// Création de l'article
+					Article article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"),
+							rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit"));
+
+					// Vérifier si la commande est déjà dans la map
+					if (commandesArticlesMap.containsKey(commande)) {
+						// Si oui, récupérer la liste d'articles associée
+						ArrayList<Article> articles = commandesArticlesMap.get(commande);
+						// Ajouter l'article à la liste
+						articles.add(article);
+					} else {
+						// Si non, créer une nouvelle liste d'articles
+						ArrayList<Article> articles = new ArrayList<>();
+						// Ajouter l'article à la liste
+						articles.add(article);
+						// Ajouter la commande et sa liste d'articles à la map
+						commandesArticlesMap.put(commande, articles);
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException(
+					"Exception ConnectionMySql.getAllCommandeWithArticles() : Problème SQL - " + ex.getMessage());
+		} finally {
+			cx.close();
+		}
+
+		return commandesArticlesMap;
+	}
+
+	/**
+	 * Retourne la liste de type de produits.
+	 */
+	public static ArrayList<TypeProduit> afficherTypeProduit() throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		/*----- Interrogation de la base -----*/
+		ArrayList<TypeProduit> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * from TypeProduit";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new TypeProduit(rs.getInt("IdTypeProduit"), rs.getString("NomTypeProduit"),
+							rs.getInt("IdCategorie")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException(
+					"Exception ConnectionMySql.afficherTypeProduit() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+
+	/**
+	 * Gets type product Id by TP name
+	 */
+	public static int getCategoryIdByTPName(String nomTP, boolean isFilter)
+			throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		if (!isFilter) {
+			ConnectionMySql.connexion();
+		}
+
+		/*----- Interrogation de la base -----*/
+		int idTP = 0;
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT IdCategorie FROM Categories WHERE NomCategory = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+			st.setString(1, nomTP);
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				if (rs.next()) {
+					idTP = rs.getInt("IdCategorie");
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException(
+					"Exception ConnectionMySql.getCategoryIdByTPName() : Problème SQL - " + ex.getMessage());
+		}
+		if (!isFilter) {
+			ConnectionMySql.cx.close();
+		}
+		return idTP;
+	}
+
+	/**
+	 * Gets articles by TP name
+	 */
+	public static ArrayList<Article> getArticlesByTPName(String nomTP) throws ClassNotFoundException, SQLException {
+		/*----- Création de la connexion à la base de données -----*/
+		ConnectionMySql.connexion();
+
+		int idTP = getCategoryIdByTPName(nomTP, true);
+		ArrayList<Article> liste = new ArrayList<>();
+
+		/*----- Requête SQL -----*/
+		String sql = "SELECT * FROM Articles WHERE IdCategorie = ?";
+
+		/*----- Ouverture de l'espace de requête -----*/
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Définir la valeur du paramètre idCat dans la requête SQL
+			st.setString(1, Integer.toString(idTP));
+			/*----- Exécution de la requête -----*/
+			try (ResultSet rs = st.executeQuery()) {
+				/*----- Lecture du contenu du ResultSet -----*/
+				while (rs.next()) {
+					liste.add(new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"),
+							rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit")));
+				}
+			}
+			st.close();
+		} catch (SQLException ex) {
+
+			throw new SQLException(
+					"Exception ConnectionMySql.getArticlesByTPName() : Problème SQL - " + ex.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return liste;
+	}
+
+	public static ArrayList<ListeCourse> getListesCourses() throws ClassNotFoundException, SQLException {
+		ArrayList<ListeCourse> courses = new ArrayList<>();
+
+		try {
+			ConnectionMySql.connexion();
+
+			/* Requête SQL */
+			String sql = "SELECT * FROM Liste_Courses";
+
+			try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+				try (ResultSet rs = st.executeQuery()) {
+					while (rs.next()) {
+						String nomListe = rs.getString("NomListe");
+						int idListe = rs.getInt("IdListe");
+						int idUtilisateur = rs.getInt("IdUtilisateur");
+
+						courses.add(new ListeCourse(idListe, nomListe, idUtilisateur));
+					}
+				}
+			} catch (SQLException ex) {
+				throw new SQLException(
+						"Exception ConnectionMySql.getListesCourses() : Problème SQL - " + ex.getMessage());
+			}
+
+		} catch (SQLException ex) {
+			throw new SQLException("Exception ConnectionMySql.getListesCourses() : Problème SQL - " + ex.getMessage());
+		}
+
+		return courses;
+	}
+
+	public static ArrayList<Article> getAllArticlesByTypeProduit(int idTypeProduit)
+			throws ClassNotFoundException, SQLException {
+		ConnectionMySql.connexion();
+
+		ArrayList<Article> liste = new ArrayList<>();
+
+		String sql = "SELECT DISTINCT * FROM Articles a, TypeProduit t, Contenu_Liste c WHERE t.IdTypeProduit = a.IdTypeProduit AND c.IdTypeProduit = a.IdTypeProduit AND a.IdTypeProduit = ? GROUP BY a.EAN";
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+
+			st.setInt(1, idTypeProduit);
+
+			try (ResultSet rs = st.executeQuery()) {
+
+				while (rs.next()) {
+					Article article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"),
+							rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit"));
+					article.setNomTypeProduit(rs.getString("NomTypeProduit"));
+					liste.add(article);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException(
+					"Exception ConnectionMySql.getAllArticlesByTypeProduit() : Problème SQL - " + ex.getMessage());
+		}
+
+		// Fermeture de la connexion
+		ConnectionMySql.cx.close();
+
+		return liste;
+	}
+
+	public static ArrayList<ContenuListe> getContenuListeByIdForTypeProduit(int idListe)
+			throws SQLException, ClassNotFoundException {
+		ArrayList<ContenuListe> liste = new ArrayList<>();
+
+		// Establish the database connection
+		ConnectionMySql.connexion();
+
+		String sql = "SELECT c.*, t.NomTypeProduit " + "FROM Contenu_Liste c "
+				+ "JOIN TypeProduit t ON c.IdTypeProduit = t.IdTypeProduit "
+				+ "WHERE c.EAN IS NULL AND c.quantite IS NULL AND c.idListe = ?";
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			st.setInt(1, idListe);
+
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					ContenuListe contenu = new ContenuListe(rs.getInt("IdListe"), rs.getInt("EAN"),
+							rs.getInt("IdTypeProduit"), rs.getInt("quantite")
+
+					);
+					contenu.setNomTypeProduit(rs.getString("NomTypeProduit"));
+					liste.add(contenu);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException("Exception in getContenuListeByIdForTypeProduit: " + ex.getMessage());
+		} finally {
+			ConnectionMySql.cx.close();
+		}
+
+		return liste;
+	}
+
+	public static ArrayList<ContenuListe> getContenuListeByIdForArticle(int idListe)
+			throws SQLException, ClassNotFoundException {
+		ArrayList<ContenuListe> liste = new ArrayList<>();
+
+		// Establish the database connection
+		ConnectionMySql.connexion();
+
+		String sql = "SELECT c.*, t.NomTypeProduit, a.LibelleArticle, a.Marque " + "FROM Contenu_Liste c "
+				+ "JOIN TypeProduit t ON c.IdTypeProduit = t.IdTypeProduit " + "JOIN Articles a ON c.EAN = a.EAN "
+				+ "WHERE c.EAN IS NOT NULL AND c.quantite IS NOT NULL AND c.idListe = ?";
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			st.setInt(1, idListe);
+
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					ContenuListe contenu = new ContenuListe(rs.getInt("IdListe"), rs.getInt("EAN"),
+							rs.getInt("IdTypeProduit"), rs.getInt("quantite"));
+					contenu.setLibelleArticle(rs.getString("LibelleArticle"));
+					contenu.setMarque(rs.getString("Marque"));
+					liste.add(contenu);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new SQLException("Exception in getContenuListeByIdForArticle: " + ex.getMessage());
+		} finally {
+			ConnectionMySql.cx.close();
+		}
+
+		return liste;
+	}
+
+	public static void updateContenuListe(int newEAN, int newQuantite, int idListe, int idTypeProduit)
+			throws ClassNotFoundException, SQLException {
+		connexion(); // Ouvre la connexion à la base de données
+
+		// Requête SQL d'update
+		String sql = "UPDATE Contenu_Liste " + "SET EAN = ?, quantite = ? "
+				+ "WHERE idListe = ? AND idTypeProduit = ? AND EAN IS NULL AND quantite IS NULL";
+
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			// Assignation des valeurs aux paramètres de la requête
+			st.setInt(1, newEAN);
+			st.setInt(2, newQuantite);
+			st.setInt(3, idListe);
+			st.setInt(4, idTypeProduit);
+
+			// Exécution de la requête
+			st.executeUpdate();
+		} catch (SQLException sqle) {
+			throw new SQLException("Erreur lors de la mise à jour du contenu de la liste : " + sqle.getMessage());
+		} finally {
+			// Fermeture de la connexion à la base de données
+			if (cx != null) {
+				cx.close();
+			}
+		}
+	}
+
+	/**
+	 * Delete all information of liste course by Id
+	 */
+	public static void deleteListeCourseById(String idListeCourse) throws ClassNotFoundException, SQLException {
+		connexion(); // Ouvre la connexion à la base de données
+
+		// Requête SQL d'update
+		String sqlDelteContenu = "DELETE FROM Contenu_Liste WHERE IdListe = ?";
+		String sqlDelteListe = "DELETE FROM Liste_Courses WHERE IdListe = ?";
+
+		try (PreparedStatement st = cx.prepareStatement(sqlDelteContenu)) {
+			// Assignation des valeurs aux paramètres de la requête
+			st.setInt(1, Integer.parseInt(idListeCourse));
+
+			// Exécution de la requête
+			st.executeUpdate();
+			st.close();
+		} catch (SQLException sqle) {
+			throw new SQLException("Erreur lors de la mise à jour du contenu de la liste : " + sqle.getMessage());
+		}
+
+		try (PreparedStatement st = cx.prepareStatement(sqlDelteListe)) {
+			// Assignation des valeurs aux paramètres de la requête
+			st.setString(1, idListeCourse);
+
+			// Exécution de la requête
+			st.executeUpdate();
+			st.close();
+		} catch (SQLException sqle) {
+			throw new SQLException("Erreur lors de la mise à jour du contenu de la liste : " + sqle.getMessage());
+		}
+
+		// Fermeture de la connexion à la base de données
+		if (cx != null) {
+			cx.close();
+		}
+	}
+
+	/**
+	 * Get all the articles to add in card from liste course by course id
+	 */
+	public static ArrayList<Article> getArticlesInfoByListeCourseId(int idListe)
+			throws SQLException, ClassNotFoundException {
+		ArrayList<Article> liste = new ArrayList<>();
+		Article article = new Article();
+
+		// Establish the database connection
+		ConnectionMySql.connexion();
+
+		String sql = "SELECT Articles.*, Contenu_Liste.quantite FROM Articles, Contenu_Liste WHERE Articles.EAN = Contenu_Liste.EAN And Contenu_Liste.IdListe = ?";
+
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			st.setInt(1, idListe);
+
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					article = new Article(rs.getInt("EAN"), rs.getString("VignetteArticle"),
+							rs.getFloat("PrixUnitaireArticle"), rs.getString("NutriscoreArticle"),
+							rs.getString("LibelleArticle"), rs.getFloat("PoidsArticle"), rs.getFloat("PrixKgArticle"),
+							rs.getString("DescriptionCourteArticle"), rs.getString("DescriptionLongueArticle"),
+							rs.getString("FournisseurArticle"), rs.getString("Marque"), rs.getInt("PromoArticle"),
+							rs.getInt("IdRayon"), rs.getInt("IdCategorie"), rs.getInt("IdTypeProduit"));
+					article.setQuantite(rs.getInt("quantite"));
+					liste.add(article);
+				}
+				st.close();
+				;
+			}
+			st.close();
+		} catch (SQLException ex) {
+			throw new SQLException("Exception in getArticlesInfoByListeCourseId: " + ex.getMessage());
+		} finally {
+			ConnectionMySql.cx.close();
+		}
+
+		return liste;
+	}
+
 	/**
 	 * update user loyalty points
 	 * 
@@ -930,104 +1478,103 @@ public class ConnectionMySql {
 	public static void updateLoyaltyPoints(int idUtilisateur, int pointFidelite, String operation) throws Exception {
 		// Crï¿½er la connexion ï¿½ la base de donnï¿½es
 		ConnectionMySql.connexion();
-		// requÃªte SQL 
+		// requÃªte SQL
 		String sql;
 		System.out.println("updateLoyaltyPoints()");
-	    if ("substract".equalsIgnoreCase(operation)) {
-	    	System.out.println("idUtilisateur="+idUtilisateur);
-	    	System.out.println("substract sql");
-	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur - ? WHERE IdUtilisateur = ?";
-	    } else {
-	        // Default to "add" operation
-	        sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur + ? WHERE IdUtilisateur = ?";
-	    }
+		if ("substract".equalsIgnoreCase(operation)) {
+			System.out.println("idUtilisateur=" + idUtilisateur);
+			System.out.println("substract sql");
+			sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur - ? WHERE IdUtilisateur = ?";
+		} else {
+			// Default to "add" operation
+			sql = "UPDATE Utilisateurs SET PointsFideliteUtilisateur = PointsFideliteUtilisateur + ? WHERE IdUtilisateur = ?";
+		}
 
-	    try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
-	        // Set the parameters for the prepared statement
-	        st.setInt(1, pointFidelite);
-	        st.setInt(2, idUtilisateur);
+		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
+			// Set the parameters for the prepared statement
+			st.setInt(1, pointFidelite);
+			st.setInt(2, idUtilisateur);
 
-	        // Execute the update
-	        int rowsUpdated = st.executeUpdate();
+			// Execute the update
+			int rowsUpdated = st.executeUpdate();
 
-	        // Check if the update was successful
-	        if (rowsUpdated == 0) {
-	            throw new Exception("Erreur lors de la mise Ã  jour des points de fidÃ©litÃ© : aucun utilisateur trouvÃ© avec l'ID " + idUtilisateur);
-	        }
+			// Check if the update was successful
+			if (rowsUpdated == 0) {
+				throw new Exception(
+						"Erreur lors de la mise Ã  jour des points de fidÃ©litÃ© : aucun utilisateur trouvÃ© avec l'ID "
+								+ idUtilisateur);
+			}
 
-	        st.close();
-	    } catch (SQLException sqle) {
-	        throw new Exception("Erreur lors de la mise Ã  jour des points de fidÃ©litÃ© : " + sqle.getMessage());
-	    }
+			st.close();
+		} catch (SQLException sqle) {
+			throw new Exception("Erreur lors de la mise Ã  jour des points de fidÃ©litÃ© : " + sqle.getMessage());
+		}
 
-	    ConnectionMySql.cx.close();
+		ConnectionMySql.cx.close();
 	}
 
-	 /* returen MagCreneaux dispo
-	 * @throws Exception 
+	/*
+	 * returen MagCreneaux dispo
+	 * 
+	 * @throws Exception
 	 */
-	public static ArrayList<Magasin_CreneauRetrait> creneauxDispo (String magasinNom) throws Exception {
-		ArrayList<Magasin_CreneauRetrait> creneauxDispo =new ArrayList<Magasin_CreneauRetrait>();
+	public static ArrayList<Magasin_CreneauRetrait> creneauxDispo(String magasinNom) throws Exception {
+		ArrayList<Magasin_CreneauRetrait> creneauxDispo = new ArrayList<Magasin_CreneauRetrait>();
 		ConnectionMySql.connexion();
 		String sql = "SELECT CreneauRetrait.IdCreneau,Magasins.IdMagasin,Magasins.NomMagasin,CreneauRetrait.DebutCreneau,CreneauRetrait.FinCreneau,NbDispoCreneau "
 				+ "FROM Magasins_CreneauRetraits,CreneauRetrait,Magasins "
 				+ "WHERE Magasins_CreneauRetraits.IdCreneau=CreneauRetrait.IdCreneau "
-				+ "AND Magasins_CreneauRetraits.IdMagasin=Magasins.IdMagasin "
-				+ "AND Magasins.NomMagasin= ? ";
+				+ "AND Magasins_CreneauRetraits.IdMagasin=Magasins.IdMagasin " + "AND Magasins.NomMagasin= ? ";
 
 		try (PreparedStatement st = cx.prepareStatement(sql)) {
-			st.setString(1,magasinNom);
+			st.setString(1, magasinNom);
 			try (ResultSet rs = st.executeQuery()) {
 				while (rs.next()) {
-					Magasin_CreneauRetrait mc = new Magasin_CreneauRetrait(
-							rs.getInt(1), 
-							rs.getInt(2),
-							rs.getString(3), 
-							rs.getTime(4),
-							rs.getTime(5),
-							rs.getInt(6));
+					Magasin_CreneauRetrait mc = new Magasin_CreneauRetrait(rs.getInt(1), rs.getInt(2), rs.getString(3),
+							rs.getTime(4), rs.getTime(5), rs.getInt(6));
 					creneauxDispo.add(mc);
 				}
-			st.close();
-		} catch (Exception sqle) {
-			throw new Exception("Erreur creneauxDispo : " + sqle.getMessage());
-		}
-		ConnectionMySql.cx.close();
-		return creneauxDispo;
+				st.close();
+			} catch (Exception sqle) {
+				throw new Exception("Erreur creneauxDispo : " + sqle.getMessage());
+			}
+			ConnectionMySql.cx.close();
+			return creneauxDispo;
 		}
 	}
-		public static User authenticate(String email, String password) throws Exception {
-	        ConnectionMySql.connexion();
-	        User user = null;
 
-	        try {
-	            String query = "SELECT * FROM Utilisateurs WHERE EmailUtilisateur = ? AND PasswordUtilisateur = ?";
-	            PreparedStatement ps = ConnectionMySql.cx.prepareStatement(query);
-	            ps.setString(1, email);
-	            ps.setString(2, password);
+	public static User authenticate(String email, String password) throws Exception {
+		ConnectionMySql.connexion();
+		User user = null;
 
-	            ResultSet rs = ps.executeQuery();
+		try {
+			String query = "SELECT * FROM Utilisateurs WHERE EmailUtilisateur = ? AND PasswordUtilisateur = ?";
+			PreparedStatement ps = ConnectionMySql.cx.prepareStatement(query);
+			ps.setString(1, email);
+			ps.setString(2, password);
 
-	            if (rs.next()) {
-	                user = new User();
-	                user.setId(rs.getInt("IdUtilisateur"));
-	                user.setNom(rs.getString("NomUtilisateur"));
-	                user.setPrenom(rs.getString("PrenomUtilisateur"));
-	                user.setEmail(rs.getString("EmailUtilisateur"));
-	                user.setAdresse(rs.getString("AdresseUtilisateur"));
-	                user.setRole(rs.getString("RoleUtilisateur"));
-	                user.setPointsFidelite(rs.getInt("PointsFideliteUtilisateur"));
-	                // Do not store password in the user object for security reasons
-	                ps.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            throw new Exception("Error authenticating user", e);
-	        } finally {
-	        	ConnectionMySql.cx.close();
-	        }
+			ResultSet rs = ps.executeQuery();
 
-	        return user;
+			if (rs.next()) {
+				user = new User();
+				user.setId(rs.getInt("IdUtilisateur"));
+				user.setNom(rs.getString("NomUtilisateur"));
+				user.setPrenom(rs.getString("PrenomUtilisateur"));
+				user.setEmail(rs.getString("EmailUtilisateur"));
+				user.setAdresse(rs.getString("AdresseUtilisateur"));
+				user.setRole(rs.getString("RoleUtilisateur"));
+				user.setPointsFidelite(rs.getInt("PointsFideliteUtilisateur"));
+				// Do not store password in the user object for security reasons
+				ps.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error authenticating user", e);
+		} finally {
+			ConnectionMySql.cx.close();
+		}
+
+		return user;
 	}
 
 	/*----------------------------*/
@@ -1035,6 +1582,15 @@ public class ConnectionMySql {
 	/*----------------------------*/
 
 	public static void main(String[] s) throws Exception {
+//		getHoursOpenedByMagasinId("MeubleLand");
+//		getOpeningByMagasinName("ElectroPlus");
+
+//		System.out.println(getContenuListe(1));
+//		insererLigneListe(1, 18, 23, 4);
+
+//		System.out.println(getContenuListe(1));
+		System.out.println(getAllArticlesByTypeProduit(1));
+
 	}
 
 } /*----- Fin de la classe ConnectionMySql -----*/

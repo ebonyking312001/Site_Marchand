@@ -166,13 +166,13 @@ function getOpeningMagasin() {
 function confirmCard() {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
-	const mot=document.getElementById("heureRetMag").value;
+	const mot = document.getElementById("heureRetMag").value;
 	console.log(mot);
-	nbC=mot.substring(mot.length-2,mot.length);
+	nbC = mot.substring(mot.length - 2, mot.length);
 	console.log(nbC);
 	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
 		alert("La date est déjà passée");
-	}else if(nbC==" 0"){
+	} else if (nbC == " 0") {
 		alert("pas de créneau disponible !");
 	}
 	else {
@@ -188,7 +188,7 @@ function confirmCard() {
 
 				var elt = document.getElementById("intNbArtCard");
 				elt.innerHTML = texte;
-				
+
 			}
 		};
 
@@ -203,7 +203,7 @@ function calculateNewTotalPrice() {
 	// get input points
 	var pointsInput = parseInt(document.getElementById("pointsInput").value) || 0;
 	// get discount amount
-	var discount = Math.floor(pointsInput/10);
+	var discount = Math.floor(pointsInput / 10);
 	// get loyalty points
 	var pointsFideliteDispo = document.getElementById("pointsFideliteDispo").dataset.value;
 	// get total price
@@ -229,18 +229,18 @@ function calculateNewTotalPrice() {
 		document.getElementById("errorPoints").innerHTML = "La valeur saisie ne peut pas etre inferieure a 0. Veuillez ajuster le montant des points.";
 		button.disabled = true;
 		button.style.backgroundColor = "#ccc"; // Change background color to grey
-    	button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
+		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
 	} else {
 		document.getElementById("errorPoints").innerHTML = "";
-		button.style.cursor = "pointer"; 
-		button.style.backgroundColor = "#007bff"; 
+		button.style.cursor = "pointer";
+		button.style.backgroundColor = "#007bff";
 
-		
+
 		var eltPrice = document.getElementById("totalPrice");
 		eltPrice.innerHTML = '<b>Prix total a payer : '+newTotalPrice.toFixed(1)+' euros </b>';
-		
+
 		// envoyer pointsInput et newTotalPrice au servlet ConfirmationPanierServlet
-        xhr.open("GET", "ConfirmationPanierServlet?pointsInput="+ pointsInput+"&newTotalPrice="+newTotalPrice, true);
+		xhr.open("GET", "ConfirmationPanierServlet?pointsInput=" + pointsInput + "&newTotalPrice=" + newTotalPrice, true);
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				// get nouveau points de fidélité à gagner
@@ -248,122 +248,232 @@ function calculateNewTotalPrice() {
 				var texte = doc[0].firstChild.nodeValue;
 				// update nouveau points de fidélité dans div addLoyaltyPoints
 				var eltPoints = document.getElementById("addLoyaltyPoints");
-				eltPoints.innerHTML = "Je cagnotte <b>"+texte+"</b> points";
+				eltPoints.innerHTML = "Je cagnotte <b>" + texte + "</b> points";
 				// update nouveau points de fidélité disponible
 				var eltNewPoints = document.getElementById("pointsFideliteDispo");
-				eltNewPoints.innerHTML = "Solde : "+ newPointsFideliteDispo;
+				eltNewPoints.innerHTML = "Solde : " + newPointsFideliteDispo;
 				button.disabled = false;
 			}
 		};
-		
-    // Send the request
-    xhr.send();
-    }
-	
+
+		// Send the request
+		xhr.send();
+	}
+
+}
+
+/**
+ * ============================================= Listes de course =============================================
+ */
+
+/**
+ * Add new liste de course
+ */
+function addListeCourse() {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	var tpProdSelectionnes = document.getElementsByClassName("tpCheck");
+
+	let stringIdsTPs = '';
+
+	for (var i = 0; tpProdSelectionnes[i]; ++i) {
+		if (tpProdSelectionnes[i].checked) {
+			stringIdsTPs += String(tpProdSelectionnes[i].value) + "_";
+		}
+	}
+
+	// Requête au serveur avec les paramètres éventuels.
+	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value + "&listeIdTp=" + stringIdsTPs, true);
+
+	document.getElementById("message-titleList").value = '';
+
+	for (var i = 0; tpProdSelectionnes[i]; ++i) {
+		if (tpProdSelectionnes[i].checked) {
+			tpProdSelectionnes[i].checked = false;
+		}
+	};
+
+	//	$('#ModalListeCourse').modal('hide');
+
+	// Envoie de la requête.
+	xhr.send();
+
+}
+
+/**
+ * Delete liste course by Id
+ */
+function deleteListeCoursebyId(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// URL to remove the article from cart
+	xhr.open("GET", "ServletListeCourse?idListeCourse=" + event, true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			//location.reload();
+			console.log("ok");
+			$("#content").load(location.href + " #" + event + "_div>*", "");
+		}
+	};
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
+ * Add articles to card
+ */
+function addArticlesToCardFromListe(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// URL to remove the article from cart
+	xhr.open("GET", "ServletListeCourse?action=addToCardFromListe&idListeCourse=" + event, true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			alert(("Les articles on été ajoutés au panier").normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+			var doc = xhr.responseXML.getElementsByTagName("int");
+			var texte = doc[0].firstChild.nodeValue;
+
+			var elt = document.getElementById("intNbArtCard");
+			elt.innerHTML = texte;
+		}
+	};
+	// Envoie de la requête.
+	xhr.send();
 }
 
 /**
  * ============================================= After loading DOM =============================================
 
  */
+
+$('.byalpha').on('click',
+	function(event) {
+		addArticleByIdWithQuantity(event.target.dataset.idart);
+	}
+);
+
+$('.byalphaAddPanier').on('click',
+	function(event) {
+		addArticleByIdFromCart(event.target.dataset.idart);
+	}
+);
+
+$('.byalphaRmPanier').on('click',
+	function(event) {
+		rmArticleByIdFromCart(event.target.dataset.idart);
+	}
+);
+
+$('.changeNbArt').on('keyup',
+	function(event) {
+		onKeyupQuantityArt(event);
+	}
+);
+
+$('#delete_card').on('click', function() {
+	deleteArticlesCart();
+});
+
+$('#nomMagasin').on('change', function() {
+	getOpeningMagasin();
+});
+
+$('#final_validation').on('click', function() {
+	confirmCard();
+});
+
+$('#plus_liste').on('click', function() {
+	addListeCourse();
+});
+
+$('.supprListe').on('click',
+	function(event) {
+		deleteListeCoursebyId(event.target.dataset.idlisterm);
+	}
+);
+
+$('.addToCardFromL').on('click',
+	function(event) {
+		addArticlesToCardFromListe(event.target.dataset.idlisteaddcard);
+	}
+);
+
+$('#envoyerListePanier').on('click', function(event) {
+	getProductsFromTPChoosed(event);
+});
+
+$('#enregistrerListe').on('click', function(event) {
+	getProductsFromTPChoosed(event);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 
-	$('.byalpha').on('click',
-		function(event) {
-			addArticleByIdWithQuantity(event.target.dataset.idart);
-		}
-	);
-
-	$('.byalphaAddPanier').on('click',
-		function(event) {
-			addArticleByIdFromCart(event.target.dataset.idart);
-		}
-	);
-
-	$('.byalphaRmPanier').on('click',
-		function(event) {
-			rmArticleByIdFromCart(event.target.dataset.idart);
-		}
-	);
-
-	$('.changeNbArt').on('keyup',
-		function(event) {
-			onKeyupQuantityArt(event);
-		}
-	);
-
-	$('#delete_card').on('click', function() {
-		deleteArticlesCart();
-	});
-
-	$('#nomMagasin').on('change', function() {
-		getOpeningMagasin();
-	});
-
-	$('#final_validation').on('click', function() {
-		confirmCard();
-	});
 	$('#decagnotter').on('click', function() {
 		calculateNewTotalPrice();
 	});
 	document.getElementById("heureRetMag").disabled = "disabled";
 	document.getElementById("dateRetMag").disabled = "disabled";
-	
-	
 
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    const cmdId = "${cmdId}";
-    
-    /*
-    add colors of buttons
-    */
-    document.querySelectorAll('button.validerBtn').forEach(button => {
-    	  const parentDiv = button.closest('div[ligne-cmd-ean]'); 
-          const etat = parentDiv.getAttribute('ligne-cmd-etat');
-        if (etat == "1") { //validée
-            button.classList.add('btn-success');
-            button.classList.remove('btn-warning');
-        } else { //en cours
-            button.classList.add('btn-warning');
-            button.classList.remove('btn-success');
-        }
-    });
-    /*
-    when click button, change button color and get ean,etat
-    */
-    document.querySelectorAll('button.validerBtn').forEach(button => {
-        const parentDiv = button.closest('div[ligne-cmd-ean]');
-        const etat = parentDiv.getAttribute('ligne-cmd-etat');
-        const ean = parentDiv.getAttribute('ligne-cmd-ean');
+	const cmdId = "${cmdId}";
 
-        button.addEventListener('click', (event) => {
-            let etat = parentDiv.getAttribute('ligne-cmd-etat');
-            etat = etat == "1" ? "0" : "1"; // get etat opposite
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", `${pageContext.request.contextPath}/ServletPreparation`, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Response received: ", xhr.responseText);
-                    // Update the parent div and button based on the new state
-                    parentDiv.setAttribute('ligne-cmd-etat', etat);
-                    button.textContent = etat == "1" ? 'Validée' : 'En cours';
-                    if (etat == "1") {
-                        button.classList.add('btn-success');
-                        button.classList.remove('btn-warning');
-                    } else {
-                        button.classList.add('btn-warning');
-                        button.classList.remove('btn-success');
-                    }
-                }
-            };
-            var data = "cmdId="+cmdId+"&ean="+ean+"&etat="+etat;
-            console.log(data);
-            xhr.send(data);
-        });
-    });
+	/*
+	add colors of buttons
+	*/
+	document.querySelectorAll('button.validerBtn').forEach(button => {
+		const parentDiv = button.closest('div[ligne-cmd-ean]');
+		const etat = parentDiv.getAttribute('ligne-cmd-etat');
+		if (etat == "1") { //validée
+			button.classList.add('btn-success');
+			button.classList.remove('btn-warning');
+		} else { //en cours
+			button.classList.add('btn-warning');
+			button.classList.remove('btn-success');
+		}
+	});
+	/*
+	when click button, change button color and get ean,etat
+	*/
+	document.querySelectorAll('button.validerBtn').forEach(button => {
+		const parentDiv = button.closest('div[ligne-cmd-ean]');
+		const etat = parentDiv.getAttribute('ligne-cmd-etat');
+		const ean = parentDiv.getAttribute('ligne-cmd-ean');
+
+		button.addEventListener('click', (event) => {
+			let etat = parentDiv.getAttribute('ligne-cmd-etat');
+			etat = etat == "1" ? "0" : "1"; // get etat opposite
+			const xhr = new XMLHttpRequest();
+			xhr.open("POST", `${pageContext.request.contextPath}/ServletPreparation`, true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					console.log("Response received: ", xhr.responseText);
+					// Update the parent div and button based on the new state
+					parentDiv.setAttribute('ligne-cmd-etat', etat);
+					button.textContent = etat == "1" ? 'Validée' : 'En cours';
+					if (etat == "1") {
+						button.classList.add('btn-success');
+						button.classList.remove('btn-warning');
+					} else {
+						button.classList.add('btn-warning');
+						button.classList.remove('btn-success');
+					}
+				}
+			};
+			var data = "cmdId=" + cmdId + "&ean=" + ean + "&etat=" + etat;
+			console.log(data);
+			xhr.send(data);
+		});
+	});
 });
 
 
@@ -371,32 +481,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
  * sort by date time (preparer cmd
  */
 document.addEventListener('DOMContentLoaded', function() {
-    function parseDateTime(dateString, timeString) {
-        // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
-        const longdate = dateString + "T" + timeString;
-        return new Date(longdate);
-    }
+	function parseDateTime(dateString, timeString) {
+		// Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
+		const longdate = dateString + "T" + timeString;
+		return new Date(longdate);
+	}
 
-    function sortCards(container, dateClass, timeClass, asc = true) {
-        const cards = Array.from(container.querySelectorAll('.id-div-commande'));
-        cards.sort((cardA, cardB) => {
-            const dateA = cardA.querySelector(dateClass).innerText.trim();
-            const timeA = cardA.querySelector(timeClass).innerText.trim();
-            const dateB = cardB.querySelector(dateClass).innerText.trim();
-            const timeB = cardB.querySelector(timeClass).innerText.trim();
+	function sortCards(container, dateClass, timeClass, asc = true) {
+		const cards = Array.from(container.querySelectorAll('.id-div-commande'));
+		cards.sort((cardA, cardB) => {
+			const dateA = cardA.querySelector(dateClass).innerText.trim();
+			const timeA = cardA.querySelector(timeClass).innerText.trim();
+			const dateB = cardB.querySelector(dateClass).innerText.trim();
+			const timeB = cardB.querySelector(timeClass).innerText.trim();
 
-            const a = parseDateTime(dateA, timeA);
-            const b = parseDateTime(dateB, timeB);
-            return (a - b) * (asc ? 1 : -1);
-        });
+			const a = parseDateTime(dateA, timeA);
+			const b = parseDateTime(dateB, timeB);
+			return (a - b) * (asc ? 1 : -1);
+		});
 
-        cards.forEach(card => container.appendChild(card));
-    }
+		cards.forEach(card => container.appendChild(card));
+	}
 
-    const container = document.getElementById('tab-cmds');
-    document.getElementById('sort-datetime').addEventListener('click', () => {
-        sortCards(container, '.order-date', '.order-time');
-    });
+	const container = document.getElementById('tab-cmds');
+	document.getElementById('sort-datetime').addEventListener('click', () => {
+		sortCards(container, '.order-date', '.order-time');
+	});
 });
 
 

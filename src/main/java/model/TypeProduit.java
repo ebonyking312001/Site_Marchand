@@ -17,7 +17,7 @@ public class TypeProduit {
 	}
 
 	public void setIdTypeProduit(int idTypeProduit) {
-		idTypeProduit = idTypeProduit;
+		this.idTypeProduit = idTypeProduit;
 	}
 
 	public String getNomTypeProduit() {
@@ -25,10 +25,9 @@ public class TypeProduit {
 	}
 
 	public void setNomTypeProduit(String nomTypeProduit) {
-		nomTypeProduit = nomTypeProduit;
+		this.nomTypeProduit = nomTypeProduit;
 	}
 
-	
 	public int getIdCategorie() {
 		return idCategorie;
 	}

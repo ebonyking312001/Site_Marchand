@@ -9,7 +9,9 @@ public class Commande {
 	private int IdCommande;
 	private int IdMagasin;
 	private int IdUtilisateur;
+	private int idCreneau;
 	private Time DebutCreneau;
+	private Time FinCreneau;
 	private String NomMagasin;
 	
 	public Commande(Date DateRetrait,String EtatCommande,int IdCommande,int IdMagasin,int IdUtilisateur){
@@ -58,6 +60,14 @@ public class Commande {
 	public void setDebutCreneau(Time debutCreneau) {
 		DebutCreneau = debutCreneau;
 	}
+	
+	public Time getFinCreneau() {
+		return FinCreneau;
+	}
+
+	public void setFinCreneau(Time finCreneau) {
+		FinCreneau = finCreneau;
+	}
 
 	public String getNomMagasin() {
 		return NomMagasin;
@@ -67,6 +77,14 @@ public class Commande {
 		NomMagasin = nomMagasin;
 	}
 
+	public int getIdCreneau() {
+		return idCreneau;
+	}
+
+	public void setIdCreneau(int idCreneau) {
+		this.idCreneau = idCreneau;
+	}
+	
 	/**
 	 *  Constructor special pour resToCmd, afficher commandes a preparer
 	 */

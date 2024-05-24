@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
@@ -32,6 +30,41 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>JspListeCourse</servlet-name>
+		<jsp-file>/jsp/ListeCourse.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspListeCourse</servlet-name>
+		<url-pattern>/ListeCourse</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JspListeCommande</servlet-name>
+		<jsp-file>/jsp/ListeCommande.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspListeCommande</servlet-name>
+		<url-pattern>/ListeCommande</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JspModificationMagasin</servlet-name>
+		<jsp-file>/jsp/ModificationCréneauMagasin.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspModificationMagasin</servlet-name>
+		<url-pattern>/ModificationCreneau</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JspArticleParTypeProduit</servlet-name>
+		<jsp-file>/jsp/ArticleTypeProduit.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspArticleParTypeProduit</servlet-name>
+		<url-pattern>/ArticleTypeProduit</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>JspDetails</servlet-name>
 		<jsp-file>/jsp/Details.jsp</jsp-file>
 	</servlet>
@@ -56,15 +89,6 @@
 	<servlet-mapping>
 		<servlet-name>PanierCommande</servlet-name>
 		<url-pattern>/PanierCommande</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>JspListeCourse</servlet-name>
-		<jsp-file>/jsp/ListeCourse.jsp</jsp-file>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>JspListeCourse</servlet-name>
-		<url-pattern>/ListeCourse</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
