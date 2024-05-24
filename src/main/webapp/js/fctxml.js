@@ -194,27 +194,6 @@ function confirmCard() {
  */
 
 /**
- * Add new content to liste de course
- */
-function addContenuListeCourse(event) {
-	// Objet XMLHttpRequest.
-	//	var xhr = new XMLHttpRequest();
-
-	var idPlus = event.target.dataset.idmorecontent;
-	console.log(idPlus);
-
-	var suggestions = document.getElementById("formAdd");
-	var nodeBtnAdd = suggestions.lastElementChild;
-
-	// Insert before the btn "+" a new input
-	//	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><select id="nomTypeProduit"><option>-----</option></select><input type="number" id="quantity" min="1" style="width: 3em" ></div>';
-	var newInput = '<div class="mt-4"><select id="postit"><option>-----</option></select><input type="number" id="quantity" min="0" style="width: 3em">';
-
-	nodeBtnAdd.insertAdjacentHTML('beforebegin', newInput);
-
-}
-
-/**
  * Add new liste de course
  */
 function addListeCourse() {
@@ -232,7 +211,7 @@ function addListeCourse() {
 	}
 
 	// Requête au serveur avec les paramètres éventuels.
-	//	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value + "&listeIdTp=" + stringIdsTPs, true);
+	xhr.open("GET", "ServletListeCourse?nomListeCourse=" + document.getElementById("message-titleList").value + "&listeIdTp=" + stringIdsTPs, true);
 
 	document.getElementById("message-titleList").value = '';
 
@@ -242,41 +221,58 @@ function addListeCourse() {
 		}
 	};
 
-	$('#ModalListeCourse').modal('hide');
+	//	$('#ModalListeCourse').modal('hide');
+
+	// Envoie de la requête.
+	xhr.send();
 
 }
 
 /**
- * Get all products by product type
+ * Delete liste course by Id
  */
-function getProductsFromTPChoosed(event) {
+function deleteListeCoursebyId(event) {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
-	var idTp = event.target.dataset.idart;
-	console.log(idTp);
 
-	// Requête au serveur avec les paramètres éventuels.
-	xhr.open("GET", "ServletListeCourse?nomTP=" + document.getElementById("postit").value, true);
-
-	var suggestions = document.getElementById("postit");
+	// URL to remove the article from cart
+	xhr.open("GET", "ServletListeCourse?idListeCourse=" + event, true);
 
 	xhr.onload = function() {
 		// Si la requête http s'est bien passée.
 		if (xhr.status === 200) {
-			var doc = xhr.responseXML.getElementsByTagName("nArt");
-
-			var newInput = '<select id="nomArt" data-idSelectArt=' + idTp + '_selectNArt><option>-----</option>';
-
-			for (i = 0; i < doc.length; i++) {
-				newInput += '<option value="' + docTPs[i].firstChild.nodeValue + '">' + docTPs[i].firstChild.nodeValue + "</option>";
-			}
-
-			newInput += '</select><input type="number" id="quantity_' + idTp + ' min="0" style="width: 3em">';
-
-			suggestions.insertAdjacentHTML('afterend', newInput);
-
+			//location.reload();
+			console.log("ok");
+			$("#content").load(location.href + " #" + event + "_div>*", "");
 		}
 	};
+	// Envoie de la requête.
+	xhr.send();
+}
+
+/**
+ * Add articles to card
+ */
+function addArticlesToCardFromListe(event) {
+	// Objet XMLHttpRequest.
+	var xhr = new XMLHttpRequest();
+
+	// URL to remove the article from cart
+	xhr.open("GET", "ServletListeCourse?action=addToCardFromListe&idListeCourse=" + event, true);
+
+	xhr.onload = function() {
+		// Si la requête http s'est bien passée.
+		if (xhr.status === 200) {
+			alert(("Les articles on été ajoutés au panier").normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+			var doc = xhr.responseXML.getElementsByTagName("int");
+			var texte = doc[0].firstChild.nodeValue;
+
+			var elt = document.getElementById("intNbArtCard");
+			elt.innerHTML = texte;
+		}
+	};
+	// Envoie de la requête.
+	xhr.send();
 }
 
 /**
@@ -319,21 +315,21 @@ $('#final_validation').on('click', function() {
 	confirmCard();
 });
 
-$('#plusLContenu').on('click', function(event) {
-	addContenuListeCourse(event);
-});
-
 $('#plus_liste').on('click', function() {
 	addListeCourse();
 });
 
-$('#postit').on('change', function(event) {
-	getProductsFromTPChoosed(event);
-});
+$('.supprListe').on('click',
+	function(event) {
+		deleteListeCoursebyId(event.target.dataset.idlisterm);
+	}
+);
 
-$('#supprListe').on('click', function(event) {
-	getProductsFromTPChoosed(event);
-});
+$('.addToCardFromL').on('click',
+	function(event) {
+		addArticlesToCardFromListe(event.target.dataset.idlisteaddcard);
+	}
+);
 
 $('#envoyerListePanier').on('click', function(event) {
 	getProductsFromTPChoosed(event);
@@ -341,11 +337,6 @@ $('#envoyerListePanier').on('click', function(event) {
 
 $('#enregistrerListe').on('click', function(event) {
 	getProductsFromTPChoosed(event);
-});
-
-$(document).on("click", ".modalC", function() {
-	var listeId = $(this).data('id');
-	$(".modal-body #listeId").val(listeId);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
