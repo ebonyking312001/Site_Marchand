@@ -214,19 +214,19 @@ function calculateNewTotalPrice() {
 	var newPointsFideliteDispo = pointsFideliteDispo - pointsInput;
 	// get bouton validation commande
 	var button = document.getElementById("final_validation");
-
-	if (pointsInput > pointsFideliteDispo) {
-		document.getElementById("errorPoints").innerHTML = "Points insuffisants";
-		button.disabled = true;
-		button.style.backgroundColor = "#ccc"; // Change background color to grey
-		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
-	} else if (newTotalPrice < 0) {
-		document.getElementById("errorPoints").innerHTML = "Le prix total ne peut pas être inférieur à 0. Veuillez ajuster le montant des points.";
-		button.disabled = true;
-		button.style.backgroundColor = "#ccc"; // Change background color to grey
-		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
-	} else if (pointsInput < 0) {
-		document.getElementById("errorPoints").innerHTML = "La valeur saisie ne peut pas être inférieure à 0. Veuillez ajuster le montant des points.";
+	
+   	if (pointsInput > pointsFideliteDispo) {
+        document.getElementById("errorPoints").innerHTML = "Points insuffisants";
+        button.disabled = true;
+        button.style.backgroundColor = "#ccc"; // Change background color to grey
+   		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
+    } else if (newTotalPrice < 0) {
+        document.getElementById("errorPoints").innerHTML = "Le prix total ne peut pas etre inferieur a 0. Veuillez ajuster le montant des points.";
+        button.disabled = true;
+        button.style.backgroundColor = "#ccc"; // Change background color to grey
+   		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
+    } else if (pointsInput < 0){
+		document.getElementById("errorPoints").innerHTML = "La valeur saisie ne peut pas etre inferieure a 0. Veuillez ajuster le montant des points.";
 		button.disabled = true;
 		button.style.backgroundColor = "#ccc"; // Change background color to grey
 		button.style.cursor = "not-allowed"; // Change cursor to indicate it's unclickable
@@ -237,7 +237,7 @@ function calculateNewTotalPrice() {
 
 
 		var eltPrice = document.getElementById("totalPrice");
-		eltPrice.innerHTML = '<b>Prix total à payer : ' + newTotalPrice.toFixed(1) + '€</b>';
+		eltPrice.innerHTML = '<b>Prix total a payer : '+newTotalPrice.toFixed(1)+' euros </b>';
 
 		// envoyer pointsInput et newTotalPrice au servlet ConfirmationPanierServlet
 		xhr.open("GET", "ConfirmationPanierServlet?pointsInput=" + pointsInput + "&newTotalPrice=" + newTotalPrice, true);
