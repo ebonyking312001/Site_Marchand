@@ -98,7 +98,7 @@
 		<div class="col-2" id="HoraireMagasin"></div>
         </div>
         
-        <div><b>Saisir le montant à décagnotter</b></div>
+        <div><b>Saisir le montant à décagnotter</b> (Veillez saisir le nombre de points de fidélité à utiliser ( 10 points = 1 € ))</div>
 	    <div id="pointsFideliteDispo" data-value="${pointFideliteDispo}">Solde : ${pointFideliteDispo}</div>
 	    <div>
 	        <input type="number" id="pointsInput" value="0" step="10" min=0 max="${pointFideliteDispo}"/>
