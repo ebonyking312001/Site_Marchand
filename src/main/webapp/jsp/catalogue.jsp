@@ -104,13 +104,14 @@
 
 				"paging" : true,
 				"pagingType" : "simple_numbers",
-				"pageLength" : 25,
+				"pageLength" : 100,
 				"ordering" : false,
 				"searching" : true,
 				"scrollX" : true,
 				"scrollY" : "400px",
 				"scrollCollapse" : true,
-				"autoWidth" : true
+				"autoWidth" : true, 
+				"info": false
 			});
 		});
 	</script>
