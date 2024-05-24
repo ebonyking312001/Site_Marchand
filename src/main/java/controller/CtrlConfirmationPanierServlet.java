@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import bd.ConnectionMySql;
 import model.Article;
 import model.Magasin;
-import model.Utilisateur;
 import model.Magasin_CreneauRetrait;
 import model.User;
 
@@ -53,13 +52,8 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 		
 		// Récupérer session loyalty points
 		String sessionLoyaltyPoints = (String) session.getAttribute("sessionLoyaltyPoints");
-		
-		// get utilisateur - A ENLEVER!!
-		Utilisateur client = new Utilisateur(5, "John", "Doe", "john.doe@example.com","client", "123 Main St", 90);
-		// set session utilisateur - A ENLEVER!!
-		session.setAttribute("sessionClient", client);
 		// get session utilisateur 
-		Utilisateur sessionClient = (Utilisateur) session.getAttribute("sessionClient");
+		User sessionClient = (User) session.getAttribute("user");
 		
 		// set session points input
 		if (pointsInput != null) {
@@ -105,12 +99,12 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 
 		try {
 			// afficher points de fidelite lorsqu'un utilisateur est identifie
-			if (sessionClient.getIdUtilisateur() > 0) {
+			if (sessionClient.getId() > 0) {
 				// Récuperer infos utilisateurs
 				// Afficher point de fidelite a gagner
 				request.setAttribute("pointFidelite", sessionLoyaltyPoints);
 				// afficher point de fidelite disponible
-				request.setAttribute("pointFideliteDispo", sessionClient.getPointsFideliteUtilisateur());
+				request.setAttribute("pointFideliteDispo", sessionClient.getPointsFidelite());
 			}
 			if (nomMagasin != null && heureRetrait == null && dateRetrait == null) {
 
@@ -131,7 +125,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 						for(Magasin_CreneauRetrait mc : heuresDispo) {
 							out.println("<hr>"+
 									mc.getDebutCreneau().toString().substring(0, 5)+" - "+mc.getFinCreneau().toString().substring(0, 5) +
-									" nombre disponibie : "+ mc.getNbDispoCreneau()+ 
+									" nombre disponible : "+ mc.getNbDispoCreneau()+ 
 									"<idC>" + mc.getDebutCreneau().toString().substring(0, 5)+" - "+mc.getFinCreneau().toString().substring(0, 5)+"</idC></hr>");
 						}
 						
@@ -141,6 +135,9 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					} catch (ClassNotFoundException | SQLException ex) {
 					
 						out.println("<hof>Erreur - " + ex.getMessage() + "</hof>");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 
 					out.println("</horaire_journee>");
@@ -164,14 +161,14 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					// ajouter points de fidélité sur le compte de l'utilisateur
 					if (sessionLoyaltyPoints != null) {
 						int points = Integer.parseInt(sessionLoyaltyPoints);
-						ConnectionMySql.updateLoyaltyPoints(sessionClient.getIdUtilisateur(), points, "add");
+						ConnectionMySql.updateLoyaltyPoints(sessionClient.getId(), points, "add");
 					}
 					// enlever points de fidélité sur le compte de l'utilisateur
 					if (sessionPointsInput != null) {
 						System.out.println("sessionPointsInput="+sessionPointsInput);
 						// convert string to int
 						int points = Integer.parseInt(sessionPointsInput);
-						ConnectionMySql.updateLoyaltyPoints(sessionClient.getIdUtilisateur(), points, "substract");
+						ConnectionMySql.updateLoyaltyPoints(sessionClient.getId(), points, "substract");
 					}
 					// ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
 					
@@ -211,7 +208,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}}
 	}
 
 	/**
