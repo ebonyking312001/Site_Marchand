@@ -166,9 +166,14 @@ function getOpeningMagasin() {
 function confirmCard() {
 	// Objet XMLHttpRequest.
 	var xhr = new XMLHttpRequest();
-
+	const mot=document.getElementById("heureRetMag").value;
+	console.log(mot);
+	nbC=mot.substring(mot.length-2,mot.length);
+	console.log(nbC);
 	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
 		alert("La date est déjà passée");
+	}else if(nbC==" 0"){
+		alert("pas de créneau disponible !");
 	}
 	else {
 		// Requête au serveur avec les paramètres éventuels.
@@ -176,7 +181,7 @@ function confirmCard() {
 
 		xhr.onload = function() {
 			if (xhr.status === 200) {
-				alert("Commande réalisée avec succès");
+				alert("Commande realisee avec succes");
 				location.href = "/Site_Marchand/";
 				var doc = xhr.responseXML.getElementsByTagName("int");
 				var texte = doc[0].firstChild.nodeValue;
@@ -307,3 +312,91 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 
 });
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const cmdId = "${cmdId}";
+    
+    /*
+    add colors of buttons
+    */
+    document.querySelectorAll('button.validerBtn').forEach(button => {
+    	  const parentDiv = button.closest('div[ligne-cmd-ean]'); 
+          const etat = parentDiv.getAttribute('ligne-cmd-etat');
+        if (etat == "1") { //validée
+            button.classList.add('btn-success');
+            button.classList.remove('btn-warning');
+        } else { //en cours
+            button.classList.add('btn-warning');
+            button.classList.remove('btn-success');
+        }
+    });
+    /*
+    when click button, change button color and get ean,etat
+    */
+    document.querySelectorAll('button.validerBtn').forEach(button => {
+        const parentDiv = button.closest('div[ligne-cmd-ean]');
+        const etat = parentDiv.getAttribute('ligne-cmd-etat');
+        const ean = parentDiv.getAttribute('ligne-cmd-ean');
+
+        button.addEventListener('click', (event) => {
+            let etat = parentDiv.getAttribute('ligne-cmd-etat');
+            etat = etat == "1" ? "0" : "1"; // get etat opposite
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `${pageContext.request.contextPath}/ServletPreparation`, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Response received: ", xhr.responseText);
+                    // Update the parent div and button based on the new state
+                    parentDiv.setAttribute('ligne-cmd-etat', etat);
+                    button.textContent = etat == "1" ? 'Validée' : 'En cours';
+                    if (etat == "1") {
+                        button.classList.add('btn-success');
+                        button.classList.remove('btn-warning');
+                    } else {
+                        button.classList.add('btn-warning');
+                        button.classList.remove('btn-success');
+                    }
+                }
+            };
+            var data = "cmdId="+cmdId+"&ean="+ean+"&etat="+etat;
+            console.log(data);
+            xhr.send(data);
+        });
+    });
+});
+
+
+/**
+ * sort by date time (preparer cmd
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    function parseDateTime(dateString, timeString) {
+        // Assuming date format is YYYY-MM-DD and time format is HH:MM:SS
+        const longdate = dateString + "T" + timeString;
+        return new Date(longdate);
+    }
+
+    function sortCards(container, dateClass, timeClass, asc = true) {
+        const cards = Array.from(container.querySelectorAll('.id-div-commande'));
+        cards.sort((cardA, cardB) => {
+            const dateA = cardA.querySelector(dateClass).innerText.trim();
+            const timeA = cardA.querySelector(timeClass).innerText.trim();
+            const dateB = cardB.querySelector(dateClass).innerText.trim();
+            const timeB = cardB.querySelector(timeClass).innerText.trim();
+
+            const a = parseDateTime(dateA, timeA);
+            const b = parseDateTime(dateB, timeB);
+            return (a - b) * (asc ? 1 : -1);
+        });
+
+        cards.forEach(card => container.appendChild(card));
+    }
+
+    const container = document.getElementById('tab-cmds');
+    document.getElementById('sort-datetime').addEventListener('click', () => {
+        sortCards(container, '.order-date', '.order-time');
+    });
+});
+
+

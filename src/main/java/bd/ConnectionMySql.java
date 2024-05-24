@@ -17,7 +17,9 @@ import model.ArticleCommande;
 import model.Categorie;
 import model.Commande;
 import model.TypeProduit;
+import model.User;
 import model.Magasin;
+import model.Magasin_CreneauRetrait;
 
 /**
  * Classe en charge de la base de données.
@@ -69,7 +71,6 @@ public class ConnectionMySql {
 		ConnectionMySql.connexion();
 
 		ArrayList<Article> liste = new ArrayList<>();
-		
 		String sql = "SELECT a.*, c.nomCategorie " + "FROM Articles a "
 				+ "INNER JOIN Categories c ON a.IdCategorie = c.IdCategorie";
 		
@@ -424,7 +425,7 @@ public class ConnectionMySql {
 	}
 
 	/**
-	 * Gets orders by state
+	 * get list of commands to be prepared
 	 */
 	public static ArrayList<Commande> panierCommande(String commandeEtat) throws ClassNotFoundException, SQLException {
 		ArrayList<Commande> liste = new ArrayList<>();
@@ -433,7 +434,10 @@ public class ConnectionMySql {
 		ConnectionMySql.connexion();
 
 		/*----- Requête SQL -----*/
-		String sql = "SELECT * FROM Commandes WHERE EtatCommande LIKE ?";
+		String sql = "SELECT Commandes.DateRetrait, CreneauRetrait.DebutCreneau,Commandes.IdCommande, Magasins.NomMagasin,Utilisateurs.IdUtilisateur,Commandes.EtatCommande FROM Commandes,Utilisateurs,CreneauRetrait,Magasins WHERE EtatCommande LIKE ? "
+				+ "AND Utilisateurs.IdUtilisateur=Commandes.IdUtilisateur "
+				+ "AND Commandes.IdMagasin=Magasins.IdMagasin "
+				+ "AND Commandes.IdCreneau=CreneauRetrait.IdCreneau;";
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sql)) {
@@ -458,8 +462,7 @@ public class ConnectionMySql {
 	public static ArrayList<Commande> resToCommandes(ResultSet rs) throws SQLException {
 		ArrayList<Commande> liste = new ArrayList<>();
 		while (rs.next()) {
-			Commande c = new Commande(rs.getDate("DateRetrait"), rs.getString("EtatCommande"), rs.getInt("IdCommande"),
-					rs.getInt("IdMagasin"), rs.getInt("IdUtilisateur"));
+			Commande c = new Commande(rs.getDate("DateRetrait"), rs.getTime("DebutCreneau"), rs.getInt("IdCommande"),rs.getString("NomMagasin"),rs.getInt("IdUtilisateur"),rs.getString("EtatCommande"));
 			liste.add(c);
 		}
 		return liste;
@@ -516,6 +519,11 @@ public class ConnectionMySql {
 				+ "SELECT Commandes.IdCommande " + "FROM Commandes "
 				+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
 				+ "WHERE Articles_Commandes.estValide=0" + ");";
+		
+		String sqlCmd2 = "UPDATE Commandes " + "SET EtatCommande = 'En cours' " + "WHERE IdCommande IN ("
+				+ "SELECT Commandes.IdCommande " + "FROM Commandes "
+				+ "INNER JOIN Articles_Commandes ON Commandes.IdCommande = Articles_Commandes.IdCommande "
+				+ "WHERE Articles_Commandes.estValide=0" + ");";
 
 		/*----- Ouverture de l'espace de requête -----*/
 		try (PreparedStatement st = ConnectionMySql.cx.prepareStatement(sqlLigneCmd)) {
@@ -531,7 +539,8 @@ public class ConnectionMySql {
 
 		PreparedStatement stCmd = ConnectionMySql.cx.prepareStatement(sqlCmd);
 		stCmd.executeUpdate();
-		System.out.println("bdbdbd");
+		PreparedStatement stCmd2 = ConnectionMySql.cx.prepareStatement(sqlCmd2);
+		stCmd2.executeUpdate();
 		cx.close();
 	}
 
@@ -863,7 +872,7 @@ public class ConnectionMySql {
 	 * @throws Exception
 	 */
 	public static void addCommande(String nomMag, Date dateRetrait, Time heureRetraitDeb, Time heureRetraitFin,
-			List<Article> articles) throws Exception {
+			List<Article> articles,int id) throws Exception {
 		// Cr�er la connexion � la base de donn�es
 		ConnectionMySql.connexion();
 
@@ -881,7 +890,7 @@ public class ConnectionMySql {
 			st.setDate(2, dateRetrait);
 			st.setInt(3, idCreneau);
 			st.setInt(4, magasin.getIdMagasin());
-			st.setInt(5, 1);
+			st.setInt(5, id);
 
 			st.executeUpdate();
 			ResultSet rs = st.getGeneratedKeys();
@@ -953,6 +962,74 @@ public class ConnectionMySql {
 
 	    ConnectionMySql.cx.close();
 	}
+
+	 /* returen MagCreneaux dispo
+	 * @throws Exception 
+	 */
+	public static ArrayList<Magasin_CreneauRetrait> creneauxDispo (String magasinNom) throws Exception {
+		ArrayList<Magasin_CreneauRetrait> creneauxDispo =new ArrayList<Magasin_CreneauRetrait>();
+		ConnectionMySql.connexion();
+		String sql = "SELECT CreneauRetrait.IdCreneau,Magasins.IdMagasin,Magasins.NomMagasin,CreneauRetrait.DebutCreneau,CreneauRetrait.FinCreneau,NbDispoCreneau "
+				+ "FROM Magasins_CreneauRetraits,CreneauRetrait,Magasins "
+				+ "WHERE Magasins_CreneauRetraits.IdCreneau=CreneauRetrait.IdCreneau "
+				+ "AND Magasins_CreneauRetraits.IdMagasin=Magasins.IdMagasin "
+				+ "AND Magasins.NomMagasin= ? ";
+
+		try (PreparedStatement st = cx.prepareStatement(sql)) {
+			st.setString(1,magasinNom);
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					Magasin_CreneauRetrait mc = new Magasin_CreneauRetrait(
+							rs.getInt(1), 
+							rs.getInt(2),
+							rs.getString(3), 
+							rs.getTime(4),
+							rs.getTime(5),
+							rs.getInt(6));
+					creneauxDispo.add(mc);
+				}
+			st.close();
+		} catch (Exception sqle) {
+			throw new Exception("Erreur creneauxDispo : " + sqle.getMessage());
+		}
+		ConnectionMySql.cx.close();
+		return creneauxDispo;
+		}
+	}
+		public static User authenticate(String email, String password) throws Exception {
+	        ConnectionMySql.connexion();
+	        User user = null;
+
+	        try {
+	            String query = "SELECT * FROM Utilisateurs WHERE EmailUtilisateur = ? AND PasswordUtilisateur = ?";
+	            PreparedStatement ps = ConnectionMySql.cx.prepareStatement(query);
+	            ps.setString(1, email);
+	            ps.setString(2, password);
+
+	            ResultSet rs = ps.executeQuery();
+
+	            if (rs.next()) {
+	                user = new User();
+	                user.setId(rs.getInt("IdUtilisateur"));
+	                user.setNom(rs.getString("NomUtilisateur"));
+	                user.setPrenom(rs.getString("PrenomUtilisateur"));
+	                user.setEmail(rs.getString("EmailUtilisateur"));
+	                user.setAdresse(rs.getString("AdresseUtilisateur"));
+	                user.setRole(rs.getString("RoleUtilisateur"));
+	                user.setPointsFidelite(rs.getInt("PointsFideliteUtilisateur"));
+	                // Do not store password in the user object for security reasons
+	                ps.close();
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            throw new Exception("Error authenticating user", e);
+	        } finally {
+	        	ConnectionMySql.cx.close();
+	        }
+
+	        return user;
+	}
+
 	/*----------------------------*/
 	/* Programme principal (test) */
 	/*----------------------------*/

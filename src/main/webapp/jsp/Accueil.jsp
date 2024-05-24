@@ -25,14 +25,10 @@
 	 				<c:forEach var="cat" items="${listeCat}"> 
 	 					<c:choose>
                         <c:when test="${idCategorieChoisi != null && idCategorieChoisi == cat.idCategorie}">
-                            <button type="button" class="btn btn-secondary btn-info">
-                                <a class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
-                            </button>
+                                <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
                         </c:when>
                         <c:otherwise>
-                            <button type="button" class="btn btn-secondary">
-                                <a class="card shadow-sm" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
-                            </button>
+                                <a class="card shadow-sm btn btn-secondary" href="?idCategorie=${cat.idCategorie}">${cat.nomCategorie}</a>
                         </c:otherwise>
                     </c:choose>
 					</c:forEach> 
@@ -46,49 +42,34 @@
 								<c:forEach var="typeProd" items="${listeTypeProd}">
 									<c:choose>
 				                        <c:when test="${idTypeProduitChoisi != null && idTypeProduitChoisi == typeProd.idTypeProduit}">
-				                            <button type="button" class="btn btn-secondary btn-info">
-				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
-				                            </button>
+				                            <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
 				                        </c:when>
 				                        <c:otherwise>
-				                            <button type="button" class="btn btn-secondary">
-				                                <a class="card shadow-sm" href="?idTypeProd=${typeProd.idTypeProduit}">${typeProd.nomTypeProduit}</a>
-				                            </button>
+				                            <a class="card shadow-sm btn btn-secondary" href="?idTypeProd=${typeProd.idTypeProduit}&idCategorie=${typeProd.idCategorie}">${typeProd.nomTypeProduit}</a>
 				                        </c:otherwise>
-				                    </c:choose>
+				                    </c:choose>       
 								</c:forEach>
 						</p>
 					</div>
-				</div>
+			
 			</c:if>
 			<h2 class="fw-light py-3 fw-bold">Liste d'articles</h2>
 			<p class="d-inline-flex gap-1">
 				<c:choose>
 	                <c:when test="${ordreChoisi == 'croissant'}">
-	                    <button type="button" class="btn btn-secondary btn-info">
-	                    	<a class="card shadow-sm" href="?ordre=croissant">Ordre Croissant</a>
-	               		</button>
-		                <button type="button" class="btn btn-secondary">
-		                    <a class="card shadow-sm" href="?ordre=decroissant">Ordre Décroissant</a>
-		                </button>
+	                    <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?ordre=croissant">Prix/kg Croissant</a>
+		                <a class="card shadow-sm btn btn-secondary" href="?ordre=decroissant">Prix/kg Décroissant</a>
 	                </c:when>
 	                <c:when test="${ordreChoisi == 'decroissant'}">
-	                    <button type="button" class="btn btn-secondary">
-	                    	<a class="card shadow-sm" href="?ordre=croissant">Ordre Croissant</a>
-	               		</button>
-		                <button type="button" class="btn btn-secondary btn-info">
-		                    <a class="card shadow-sm" href="?ordre=decroissant">Ordre Décroissant</a>
-		                </button>
+	                    <a class="card shadow-sm btn btn-secondary" href="?ordre=croissant">Prix/kg Croissant</a>
+		                <a class="card shadow-sm btn btn-secondary bg-secondary text-white" href="?ordre=decroissant">Prix/kg Décroissant</a>
 	                </c:when>
 	                <c:otherwise>
-	                    <button type="button" class="btn btn-secondary">
-	                    	<a class="card shadow-sm" href="?ordre=croissant">Ordre Croissant</a>
-	               		</button>
-		                <button type="button" class="btn btn-secondary">
-		                    <a class="card shadow-sm" href="?ordre=decroissant">Ordre Décroissant</a>
-		                </button>
+	                    <a class="card shadow-sm btn btn-secondary" href="?ordre=croissant">Prix/kg Croissant</a>
+		                <a class="card shadow-sm btn btn-secondary" href="?ordre=decroissant">Prix/kg Décroissant</a>
 	                </c:otherwise>
 	            </c:choose>
+
 			</p>
 
 			<div class="row">

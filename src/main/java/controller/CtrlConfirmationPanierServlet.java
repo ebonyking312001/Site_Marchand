@@ -20,6 +20,8 @@ import bd.ConnectionMySql;
 import model.Article;
 import model.Magasin;
 import model.Utilisateur;
+import model.Magasin_CreneauRetrait;
+import model.User;
 
 /**
  * Servlet implementation class CtrlConfirmationPanierServlet
@@ -35,7 +37,9 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		 if ( request.getSession().getAttribute("user") == null) {
+             request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+         }else {
 		// Gets session
 		HttpSession session = request.getSession();
 
@@ -119,20 +123,23 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 					out.println("<horaire_journee>");
 
 					try {
-						/*----- Lecture de liste de mots dans la BD -----*/
 						String horaire = ConnectionMySql.getOpeningByMagasinName(nomMagasin);
 
 						out.println("<hof>" + horaire + "</hof>");
-						ArrayList<String> heuresDispo = ConnectionMySql.getHoursOpenedByMagasinId(nomMagasin);
+						ArrayList<Magasin_CreneauRetrait> heuresDispo = ConnectionMySql.creneauxDispo(nomMagasin);
 						
-						for(String h : heuresDispo) {
-							out.println("<hr>" + h + "</hr>");
+						for(Magasin_CreneauRetrait mc : heuresDispo) {
+							out.println("<hr>"+
+									mc.getDebutCreneau().toString().substring(0, 5)+" - "+mc.getFinCreneau().toString().substring(0, 5) +
+									" nombre disponibie : "+ mc.getNbDispoCreneau()+ 
+									"<idC>" + mc.getDebutCreneau().toString().substring(0, 5)+" - "+mc.getFinCreneau().toString().substring(0, 5)+"</idC></hr>");
 						}
 						
 						// set xml nouveau points fidélité à gagner
 						out.println("<points>" + sessionLoyaltyPoints + "</points>");
 						
 					} catch (ClassNotFoundException | SQLException ex) {
+					
 						out.println("<hof>Erreur - " + ex.getMessage() + "</hof>");
 					}
 
@@ -166,7 +173,9 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 						int points = Integer.parseInt(sessionPointsInput);
 						ConnectionMySql.updateLoyaltyPoints(sessionClient.getIdUtilisateur(), points, "substract");
 					}
-					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
+					// ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession);
+					
+					ConnectionMySql.addCommande(nomMagasin, d, tDeb, tFin, articlesInSession,((User) session.getAttribute("user")).getId());
 					session.setAttribute("articleList", null);
 					session.setAttribute("countArtCard", 0);
 					
@@ -197,8 +206,7 @@ public class CtrlConfirmationPanierServlet extends HttpServlet {
 				request.getRequestDispatcher("jsp/ConfirmationPanier.jsp").forward(request, response);
 
 			}
-			
-
+		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

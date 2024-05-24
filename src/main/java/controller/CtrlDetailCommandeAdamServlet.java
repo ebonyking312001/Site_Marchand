@@ -36,10 +36,16 @@ public class CtrlDetailCommandeAdamServlet extends HttpServlet {
         String id = request.getPathInfo().substring(1);
 
 		try {
+			if ( request.getSession().getAttribute("user") == null) {
+	              request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+	          }else {
+	        	  
+	     
 			ArrayList<ArticleCommande> articles = ConnectionMySql.DetailCommande(id);
 	        request.setAttribute("cmdId", id);
 	        request.setAttribute("articles", articles);
 	        request.getRequestDispatcher("/jsp/DetailCommande.jsp").forward(request, response);
+	          }
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
