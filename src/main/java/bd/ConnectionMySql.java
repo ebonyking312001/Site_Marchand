@@ -1225,6 +1225,7 @@ public class ConnectionMySql {
 					article.setQuantite(rs.getInt("quantite"));
 					liste.add(article);
 				}
+				st.close();;
 			}
 			st.close();
 		} catch (SQLException ex) {
