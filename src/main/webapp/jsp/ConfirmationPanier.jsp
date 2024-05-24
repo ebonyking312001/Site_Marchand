@@ -82,9 +82,9 @@
         <div class="mt-5">
 	
         <b>Choix du magasin de retrait</b>
-        <div class="row mt-5">
+        <div class="row mt-1">
         <div class="col-3">
-        <select id="nomMagasin">
+        <select id="nomMagasin" class="form-control">
 		<option>-----</option>
 			<c:forEach var="mag" items="${requestScope.allMagasins}">
 				<option value="${mag.nomMagasin}">${mag.nomMagasin}</option>
@@ -93,22 +93,22 @@
 		</select>
         </div>
         <div class="col-3">
-        <input type="date" id="dateRetMag" name="datRetMag" />
+        <input type="date" id="dateRetMag" name="datRetMag" class="form-control" />
         </div>
 		<div class="col-3">
-		<select id="heureRetMag"><option>-----</option></select>
+		<select id="heureRetMag" class="form-control"><option>-----</option></select>
 <!-- 		<input type="time" id="heureRetMag" name="retMag" min="00:00" -->
 <!-- 									max="23:59" required /> -->
 		</div>
-		
+		<div class="mt-3"> <b>Horaires d'ouverture du magasin : </b> </div>
 		<div class="col-4" id="HoraireMagasin"></div>
         </div>
         
-        <div><b>Saisir le montant à décagnotter</b> (Veillez saisir le nombre de points de fidélité à utiliser ( 10 points = 1 € ))</div>
+        <div class="mt-3 mb-1"><b>Saisir le montant à décagnotter</b> (Veillez saisir le nombre de points de fidélité à utiliser ( 10 points = 1 € ))</div>
 	    <div id="pointsFideliteDispo" data-value="${pointFideliteDispo}">Solde : ${pointFideliteDispo}</div>
 	    <div>
-	        <input type="number" id="pointsInput" value="0" step="10" min=0 max="${pointFideliteDispo}"/>
-			<button class="btn btn-sm btn-warning" id="decagnotter">Décagnotter</button>
+	        <input class="form-control" type="number" id="pointsInput" value="0" step="10" min=0 max="${pointFideliteDispo}"/>
+			<button class="btn btn-sm btn-warning mt-2" id="decagnotter">Décagnotter</button>
 	        <div class="text-danger" id="errorPoints"></div>
 	    </div>
         

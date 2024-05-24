@@ -171,9 +171,9 @@ function confirmCard() {
 	nbC = mot.substring(mot.length - 2, mot.length);
 	console.log(nbC);
 	if (document.getElementById("dateRetMag").value < new Date().getDate()) {
-		alert("La date est déjà passée");
+		alert("La date est deja passee");
 	} else if (nbC == " 0") {
-		alert("pas de créneau disponible !");
+		alert("pas de creneau disponible");
 	}
 	else {
 		// Requête au serveur avec les paramètres éventuels.
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 					console.log("Response received: ", xhr.responseText);
 					// Update the parent div and button based on the new state
 					parentDiv.setAttribute('ligne-cmd-etat', etat);
-					button.textContent = etat == "1" ? 'Validée' : 'En cours';
+					button.textContent = etat == "1" ? 'Validee' : 'En cours';
 					if (etat == "1") {
 						button.classList.add('btn-success');
 						button.classList.remove('btn-warning');
