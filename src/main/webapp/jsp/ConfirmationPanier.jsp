@@ -5,6 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <t:genericpage>
+	<jsp:attribute name="header">
+        <%@ include file="Header.jsp"%>
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+        <%@ include file="Footer.jsp"%>
+    </jsp:attribute>
 	<jsp:body>
         <main>
         <div class="container">
@@ -67,16 +73,17 @@
                             </div>
                         </c:forEach>
                     </div>
-                     <div class="total">
-                        <p class="fw-bold my-2">Prix total à payer : <fmt:formatNumber
+                     <div class="total" id="totalPrice" data-value="${totalPrice}">
+                        <p class="fw-bold my-2" >Prix total à payer : <fmt:formatNumber
 								value="${totalPrice}" minFractionDigits="1"
-								maxFractionDigits="1" /> €</p>
+								maxFractionDigits="1"/> €</p>
                     </div>
+                    <div id="addLoyaltyPoints">Je cagnotte <b>${pointFidelite}</b> points</div>
         <div class="mt-5">
-
+	
         <b>Choix du magasin de retrait</b>
         <div class="row mt-5">
-        <div class="col-2">
+        <div class="col-3">
         <select id="nomMagasin">
 		<option>-----</option>
 			<c:forEach var="mag" items="${requestScope.allMagasins}">
@@ -85,24 +92,33 @@
 		
 		</select>
         </div>
-        <div class="col-2">
+        <div class="col-3">
         <input type="date" id="dateRetMag" name="datRetMag" />
         </div>
-		<div class="col-2">
+		<div class="col-3">
 		<select id="heureRetMag"><option>-----</option></select>
 <!-- 		<input type="time" id="heureRetMag" name="retMag" min="00:00" -->
 <!-- 									max="23:59" required /> -->
 		</div>
 		
-		<div class="col-2" id="HoraireMagasin"></div>
+		<div class="col-4" id="HoraireMagasin"></div>
         </div>
+        
+        <div><b>Saisir le montant à décagnotter</b> (Veillez saisir le nombre de points de fidélité à utiliser ( 10 points = 1 € ))</div>
+	    <div id="pointsFideliteDispo" data-value="${pointFideliteDispo}">Solde : ${pointFideliteDispo}</div>
+	    <div>
+	        <input type="number" id="pointsInput" value="0" step="10" min=0 max="${pointFideliteDispo}"/>
+	        <button id="decagnotter">Décagnotter</button>
+	        <div class="text-danger" id="errorPoints"></div>
+	    </div>
+        
         <div class="row mt-5">
-									<div class="col-2">
+									<div class="col-3">
 									<div>
 		<button class="checkout-btn" id="final_validation">Valider la commande</button>
 </div>
 									</div>
-									<div class="col-2">
+									<div class="col-3">
 											<a href="ServletPanier">
 			<button type="button" class="btn btn-sm btn-outline-secondary">Retour au panier</button>
 		</a>

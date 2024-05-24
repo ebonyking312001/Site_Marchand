@@ -181,14 +181,14 @@ public class Article {
 	public void setIdTypeProduit(int typeProduit) {
 		this.idTypeProduit = typeProduit;
 	}
-	
-	public String getNomCategorie() {
-	    return nomCategorie;
-	}
-	  
-	public void setNomCategorie(String nomCategorie) {
-	    this.nomCategorie = nomCategorie;
-	}
+    
+    public String getNomCategorie() {
+        return nomCategorie;
+    }
+      
+    public void setNomCategorie(String nomCategorie) {
+        this.nomCategorie = nomCategorie;
+    }
 
 	
 	public String getNomTypeProduit() {

@@ -3,8 +3,6 @@
 	<div class="container">
 		<div
 			class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
-
 			<ul
 				class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 				<li class="d-flex d-row align-items-center"><svg
@@ -34,25 +32,64 @@
 							d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" /></svg>
 				</button>
 			</form>
+			<style>
+/* Optional: Style the dropdown icon */
+.dropdown-toggle {
+	display: inline-block;
+	padding: 0.5rem;
+}
 
+.dropdown-toggle svg {
+	vertical-align: middle;
+	fill: #ffffff;
+}
 
+.dropdown-menu {
+	min-width: auto; /* Adjust the width of the dropdown menu */
+}
+
+.dropdown-item {
+	color: #000; /* Adjust text color */
+}
+
+.dropdown-item:hover {
+	background-color: #f8f9fa; /* Hover effect */
+}
+</style>
 			<a style="text-decoration: none;" href="ServletPanier"
 				class=" text-white "> <svg xmlns="http://www.w3.org/2000/svg"
 					height="30" width="32.5" viewBox="0 0 576 512">
 					<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
 					<path fill="#ffffff"
 						d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
-				<span class="badge" id="intNbArtCard">${countArtCard}</span></a>
-      </a>
-    
-		 	<a href="ServletListeCourse" class="text-white ms-3">
-                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="32.5" viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 8h12v-2H7v2zm0-4h12v-2H7v2zm0-6v2h12V7H7z"/>
+
+				<span class="badge" id="intNbArtCard">${countArtCard}</span></a> </a> <a
+				href="ServletListeCourse" class="text-white ms-3"> <svg
+					xmlns="http://www.w3.org/2000/svg" height="30" width="32.5"
+					viewBox="0 0 24 24">
+                    <path fill="#ffffff"
+						d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 8h12v-2H7v2zm0-4h12v-2H7v2zm0-6v2h12V7H7z" />
                 </svg>
-      		</a>
-      		<a href="ServletCommandes" class="text-white ms-3" style="text-decoration: none; border: 1px solid #ffffff; padding: 5px 10px; border-radius: 5px;">
-    Mes commandes
-</a>
+			</a> <a href="ServletCommandes" class="text-white ms-3"
+				style="text-decoration: none; border: 1px solid #ffffff; padding: 5px 10px; border-radius: 5px;">
+				Mes commandes </a>
+
+			<!-- Example single danger button -->
+			<div class="btn-group mx-2">
+				<button type="button" class="btn btn-primary dropdown-toggle"
+					data-bs-toggle="dropdown" aria-expanded="false">Account</button>
+				<ul class="dropdown-menu ">
+					<c:choose>
+						<c:when test="${not empty sessionScope.user}">
+							<li><a class="dropdown-item" href="Logout">Sign Out</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a class="dropdown-item" href="CtrlAuthentification">Sign
+									In</a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</div>
 		</div>
 	</div>
 </header>

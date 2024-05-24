@@ -1,98 +1,149 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-    id="WebApp_ID" version="4.0">
-
-    <display-name>SiteMarchand</display-name>
-
-    <!-- Existing JSP Mappings -->
-    <servlet>
-        <servlet-name>SiteMarchand</servlet-name>
-        <jsp-file>/SiteMarchand.html</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SiteMarchand</servlet-name>
-        <url-pattern>/SiteMarchand</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>JspAccueil</servlet-name>
-        <jsp-file>/jsp/Accueil.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspAccueil</servlet-name>
-        <url-pattern>/accueil</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>JspPanier</servlet-name>
-        <jsp-file>/jsp/Panier.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspPanier</servlet-name>
-        <url-pattern>/panier</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>JspDetails</servlet-name>
-        <jsp-file>/jsp/Details.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspDetails</servlet-name>
-        <url-pattern>/Details</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>Chercher</servlet-name>
-        <jsp-file>/jsp/Chercher.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Chercher</servlet-name>
-        <url-pattern>/Chercher</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>PanierCommande</servlet-name>
-        <jsp-file>/jsp/PanierCommande.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PanierCommande</servlet-name>
-        <url-pattern>/PanierCommande</url-pattern>
-    </servlet-mapping>
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<!-- http://xmlns.jcp.org/xml/ns/javaee -->
+	<display-name>SiteMarchand</display-name>
+	<servlet>
+		<servlet-name>SiteMarchand</servlet-name>
+		<jsp-file>/SiteMarchand.html</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SiteMarchand</servlet-name>
+		<url-pattern>/SiteMarchand</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>JspAccueil</servlet-name>
+		<jsp-file>/jsp/Accueil.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspAccueil</servlet-name>
+		<url-pattern>/accueil</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>JspPanier</servlet-name>
+		<jsp-file>/jsp/Panier.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspPanier</servlet-name>
+		<url-pattern>/panier</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
-        <servlet-name>JspListeCourse</servlet-name>
-        <jsp-file>/jsp/ListeCourse.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspListeCourse</servlet-name>
-        <url-pattern>/ListeCourse</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>JspListeCommande</servlet-name>
-        <jsp-file>/jsp/ListeCommande.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspListeCommande</servlet-name>
-        <url-pattern>/ListeCommande</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>JspModificationMagasin</servlet-name>
-        <jsp-file>/jsp/ModificationCréneauMagasin.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspModificationMagasin</servlet-name>
-        <url-pattern>/ModificationCreneau</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>JspArticleParTypeProduit</servlet-name>
-        <jsp-file>/jsp/ArticleTypeProduit.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JspArticleParTypeProduit</servlet-name>
-        <url-pattern>/ArticleTypeProduit</url-pattern>
-    </servlet-mapping>
+		<servlet-name>JspListeCourse</servlet-name>
+		<jsp-file>/jsp/ListeCourse.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspListeCourse</servlet-name>
+		<url-pattern>/ListeCourse</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JspListeCommande</servlet-name>
+		<jsp-file>/jsp/ListeCommande.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspListeCommande</servlet-name>
+		<url-pattern>/ListeCommande</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JspModificationMagasin</servlet-name>
+		<jsp-file>/jsp/ModificationCréneauMagasin.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspModificationMagasin</servlet-name>
+		<url-pattern>/ModificationCreneau</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JspArticleParTypeProduit</servlet-name>
+		<jsp-file>/jsp/ArticleTypeProduit.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspArticleParTypeProduit</servlet-name>
+		<url-pattern>/ArticleTypeProduit</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>JspDetails</servlet-name>
+		<jsp-file>/jsp/Details.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JspDetails</servlet-name>
+		<url-pattern>/Details</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Chercher</servlet-name>
+		<jsp-file>/jsp/Chercher.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Chercher</servlet-name>
+		<url-pattern>/Chercher</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>PanierCommande</servlet-name>
+		<jsp-file>/jsp/PanierCommande.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PanierCommande</servlet-name>
+		<url-pattern>/PanierCommande</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>
+		<servlet-class>controller.CtrlDetailCommandeAdamServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>CtrlDetailCommandeAdamServlet</servlet-name>
+		<url-pattern>/CtrlDetailCommandeAdamServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletPreparation</servlet-name>
+		<servlet-class>controller.CtrlPreparationAdamServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ServletPreparation</servlet-name>
+		<url-pattern>/CtrlPreparationAdamServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>controller.Logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/logout.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>sitemarchand</servlet-name>
+		<servlet-class>controller.CtrlArticleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>sitemarchand</servlet-name>
+		<url-pattern>/Accueil.jsp</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>

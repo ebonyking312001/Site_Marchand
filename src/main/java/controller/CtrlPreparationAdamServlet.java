@@ -1,6 +1,8 @@
 package controller;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,40 +31,46 @@ public class CtrlPreparationAdamServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		String action=request.getParameter("action");
-		if (action.equals("afficherCommandes")) {
-			ArrayList<Commande> cEnCours;
-			try {
-				cEnCours = ConnectionMySql.panierCommande("en cours");
-				request.setAttribute("cEnCours", cEnCours);
-		        request.getRequestDispatcher("/PanierCommande").forward(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		}else {
-			ArrayList<ArticleCommande> cmdD;
-			try {
-				cmdD = ConnectionMySql.DetailCommande(action);
-				request.setAttribute("cmdD", cmdD);
-		        request.getRequestDispatcher("/PanierCommande").forward(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    try {
+	    	  if ( request.getSession().getAttribute("user") == null) {
+	              request.getRequestDispatcher("/jsp/Authentification.jsp").forward(request, response);
+	          } else {
+	            ArrayList<Commande> cEnCours = ConnectionMySql.panierCommande("en cours");
+	            request.setAttribute("cEnCours", cEnCours);
+	            request.getRequestDispatcher("/jsp/PanierCommande.jsp").forward(request, response);
+	          }
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An internal error occurred while processing the request.");
+	    }
 	}
+
 
 	
 
 	/**
+	 * @throws IOException 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		// TODO Auto-generated method stub
 	
-	}
+		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+	    String cmdId = request.getParameter("cmdId");
+	    String ean = request.getParameter("ean");
+	    String etat = request.getParameter("etat");
+	   
+	    
+	    try {
+
+	        ConnectionMySql.miseAJourCommande(cmdId, ean, etat);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    response.sendRedirect(request.getContextPath() + "/CtrlDetailCommandeAdamServlet/" + cmdId);
+	    return ; 
+	}
 }

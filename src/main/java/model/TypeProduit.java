@@ -6,10 +6,10 @@ public class TypeProduit {
 	private String nomTypeProduit;
 	private int idCategorie;
 	
-	public TypeProduit(int IdTypeProduit, String NomTypeProduit, int idCategorie) {
-		this.idTypeProduit=IdTypeProduit;
-		this.nomTypeProduit=NomTypeProduit;
-		this.idCategorie = idCategorie;
+	public TypeProduit(int idTypeProduit, String nomTypeProduit, int idCategorie) {
+		this.idTypeProduit=idTypeProduit;
+		this.nomTypeProduit=nomTypeProduit;
+		this.idCategorie=idCategorie;
 	}
 
 	public int getIdTypeProduit() {

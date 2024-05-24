@@ -52,7 +52,7 @@ public class Commande {
 	public void setIdUtilisateur(int idUtilisateur) {
 		IdUtilisateur = idUtilisateur;
 	}
-
+	
 	public Time getDebutCreneau() {
 		return DebutCreneau;
 	}
@@ -60,7 +60,7 @@ public class Commande {
 	public void setDebutCreneau(Time debutCreneau) {
 		DebutCreneau = debutCreneau;
 	}
-
+	
 	public Time getFinCreneau() {
 		return FinCreneau;
 	}
@@ -85,12 +85,15 @@ public class Commande {
 		this.idCreneau = idCreneau;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 *  Constructor special pour resToCmd, afficher commandes a preparer
+	 */
+	public Commande(Date DateRetrait, Time DebutCreneau, int IdCommande, String NomMagasin,int IdUtilisateur,String EtatCommande){
+		this.DateRetrait=DateRetrait;
+		this.DebutCreneau=DebutCreneau;
+		this.IdCommande= IdCommande;
+		this.NomMagasin =NomMagasin;
+		this.IdUtilisateur=IdUtilisateur;
+		this.EtatCommande=EtatCommande;
+	}
 }

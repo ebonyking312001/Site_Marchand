@@ -94,7 +94,7 @@ public class CtrlPanierServlet extends HttpServlet {
 					countArtCard = articleList.size();
 					session.setAttribute("countArtCard", countArtCard);
 
-					/*----- Type de la réponse -----*/
+					/*----- Type de la r ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
@@ -117,7 +117,7 @@ public class CtrlPanierServlet extends HttpServlet {
 						countArtCard = articlesInSession.size();
 						session.setAttribute("countArtCard", countArtCard);
 
-						/*----- Type de la réponse -----*/
+						/*----- Type de la r ponse -----*/
 						response.setContentType("application/xml;charset=UTF-8");
 						response.setCharacterEncoding("UTF-8");
 						try (PrintWriter out = response.getWriter()) {
@@ -151,7 +151,7 @@ public class CtrlPanierServlet extends HttpServlet {
 					countArtCard = articlesInSession.size();
 					session.setAttribute("countArtCard", countArtCard);
 
-					/*----- Type de la réponse -----*/
+					/*----- Type de la r ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
@@ -179,10 +179,10 @@ public class CtrlPanierServlet extends HttpServlet {
 				// Delete articles from cart
 				case "deleteArticlesCart":
 					session.setAttribute("articleList", null);
-					
+
 					session.setAttribute("countArtCard", 0);
 
-					/*----- Type de la réponse -----*/
+					/*----- Type de la r ponse -----*/
 					response.setContentType("application/xml;charset=UTF-8");
 					response.setCharacterEncoding("UTF-8");
 					try (PrintWriter out = response.getWriter()) {
